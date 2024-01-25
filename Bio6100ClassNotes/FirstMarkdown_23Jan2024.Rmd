@@ -1,0 +1,109 @@
+---
+title: "Working with Markdown"
+author: "Nicole R Gorman"
+date: "2024-01-23"
+output: 
+  html_document: 
+    theme: cerulean
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+For markdown, use asterisks to *indicate italic text*.
+
+Double line return for a new chunk of text like this.
+
+Nicole R. Gorman  
+Department of Plant Biology  
+University of Vermont  
+
+**#  Practice with RMarkdown code**  
+**##  Different language to change formatting**
+
+# Hash marks for headers
+
+## More hashes for progressively
+
+## smaller
+
+### and smaller
+
+#### headers!!
+
+**bold face this way**
+
+>Offset quote which embeds and looks really nice when you have extended material that you would like to see.
+
+Back to plain text
+
+* first list item
+* second list item
+   - spacing for indents  
+
+^superscript^ but also a ~superscript~ like this
+
+[set up a link with text](website address)
+
+First Header  |  Second Header
+------------  |  -------------
+Content Cell  |  Content Cell
+Content Cell  |  Content Cell
+
+'''
+Fencing sets boundaries and everything inside the fencing *is shown as literal text* without rendering.
+'''
+
+$$a + b =c$$
+
+We can also use Latex in the line with a single dollar sign $a + b=c$ like this.
+
+##subscripts in LaTex
+
+$$H_0 = Z_{a + b}$$
+
+
+
+ 
+
+
+$$S=cA^z_1+ z_(Z + x)$$
+
+$$\alpha = \frac{\best}{\delta + \gamma_x}$$
+$$z = \sum_{i=1}^X{K}$$
+
+
+### What if we need a backslash??
+
+$$\backslash \alpha \le b \ \backslash$$
+
+### Sometimes we want to mix math with plain text?
+
+
+$$P(Occurance Of Species A) = Z$$
+$$P(\mbox{Occurance Of Species A}) = Z$$
+
+East to embed Latex in line $\pi + 3$ like so we can also use markdown fencing in line with a single backtick `pi + 3` like this. We can even execute r code inside markdown text `r pi +3`
+
+
+# Rendering in plain text
+
+We can run and execute R code within the R Markdown file. We can add code insode the fencing.
+  
+  
+```{r eval=TRUE, echo=TRUE}
+
+# use the eval statement to toggle 
+3 {r eval=TRUE, echo=FALSE}
+
+# Use comments extensively in all of your coding!
+Pred <-seq(1,10)   #make a vector of integers from 1 to 10
+Res <-runif(10)    #generate 10 draws from a random uniform (0,1) distribution
+
+# Print random numbers
+print(Res)
+
+plot(Res,Pred)
+
+```
