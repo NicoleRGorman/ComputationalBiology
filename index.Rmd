@@ -21,4 +21,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #1
 This is a [link](RegularExpressions.html) to another webpage.
 
+### Homework #3
+Please click [here](Homework3.html) to find homework #3.
+
 # References
