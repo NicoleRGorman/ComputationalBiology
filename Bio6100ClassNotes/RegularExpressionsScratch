@@ -1,0 +1,28 @@
+A sentence. Another. And a third. crow raven grackle
+
+Cutting and
+pasting from pdf is
+a mess. Sentences
+are
+all chopped up. It is
+hard
+to repair.
+
+
+MY WORD: raven\s LEFTOVER:  ,MY WORD: starling\s LEFTOVER:   ,    robin
+
+
+L_neoniger
+L_umbratus
+M_lobifrons
+
+MY WORD: MyWord\s LEFTOVER:  OtherJunk. ,
+MY WORD: MyWord2\s LEFTOVER: ,OtherStuff,,
+MY WORD: MyThirdWord\s LEFTOVER: ,        MoreTrash,!##
+MY WORD: LastWord\s LEFTOVER:      x.
+
+
+MY WORD: MyWord\s LEFTOVER:  OtherJunk. ,
+MY WORD: MyWord2\s LEFTOVER: ,OtherStuff,,
+MY WORD: MyThirdWord\s LEFTOVER: ,        MoreTrash,!##
+MY WORD: LastWord\s LEFTOVER:      x.

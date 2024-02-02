@@ -1,0 +1,210 @@
+---
+title: "Homework #3"
+author: "Nicole R Gorman"
+date: "2024-01-31"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br>
+
+## **Question 1:**  
+*Transform these lines into what we need for a proper .csv file:*  <br>
+
+First String    Second      1.22      3.4  
+Second          More Text   1.555555  2.2220  
+Third           x           3         124  
+*Note: Need to figure out to get a tab in .Rmd file*   
+
+  
+```
+Find:\s  *  
+
+Replace:,
+
+```
+
+**Produces:**  
+First String,Second,1.22,3.4  
+Second,More Text,1.555555,2.2220  
+Third,x,3,124  
+
+**Rationale:**  
+-Using the `\s` finds a single space, tab, or line break  
+-Add two spaces after the `s` to find anything with 2 or more spaces after  
+-Use `*` to mean any character can come next, but it has to be a character
+
+<br>
+
+## **Question 2:**  
+*However, my collaborator asked me to please provide to her the list in different format.*  
+
+```
+Change this:
+Ballif, Bryan, University of Vermont
+Ellison, Aaron, Harvard Forest
+Record, Sydne, Bryn Mawr
+
+To this:
+Bryan Ballif (University of Vermont)
+Aaron Ellison (Harvard Forest)
+Sydne Record (Bryn Mawr)
+
+```
+
+```
+Find:(\w+), (\w+), (\w+ \w+ *\w*)  
+
+Replace:\2 \1 (\3)
+
+```
+**Rationale:**
+
+-Using `( )` captures a component in a string  
+-Using the `\w+` finds one or more consecutive word characters  
+-Following the first capture with a space finds two words  
+-This first part gives me the first and last names and then I can reorder in the replace  
+-Using a third capture `()` gets the institution  
+-Adding `()` in the replace adds (institution)  
+-The same expressions as above were used to capture the fist two words of the institution `\w+ \w+`  
+-Then the ` *` was used to find any word the had zero or more spaces following  
+-And finally, `\w*` was used to get the final word, and also include institutions that included only two words  
+
+## **Question 3:**  
+*All of these files are on a single line, so first write a regular expression to place each file name on its own line*  
+
+```
+Change this:
+0001 Georgia Horseshoe.mp3 0002 Billy In The Lowground.mp3 0003 Winder Slide.mp3 0004 Walking Cane.mp3
+
+To this:
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Winder Slide.mp3
+0004 Walking Cane.mp3
+
+```
+
+```
+Find:  \.\w{3}\s*  
+
+Replace: \.mp3\r
+
+```
+**Rationale:**
+
+-Use `\` to find an actual period  
+-Use `\w{3}\s* ` to find two characters followed by zero or more spaces  
+-Use `.mp3\r` to make a line break anywhere there is .mp3, but also keep .mp3  
+
+## **Question 4:**  
+*Now write a regular expression to grab the four digit number and put it at the end of the title:*
+
+```
+Change this:
+0001 Georgia Horseshoe.mp3
+0002 Billy In The Lowground.mp3
+0003 Winder Slide.mp3
+0004 Walking Cane.mp3
+
+To this:
+Georgia Horseshoe_0001.mp3
+Billy In The Lowground_0002.mp3
+Winder Slide_0003.mp3
+Walking Cane_0004.mp3
+
+```
+```
+Find:  
+
+Replace:
+
+```
+**Rationale:**
+
+-Using  
+
+## **Question 5:**  
+*Here is a data frame with genus, species, and two numeric variables. Write a single regular expression to rearrange the data set like this:*
+
+```
+Change this:
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+
+To this:
+C_pennsylvanicus,44
+C_herculeanus,3
+M_punctiventris,4
+L_neoniger,55
+
+```
+```
+Find:  
+
+Replace:
+
+```
+**Rationale:**
+
+-Using  
+
+## **Question 6:**  
+*Beginning with the original data set, rearrange it to abbreviate the species name like this:*
+
+```
+Change this:
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+
+To this:
+C_penn,44
+C_herc,3
+M_punc,4
+L_neon,55
+
+```
+```
+Find:  
+
+Replace:
+
+```
+**Rationale:**
+
+-Using  
+
+## **Question 7:**  
+*Beginning with the original data set, rearrange it so that the species and genus names are fused with the first 3 letters of each, followed by the two columns of numerical data in reversed order:*
+
+```
+Change this:
+Camponotus,pennsylvanicus,10.2,44
+Camponotus,herculeanus,10.5,3
+Myrmica,punctiventris,12.2,4
+Lasius,neoniger,3.3,55
+
+To this:
+Campen, 44, 10.2
+Camher, 3, 10.5
+Myrpun, 4, 12.2
+Lasneo, 55, 3.3
+
+```
+```
+Find:  
+
+Replace:
+
+```
+**Rationale:**
+
+-Using  
+

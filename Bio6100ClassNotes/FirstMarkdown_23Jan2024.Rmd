@@ -13,6 +13,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 For markdown, use asterisks to *indicate italic text*.
 
+```{r}
+
+#first chunk of code in rmd file
+print(pi) 
+pi + 3
+
+```
+
 Double line return for a new chunk of text like this.
 
 Nicole R. Gorman  
@@ -65,8 +73,6 @@ $$H_0 = Z_{a + b}$$
 
 
 
- 
-
 
 $$S=cA^z_1+ z_(Z + x)$$
 
@@ -95,7 +101,9 @@ We can run and execute R code within the R Markdown file. We can add code insode
 ```{r eval=TRUE, echo=TRUE}
 
 # use the eval statement to toggle 
-3 {r eval=TRUE, echo=FALSE}
+
+#{r eval=TRUE, echo=FALSE}
+# Commented this bc notr working
 
 # Use comments extensively in all of your coding!
 Pred <-seq(1,10)   #make a vector of integers from 1 to 10
