@@ -8,8 +8,8 @@ output: html_document
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+Please see below for the homework problems posted [here](https://gotellilab.github.io/Bio381/Homeworks/Homework_03.html).
 
-<br>
 
 ## **Question 1:**  
 *Transform these lines into what we need for a proper .csv file:*  <br>
@@ -89,16 +89,18 @@ To this:
 ```
 
 ```
-Find:  \.\w{3}\s*  
+Find:(\.\w{3})(\s*)  
 
-Replace: \.mp3\r
+Replace:\1\r
 
 ```
 **Rationale:**
 
--Use `\` to find an actual period  
--Use `\w{3}\s* ` to find two characters followed by zero or more spaces  
--Use `.mp3\r` to make a line break anywhere there is .mp3, but also keep .mp3  
+-Use `()` to capture the file extension, .mp3  
+-Within the capture, use `\.` to find a period  
+-Use `\w{3}\s* ` to find three characters followed by zero or more spaces. The `*` needs to be used here because the final song does not have a space following the file extension, so zero or more needs to be specified rather than one or more  
+-Now capture 1 is `.mp3` and can be used in replace  
+-For replace, `\1` replaces `.mp3` and `\r` adds a line break after every .mp3  
 
 ## **Question 4:**  
 *Now write a regular expression to grab the four digit number and put it at the end of the title:*
@@ -118,14 +120,19 @@ Walking Cane_0004.mp3
 
 ```
 ```
-Find:  
+Find:(\d{4})( )(\w+ \w+\s*\w*\s*\w*)(.\w{3})
 
-Replace:
+Replace:\3_\1\4
 
 ```
 **Rationale:**
 
--Using  
+-Using `( )` captures a component in a string  
+-For the first capture, using `(\d{4})` finds exactly number characters  
+-For the second capture, `( )` finds just the space so I can get rid of it for replace  
+-For the third capture, `(\w+ \w+\s*\w*\s*\w*)` finds one or more consecutive word characters, followed by a space, followed by zero or more spaces to accommodate for the different numbers of words in the song titles, followed by the same zero or more space and characters, also to accommodate for the different numbers of words in the titles  
+-The fourth capture`(.\w{3})` finds a period followed by exactly three word characters  
+-For the replace, `\3_\1\4` deletes and reorganizes the captures as well as adds an underscore following the song title  
 
 ## **Question 5:**  
 *Here is a data frame with genus, species, and two numeric variables. Write a single regular expression to rearrange the data set like this:*
@@ -145,14 +152,23 @@ L_neoniger,55
 
 ```
 ```
-Find:  
+Find:(\w{1})(\w+),(\w+),(\d+.\d,)(\d+)
 
-Replace:
+Replace:\1_\3,\5
 
 ```
 **Rationale:**
 
--Using  
+-For this question parts of words need to be deleted, so words can be broken up using numbers and brackets to specify exact numbers of characters  
+-Also using `( )` captures a component in a string, allowing for reorganization and deleting certain components  
+-For the first capture, using `(\w{1})` finds exactly one word character in the genus  
+-The `,` is outside the capture so it is removed during replace  
+-For the second capture, `(\w+)` finds the rest of the genus  
+-For the third capture, `(\w+)` finds the specific epithet, that can include one or more word characters  
+-Again, the `,` is outside the capture so it is removed during replace 
+-The fourth capture`(\d+.\d,)` finds one or more number characters , followed by a period, followed by a single decimal, followed by a comma. This is the comma that will be saved in replace  
+-For the final capture, `(\d+)` finds one or more number characters, capturing the last number  
+-For the replace, `\1_\3,\5` deletes and reorganizes the captures as well as adds an underscore following the first letter of the genus  
 
 ## **Question 6:**  
 *Beginning with the original data set, rearrange it to abbreviate the species name like this:*
@@ -172,14 +188,24 @@ L_neon,55
 
 ```
 ```
-Find:  
+Find:(\w{1})(\w+),(\w{4})(\w+),(\d+.\d,)(\d+)  
 
-Replace:
+Replace:\1_\3,\6
 
 ```
 **Rationale:**
 
--Using  
+-Again, for this question parts of words need to be deleted
+-As before, using `( )` captures a component in a string, allowing for reorganization and deleting certain components  
+-For the first capture, using `(\w{1})` finds exactly one word character in the genus  
+-The `,` is outside the capture so it is removed during replace  
+-For the second capture, `(\w+)` finds the rest of the genus  
+-For the third capture, `(\w{4})` finds exactly four word characters to be included in the replace
+-The fourth capture`(\w+)` finds the rest of the specific epithet  
+-Again, the `,` is outside the capture so it is removed during replace 
+-The fifth capture`(\d+.\d,)` finds one or more number characters, followed by a period, followed by a single decimal, followed by a comma. This is the comma that will be saved in replace  
+-For the final capture, `(\d+)` finds one or more number characters, capturing the last number  
+-For the replace, `\1_\3,\6` deletes and reorganizes the captures as well as adds an underscore following the first letter of the genus   
 
 ## **Question 7:**  
 *Beginning with the original data set, rearrange it so that the species and genus names are fused with the first 3 letters of each, followed by the two columns of numerical data in reversed order:*
@@ -199,12 +225,18 @@ Lasneo, 55, 3.3
 
 ```
 ```
-Find:  
+Find:(\w{3})(\w+),(\w{3})(\w+),(\d+.\d),(\d+)  
 
-Replace:
+Replace:\1\3, \6, \5
 
 ```
 **Rationale:**
 
--Using  
+-Again, for this question parts of words need to be deleted  
+-As before, using `( )` captures a component in a string, allowing for reorganization and deleting certain components  
+-Components are captured using the same rationale as previous questions  
+-New to this question is combining components of the genus and specific epithet to create a shortened and combined species name  
+-To do this, captures are specified in the find and then reordered in replace without any space like this`\1\3`  
+-Numerical data is also reorganized use the same captures as previously, but reordering and adding spaces in the replace function like this ` \6, \5`  
+
 
