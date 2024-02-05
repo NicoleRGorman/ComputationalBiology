@@ -6,7 +6,7 @@ output:
   html_document:
     theme: cerulean
     highlight: tango
-    toc: yes
+    toc: no
     toc_float:
         collapse: true
 ---
