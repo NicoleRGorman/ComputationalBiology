@@ -18,10 +18,17 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Homeworks
 
-### Homework #1
-This is a [link](RegularExpressions.html) to another webpage.
+### Homework #1: Github  
++ Click here to find my [github repository](https://github.com/NicoleRGorman).  
++ My user name is NicoleRGorman
 
-### Homework #3
-Please click [here](Homework3.html) to find homework #3.
+### Homework #2: R Markdown 
++ This is a [link](RegularExpressions.html) to another webpage.
+
+### Homework #3: Regular Expressions
++ Please click [here](Homework3.html) to find homework #3.
+
+### Homework #4: Using R
+
 
 # References
