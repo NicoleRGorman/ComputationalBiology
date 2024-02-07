@@ -98,7 +98,7 @@ dogs[c(-2,-4)]
 dogs[-c(2,4)]
 
 #can't mix positive and negative elements in brackets
-dogs[c(1,-5)]
+# dogs[c(1,-5)]
 
 z <- c(1.1, 1.2, 3, 4.4)
 typeof(z) # gives type
@@ -165,3 +165,71 @@ length(z)
 is.null(z)
  #only operatiopn that works on a null
 
+# All atomics are of the same type
+# if they are different, R coerces them
+# logical -> integer -> double -> character
+
+a <- c(2, 2.0)
+print(a)
+typeof(a) #technicaly integer coerced to numeric
+
+
+b<- c("purple", "green")
+typeof(b)
+
+d <- c(a,b)
+print(d)
+typeof(d)
+
+# "Mistakes" in numeric variable convert to strings
+# very useful when working with logical variables
+
+a <- runif(10)
+print(a)
+
+# Conparison operators yield a logical result
+
+a > 0.5
+
+# do math on a logical and it coerves the integer
+
+# how many elements are greater than 0.5?
+sum(a > 0.5)
+
+#What proprtion of the vecotor elements are gtreater than 0.5?
+mean(a > 0.5)
+
+# Break dow the result, period is a place holder
+
+. <- a > 0.5
+print(.)
+. <- as.integer(.)
+print(.)
+print(sum(.))
+print(mean(.))
+ 
+#Qualifying exam question! Aproximately what proprtion of observations drawn from a normal (0,1) distribution are larger than 2.0?
+
+mean(rnorm(1000) > 2)
+print(sum(.))
+print(mean(.))
+
+# adding a constant to a vector
+z <- c(10,20,30)
+z + 1
+
+#What happens when vecors are added?
+y <- c(1,2,3)
+z + y
+
+# results is an "element by element" operation of the ector
+# most vector operations can be dome this way
+z^2
+
+# Recycling
+# But what if vectors are not equal in length?
+# Give a warning just bc vectors are of different lengths, but ok if that's what you are rtrying to do
+ z <-c(10,20,30)
+ x <- c(1,2)
+ z + x
+ 
