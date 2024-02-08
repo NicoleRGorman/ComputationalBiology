@@ -1,0 +1,91 @@
+---
+title: "Homework #4: Atomic Vectors"
+author: "Nicole R Gorman"
+date: "2024-02-07"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, echo = FALSE)
+```
+
+## Question #1
+
+Suppose x = 1.1, a = 2.2, and b = 3.3. Assign each expression to the value of the variable z and print the value stored in z.
+  
+$x^{a^b}$  
+$(x^a)^b$  
+$3x^3+2x^2+1$  
+
+```{r echo=TRUE, results=TRUE}
+
+# Use the assignment operator
+x <- 1.1 
+a <- 2.2
+b <- 3.3
+
+z = x^{a^b}
+print(z)
+
+z = (x^a)^b
+print(z)
+
+z = 3*x^3+2*x^2+1
+print(z)
+
+```
+
+## Question #2
+
+Using the rep and seq functions, create the following vectors:
+
+(1,2,3,4,5,6,7,8,7,6,5,4,3,2,1)  
+(1,2,2,3,3,3,4,4,4,4,5,5,5,5,5)  
+(5,4,4,3,3,3,2,2,2,2,1,1,1,1,1)  
+
+```{r echo=TRUE, results=TRUE}
+z <- c(seq(0,8),seq(7,1))
+print(z)
+
+```
+```{r echo=TRUE, results=TRUE}
+my_vec <- c(1,2,3,4,5)
+my_vec <- rep(x=my_vec,times=my_vec)
+print(my_vec)
+```
+```{r echo=TRUE, results=TRUE}
+my_vec <- c(5,4,3,2,1)
+my_vec <- rep(x=my_vec,times=c(1,2,3,4,5))
+print(my_vec)
+```
+
+## Question #3
+
+
+Create a vector of two random uniform numbers. In a spatial map, these can be interpreted as x and y coordinates that give the location of an individual (such as a marked forest tree in a plot that has been mapped). Using one of R’s inverse trigonometry functions `(asin()`, `acos()`, or `atan())`, convert these numbers into polar coordinates (If you don’t know what polar coordinates are, read about them on the web here, here, or in your calculus textbook)  
+```
+
+
+```
+
+## Question #4
+
+Create a vector queue <- c("sheep", "fox", "owl", "ant") where queue represents the animals that are lined up to enter Noah’s Ark, with the sheep at the front of the line. Using R expressions, update queue as:
+
+the serpent arrives and gets in line;
+the sheep enters the ark;
+the donkey arrives and talks his way to the front of the line;
+the serpent gets impatient and leaves;
+the owl gets bored and leaves;
+the aphid arrives and the ant invites him to cut in line.
+Finally, determine the position of the aphid in the line.
+
+
+```
+
+
+```
+
+## Question #5
+
+Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7. You will need one of the arithmetic operators on this cheat sheet.

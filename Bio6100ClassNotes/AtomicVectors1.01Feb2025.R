@@ -58,7 +58,7 @@ is.character(z)
 #Building locals
 #Boolean, not with quotes, all caps
 z <- c(TRUE,TRUE,FALSE)
-# avoid abbrevitions T, F which will work
+# avoid abbreviations T, F which will work
 print(z)
 typeof(z)
 is.logical(z)

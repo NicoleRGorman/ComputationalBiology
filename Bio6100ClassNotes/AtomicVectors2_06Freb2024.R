@@ -8,9 +8,9 @@ print(z)
 
 z <-c(z,5)
 print(z)
-# This "dynamic sizing" is VERY SLOW....so don't do it uness no other option
+# This "dynamic sizing" is VERY SLOW....so don't do it unless no other option
 
-# has 100 0s in a numeric vecotor
+# has 100 0s in a numeric vector
 z <- rep(0,100)
 length(z)
 head(z)
@@ -46,7 +46,7 @@ str(my_vector)
 
 # rep for repeating elements
 rep(0,5,6) #give the element (or vector) and number of times to repeat
-rep(x=0,5,times=5) #using the argument name sis always prudent
+rep(x=0,5,times=5) #using the argument name is always prudent
 rep(times=6,x=0.5) #which argument names, order is not important
 my_vec <- c(1,2,3)
 rep(x=my_vec,times=2) # number applies to entire vector
@@ -57,8 +57,8 @@ rep(x=my_vec,each=c(3,2,1)) # what about this?
 
 # Using seq
 seq(from=2, to=1) #set limits for integer sequences
-2:4 # very common short cut with no explicit functio wrappers
-seq(from=2,to=4,by=0.5) #us a by function can generate real numbers
+2:4 # very common short cut with no explicit function wrappers
+seq(from=2,to=4,by=0.5) #use a by function can generate real numbers
 x <- seq(from=2, to=4,length=7) #sometimes easier to just specify length
 my_vec <- 1:length(x) # commonly used, but actually slow
 print(my_vec)
@@ -69,10 +69,10 @@ seq_len(5)
 #explore
 set.seed(2400) 
 runif(5) # 5 random uniform values between 0 and 1
-runif(n=3, min=100, max=101) # 3 randome uniform values between 100 and 101
+runif(n=3, min=100, max=101) # 3 random uniform values between 100 and 101
 
 rnorm(6) # 6 random normal values with mean 0 and standard deviation 1
-rnorm(n=5, mean=100, sd=30) # 5 randome normal values with mean 100 and sd 30
+rnorm(n=5, mean=100, sd=30) # 5 random normal values with mean 100 and sd 30
 
 #Explore distributions by sampling and plotting
 library(ggplot2) #do this at the very start
