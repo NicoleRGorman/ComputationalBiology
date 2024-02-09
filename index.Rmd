@@ -28,7 +28,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #3: Regular Expressions
 + Please click [here](Homework3.html) to find homework #3.
 
-### Homework #4: Using R
-
+### Homework #4: Using R, Atomic Vectors
++ Please click [here](Homework4.html) for homework #4.
 
 # References
