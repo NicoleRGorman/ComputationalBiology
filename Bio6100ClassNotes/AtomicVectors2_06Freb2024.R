@@ -62,7 +62,9 @@ seq(from=2,to=4,by=0.5) #use a by function can generate real numbers
 x <- seq(from=2, to=4,length=7) #sometimes easier to just specify length
 my_vec <- 1:length(x) # commonly used, but actually slow
 print(my_vec)
-seq_along(my_vec)# this is also faster than 1:5 # much faster for models and big data
+seq_along(my_vec)
+# this is also faster than 1:5 
+# much faster for models and big data
 seq_len(5) 
 
 #using random number generators
@@ -85,7 +87,89 @@ long_vec <- seq_len(10)
 typeof(long_vec)
 str(long_vec)
 
-sample(x=long_vec) #with no other params, this renbers the vector
+sample(x=long_vec) #with no other params, this reorders the vector, no other changes, =s not saved this way, would do this with an +
 sample(x=long_vec, size=3) # specify a number (sampling without replacement)
-sample(x=long_vec, size=11) 
+sample(x=long_vec, size=11) # Can't do bc sampling wo replacement, run out of options...need replacement
 sample(x=long_vec, size=16,replace=TRUE) #can generate duplicates
+# above is even sampling from all
+# sometimes want to sample some elements more than others
+my_weights <- c(rep(20,5),rep(100,5))
+print(my_weights)
+my_weights <- c(rep(c(20,500),each=5))# Can also write it this way
+print(my_weights)
+my_weights <- c(rep(c(20,500),each=5))
+my_weights <-c(100,100,100,500,100,100,100,100,100,100)
+print(my_weights)
+sample(x=long_vec,replace=TRUE,prob=my_weights) #sampling with reaplcement and weights
+# almost all n umbers are greater than 5, weighted sampling
+
+z <- c(3.1, 9.2, 1.3, 0.4, 7.5)
+
+#positive index values
+z[c(2,3)]
+
+# negative index values exclude elements
+sample(z[-c(2,3)])
+
+#create a vector of logical elements to select conditions
+
+z[z<3]
+
+tester <- z<3
+print(tester)
+z[tester]
+
+which(z<3)
+
+z[which(z<3)] # this is the same as above, but overkill
+
+z[-(length(z):(length(z)-2))]
+
+names(z) <- letters[1:5]
+names(z) <- LETTERS[1:5]
+#z[c("b","c")]
+z
+
+#Logical Operators
+
+# < less than
+# > greater than
+# <= less than or equal to
+# >= greater than or equal to
+# == equal to
+
+# ! not
+# & and (vector)
+## | or (vector)
+# xor(x,y)
+
+x <- 1:5
+y <- c(1:3,7,7)
+
+x == 2
+x != 2
+x == 1 & y == 7
+x
+y
+y_special <- c(y,7)
+x == 1 & y_special == 7
+x==1 | y ==7
+x
+y
+x ==3 | y ==3
+xor(x==3, y==3)
+
+set.seed(90)
+z <- runif(10) # simple integer sequence
+print(z)
+
+z < 0.5 # create logical vector
+z[z < 0.5] # use as index call
+which(z < 0.5) # use to ger indicies for logical
+z[which(z < 0.5)] # does same as above
+
+zD <- c(z,NA,NA) # concatinate it
+zD[zD < 0.5] # NA values carried along!
+zD[which(zD < 0.5)] # NA values dropped
+
+

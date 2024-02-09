@@ -63,9 +63,14 @@ print(my_vec)
 
 
 Create a vector of two random uniform numbers. In a spatial map, these can be interpreted as x and y coordinates that give the location of an individual (such as a marked forest tree in a plot that has been mapped). Using one of R’s inverse trigonometry functions `(asin()`, `acos()`, or `atan())`, convert these numbers into polar coordinates (If you don’t know what polar coordinates are, read about them on the web here, here, or in your calculus textbook)  
-```
 
-
+```{r echo=TRUE, results=TRUE}
+runif(n=2, min=-90, max=90)
+x <- seq(1:2)
+x <- 1
+y <- 2
+asin(x)
+asin(y)
 ```
 
 ## Question #4
@@ -81,11 +86,16 @@ the aphid arrives and the ant invites him to cut in line.
 Finally, determine the position of the aphid in the line.
 
 
-```
+```{r echo=TRUE, results=TRUE}
 
 
 ```
 
 ## Question #5
 
-Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7. You will need one of the arithmetic operators on this cheat sheet.
+Use R to create a vector of all of the integers from 1 to 100 that are not divisible by 2, 3, or 7. You will need one of the arithmetic operators on this cheat sheet.  
+
+```{r echo=TRUE, results=TRUE}
+
+
+```
