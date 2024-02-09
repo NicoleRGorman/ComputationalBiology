@@ -34,5 +34,11 @@ myList <-list(1:10, matrix(1:8,nrow=4,byrow=TRUE), letters[1:3],pi)
 str(myList)
 print(myList)
 
+# using [] gives you a single item, which is of type of list
+myList[4]
+
+mylist[4] - 3 # no! Cannot subtract a number from an item on a list
+
+myList  [[no]] # use a double bracket
 
 

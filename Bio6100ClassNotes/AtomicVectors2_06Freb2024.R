@@ -165,7 +165,7 @@ print(z)
 
 z < 0.5 # create logical vector
 z[z < 0.5] # use as index call
-which(z < 0.5) # use to ger indicies for logical
+which(z < 0.5) # use to get indicies for logical
 z[which(z < 0.5)] # does same as above
 
 zD <- c(z,NA,NA) # concatinate it

@@ -403,12 +403,25 @@ print(my_vec)</code></pre>
 these can be interpreted as x and y coordinates that give the location
 of an individual (such as a marked forest tree in a plot that has been
 mapped). Using one of R’s inverse trigonometry functions
-<code>(asin()</code>, <code>acos()</code>, or <code>atan())</code>,
+<code>asin()</code>, <code>acos()</code>, or <code>atan()</code>,
 convert these numbers into polar coordinates (If you don’t know what
 polar coordinates are, read about them on the web here, here, or in your
 calculus textbook)</p>
-<pre class="r"><code>runif(n=2, min=-90, max=90)</code></pre>
-<pre><code>## [1] -29.87245 -87.68404</code></pre>
+<pre class="r"><code>set.seed(100) #sets the random number 
+ranNum &lt;- runif(n=2, min=-90, max=90) #stores random numbers as ranNum
+x &lt;- ranNum[1] #assigns first random number as x
+y &lt;- ranNum[2] #assigns second random number as y
+
+r &lt;-  sqrt((x*x) + (y*y)) #use conversion formula to calculate r
+print(r)</code></pre>
+<pre><code>## [1] 55.67691</code></pre>
+<pre class="r"><code>r # Or can just type r and get the same thing</code></pre>
+<pre><code>## [1] 55.67691</code></pre>
+<pre class="r"><code>theta &lt;- atan(y/x) #use conversion formula to calculate theta
+print(theta) </code></pre>
+<pre><code>## [1] 0.9001656</code></pre>
+<pre class="r"><code>theta # Or can just type theta and that does the same thing</code></pre>
+<pre><code>## [1] 0.9001656</code></pre>
 </div>
 <div id="question-4" class="section level2">
 <h2>Question #4</h2>
@@ -421,12 +434,55 @@ donkey arrives and talks his way to the front of the line; the serpent
 gets impatient and leaves; the owl gets bored and leaves; the aphid
 arrives and the ant invites him to cut in line. Finally, determine the
 position of the aphid in the line.</p>
+<pre class="r"><code>Ark &lt;-c(&quot;sheep&quot;,&quot;fox&quot;,&quot;owl&quot;,&quot;ant&quot;) #sets up my queue
+my_Ark &lt;-Ark[c(1,2,3,4)]
+print(my_Ark)</code></pre>
+<pre><code>## [1] &quot;sheep&quot; &quot;fox&quot;   &quot;owl&quot;   &quot;ant&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- c(my_Ark, &quot;serpent&quot;)
+my_Ark</code></pre>
+<pre><code>## [1] &quot;sheep&quot;   &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- c(my_Ark[-1])
+my_Ark</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark[5] &lt;- &quot;donkey&quot;
+my_Ark</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot; &quot;donkey&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- my_Ark[c(1,2,3,5,4)]
+my_Ark</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;donkey&quot;  &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- my_Ark[c(1,2,4,3,5)]
+my_Ark</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;owl&quot;     &quot;donkey&quot;  &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- my_Ark[c(1,3,2,4,5)]
+my_Ark</code></pre>
+<pre><code>## [1] &quot;fox&quot;     &quot;donkey&quot;  &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- my_Ark[c(2,1,3,4,5)]
+my_Ark</code></pre>
+<pre><code>## [1] &quot;donkey&quot;  &quot;fox&quot;     &quot;owl&quot;     &quot;ant&quot;     &quot;serpent&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- c(my_Ark[-5])
+my_Ark</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;owl&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- c(my_Ark[-3])
+my_Ark</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;ant&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- c(my_Ark, &quot;aphid&quot;)
+my_Ark</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;ant&quot;    &quot;aphid&quot;</code></pre>
+<pre class="r"><code>my_Ark &lt;- my_Ark[c(1,2,4,3)]
+my_Ark</code></pre>
+<pre><code>## [1] &quot;donkey&quot; &quot;fox&quot;    &quot;aphid&quot;  &quot;ant&quot;</code></pre>
+<pre class="r"><code>which(my_Ark == &#39;aphid&#39;)</code></pre>
+<pre><code>## [1] 3</code></pre>
 </div>
 <div id="question-5" class="section level2">
 <h2>Question #5</h2>
 <p>Use R to create a vector of all of the integers from 1 to 100 that
-are not divisible by 2, 3, or 7. You will need one of the arithmetic
-operators on this cheat sheet.</p>
+are not divisible by 2, 3, or 7.</p>
+<pre class="r"><code>z &lt;- 1:100 # creates a vector from 1-100
+my_numbers &lt;- z[!(z %% 2 == 0 | z %% 3 == 0 | z %% 7 == 0)] # checks for numbers that are divisible by 2, 7, and 3 (specify 0 as remainder), the pipe separating each expression means &quot;or&quot; because trying to exclude any number that is not divisible by 2,3, or 7, and then the ! excludes those numbers from the vector
+print(my_numbers) # prints the result</code></pre>
+<pre><code>##  [1]  1  5 11 13 17 19 23 25 29 31 37 41 43 47 53 55 59 61 65 67 71 73 79 83 85
+## [26] 89 95 97</code></pre>
 </div>
 
 

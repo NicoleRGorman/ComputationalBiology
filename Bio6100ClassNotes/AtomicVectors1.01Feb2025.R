@@ -22,9 +22,9 @@ plant_height <- 3.3 # optimal "snake_case_formatting"
 # 2-dimensions = matrix
 # n-dimensions = array, don;t use this very often
 
-# Data frame = heterogenous in 2-dimensions
+# Data frame = heterogeneous in 2-dimensions
 
-# Types of atomic vecotors
+# Types of atomic vectors
 
 # CS = letters, nums, etc....has to be bracketed by single or double quotes, green in code
 # Numerical values, integers = don;t need to worry
@@ -50,7 +50,7 @@ z <-c("perch","bass","trout")
 print(z)
 
 #Use both with an internal quote
-z <-c("This is the only 'one' character string", 'a second')
+z <-c("This is only 'one' character string", 'a second')
 print(z)
 typeof(z)
 is.character(z)
@@ -67,7 +67,7 @@ is.integer(z)
 # vector of character strings
 dogs <-c("chow","pug","beagle","greyhound","akida")
 
-#use number in brackets to refer to a single element in vecotor, First slot is "1"
+#use number in brackets to refer to a single element in vector, First slot is "1"
 dogs[1] # picks first element
 dogs[2] # picks last element
 dogs[3] # NA, but not an error
@@ -112,14 +112,14 @@ length(y_not) # throws error variable does not exist, then you know you need to 
 
 z <- runif(5)
 print(z)
-#optional attribute not initiall assigned
+#optional attribute not initial assigned
 names(z)
 print(z)
-#add names later after variable in crteated
+#add names later after variable in created
 names(z) <- c("chow","pug","beagle","greyhound","akida")
 print(z)
 
-# add names when variable is build (ith or without quotes)
+# add names when variable is built (with or without quotes)
 z2 <- c(gold=3.3, silver=10, lead=2)
 print(z)
 
@@ -208,7 +208,7 @@ print(.)
 print(sum(.))
 print(mean(.))
  
-#Qualifying exam question! Aproximately what proprtion of observations drawn from a normal (0,1) distribution are larger than 2.0?
+#Qualifying exam question! Approximately what proportion of observations drawn from a normal (0,1) distribution are larger than 2.0?
 
 mean(rnorm(1000) > 2)
 print(sum(.))
@@ -218,7 +218,7 @@ print(mean(.))
 z <- c(10,20,30)
 z + 1
 
-#What happens when vecors are added?
+#What happens when vectors are added?
 y <- c(1,2,3)
 z + y
 
@@ -232,4 +232,5 @@ z^2
  z <-c(10,20,30)
  x <- c(1,2)
  z + x
+ 
  
