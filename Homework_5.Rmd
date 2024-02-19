@@ -183,16 +183,22 @@ head(dFrame)
 print(dFrame)
 str(dFrame)
 
-# need to figure out how to select 4 random samples, can only find the forth sample 
+# need to figure out how to select 4 random samples, can only replace the fourth value 
 my_unis[4] <- NA # contaminate the dataframe
 print(my_unis)
+
+### Can I use something like this?
+### Syntax: df[ sample(which ( conditions ) ,4), ]
 
 # for the first variable, write a single line of R code to identify which rows have the missing values.
 which(!complete.cases(my_unis))
 
 # re-order the entire data frame to arrange the second variable in alphabetical order
+### Why won't the data frame print?
 dFrame <- dFrame[order(dFrame$x),]
 print(dFrame)
+head(dFrame)
+tail(dFrame)
 
 # calculate the column mean for the first variable.
 mean(dFrame[ ,2])
