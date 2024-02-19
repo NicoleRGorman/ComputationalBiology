@@ -196,10 +196,10 @@ a > 0.5
 # how many elements are greater than 0.5?
 sum(a > 0.5)
 
-#What proprtion of the vecotor elements are gtreater than 0.5?
+#What proportion of the vecotor elements are gtreater than 0.5?
 mean(a > 0.5)
 
-# Break dow the result, period is a place holder
+# Break down the result, period is a place holder
 
 . <- a > 0.5
 print(.)
@@ -207,7 +207,7 @@ print(.)
 print(.)
 print(sum(.))
 print(mean(.))
- 
+
 #Qualifying exam question! Approximately what proportion of observations drawn from a normal (0,1) distribution are larger than 2.0?
 
 mean(rnorm(1000) > 2)
@@ -232,5 +232,4 @@ z^2
  z <-c(10,20,30)
  x <- c(1,2)
  z + x
- 
- 
+

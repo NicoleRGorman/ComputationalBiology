@@ -31,4 +31,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #4: Using R, Atomic Vectors
 + Please click [here](Homework4.html) for homework #4.
 
+### Homework #5: Working with Matrices, Lists, and Data Frames
++ Click [here](Homework_5.html) for homework #5!
+
 # References
