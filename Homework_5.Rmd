@@ -195,12 +195,17 @@ head(dFrame)
 print(dFrame)
 str(dFrame)
 
-# need to figure out how to select 4 random samples, can only replace the fourth value 
+# this changed just the fourth value
+# my_unis[4] <- NA # contaminate the dataframe
+# Select 4 random samples....got it!
 dFrame[sample(1:26,4),1] <-NA
-# element referencing is[], also indexing...whatever element in that thing
+# the sample function choses randomly, the 1:26 says any one of the rows, and the four says choose 4...that is all for rows
+# then, the 1 says do all of this only in column number 1
+#element referencing is[], also indexing...whatever element in that thing
+# Need to practice with indexing syntax
 
-#my_unis[4] <- NA # contaminate the dataframe
-print(my_unis)
+print(my_unis) 
+# check to make sure four random numbers are replaced with NA
 
 ### Can I use something like this?
 ### Syntax: df[ sample(which ( conditions ) ,4), ]
