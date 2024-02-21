@@ -101,9 +101,9 @@ my_matrix<-matrix(rnorm(16),nrow=4,byrow=TRUE)
 print(my_matrix)
 
 # my_logical which is a 100-element vector of TRUE or FALSE values. Do this efficiently by setting up a vector of random values and then applying an inequality to it.
-my_vec2 <- runif(n=100)
+my_vec2 <- runif(n=100,min=0, max=20)
 print(my_vec2)
-my_logical <- my_vec2 > 0.05
+my_logical <- my_vec2 > 5
 print(my_logical)
 
 # my_letters, which is a 26-element vector of all the lower-case letters in random order
@@ -111,14 +111,18 @@ print(my_logical)
 my_letters <- sample(letters)
 print(my_letters)
 
-# Generate the list with each item
-my_list <-list (matrix(rnorm(16),nrow=4,byrow=TRUE),
-               runif(n=100), 
-               my_vec2 > 0.05,sample(letters))
+# Already defined objects, so don't need to recreate!
+# my_list <-list (matrix(rnorm(16),nrow=4,byrow=TRUE),
+#               runif(n=100), 
+#               my_vec2 > 0.05,sample(letters))
+
+# Generate the list with each item that has already been created above. 
+my_list <-list (my_matrix,my_vec2,my_letters)
 str(my_list)
 print(my_list)
 
-# I can't get the original vector to not show up in the list. I tried several calls. For example, I tried to use the following, no luck. I will keep trying :)
+# This is solved by creating the list after each object has already been described
+#I can't get the original vector to not show up in the list. I tried several calls. For example, I tried to use the following, no luck. I will keep trying :)
 #my_List <-list (matrix(rnorm(16),echo=TRUE, results=FALSE,nrow=4,
 #               byrow=TRUE),runif(n=100), my_vec2 > 0.05,sample(letters))
 
@@ -132,6 +136,7 @@ new_list <- list(my_matrix[[2,2]],my_logical[[2]],my_letters[[2]])
 print(new_list)
 
 # use the typeof() function to confirm the underlying data types of each component in this list
+
 typeof(new_list)
 typeof(new_list[[1]])
 typeof(new_list[[2]])
@@ -151,8 +156,13 @@ new_matrix <- my_matrix[2,2]
 new_logical <- my_logical [2]
 new_letters <- my_letters [2]
 
-c_vec <- c(new_matrix, new_logical, new_letters)
-print(c_vec)
+#c_vec <- c(new_list[2, new_logical, new_letters)
+
+VecA <- c(new_list[[1]],new_list[[2]],new_list[[3]])
+typeof(new_list[[1]])
+print(VecA)
+typeof(VecA)
+#coercing data types using as.numeric, as.character, as.XYZ
 
 # Or can also use the unlist function
 new_vec <- unlist(new_list)
@@ -160,6 +170,8 @@ print(new_vec)
 
 #what is the data type of this vector?
 typeof(new_vec)
+
+# [1] "character"
 
 ```
 
@@ -178,13 +190,16 @@ my_letters <- sample(LETTERS) # sample function scrambles the letters
 print(my_letters)
 
 # for the first variable, use a single line of code in R to select 4 random rows and replace the numerical values in those rows with NA.
-dFrame <- data.frame(varA,v=my_unis,x=my_letters) # create a dataframe
+dFrame <- data.frame(v=my_unis,x=my_letters) # create a dataframe
 head(dFrame)
 print(dFrame)
 str(dFrame)
 
 # need to figure out how to select 4 random samples, can only replace the fourth value 
-my_unis[4] <- NA # contaminate the dataframe
+dFrame[sample(1:26,4),1] <-NA
+# element referencing is[], also indexing...whatever element in that thing
+
+#my_unis[4] <- NA # contaminate the dataframe
 print(my_unis)
 
 ### Can I use something like this?
@@ -194,8 +209,8 @@ print(my_unis)
 which(!complete.cases(my_unis))
 
 # re-order the entire data frame to arrange the second variable in alphabetical order
-### Why won't the data frame print?
 dFrame <- dFrame[order(dFrame$x),]
+
 print(dFrame)
 head(dFrame)
 tail(dFrame)
