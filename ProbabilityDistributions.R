@@ -35,11 +35,18 @@ qplot(x=hits,y=myVec,geom="col",color=I("black"),fill=I("goldenrod"))
 sum(myVec) # sum of density function = 1.0 (total area under curve)
 # returns [1] 1
 
-# What is the probability that a single draw will yield = 0
-# for a Poisson distribution with lambda = 2
-# what is the probability 
+# For a Poisson distribution with lambda = 2,
+# What is the probability that a single draw will yield X = 0?
+
 dpois(x=0,lambda=2)
-#returns [1] 0.1353353
+# returns [1] 0.1353353
+# "p" function generates cumulative probability density; gives the 
+# "lower tail" cumulative area of the distribution
+
+
+# for a Poisson distribution with lambda=2, 
+# what is the probability of getting 1 or fewer hits?
+ppois(q=1, lambda=2)
 
 # do with ppois (instead of dpois)
 hits <- 0:10
@@ -47,22 +54,38 @@ myVec <- ppois(q=hits,lambda=2) # 2 is rate of process
 qplot(x=hits,y=myVec,geom="col",color=I("black"),fill=I("goldenrod"))
 
 # could also do this using dpois
-
+# We could also get this through dpois
 p_0 <- dpois(x=0,lambda=2)
-
-
+p_0
+p_1 <- dpois(x=1,lambda=2)
+p_1
+p_0 + p_1
 
 #########
 #q function() - inverse
 ##########
 
-#qpois(p=0.5,lambda=2.5) # 2.5 is rate of process
-##qplot(x=1:10,y=dbpois(geom="col",color=I("black"),fill=I("goldenrod"))
-
+# The q function is the inverse of p
+# What is the number of hits corresponding to 50% of the probability mass
+qpois(p=0.5,lambda=2.5)
+qplot(x=0:10,y=dpois(x=0:10,lambda=2.5),geom="col",color=I("black"),fill=I("goldenrod"))
 
 
 # but distribution is discrete, so this is not exact
-#ppois
+ppois(q=2,lambda=2.5)
+
+# finally, we can simulate individual values from a poisson
+ranPois <- rpois(n=1000,lambda=2.5)
+qplot(x=ranPois,color=I("black"),fill=I("goldenrod"))
+
+
+# for real or simulated data, we can use the quantile
+# function to find the empirical  95% confidence interval on the data
+
+quantile(x=ranPois,probs=c(0.025,0.975))
+
+#Binomial distribution
+#################################
 
 #for real or simulated data, we can use the quantile
 # function to find empirical 95% 

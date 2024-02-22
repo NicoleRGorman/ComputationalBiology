@@ -25,7 +25,9 @@ my_m_data <- c(1,2,3,
 my_new_matrix <- matrix(data=my_m_data,nrow=3,byrow=TRUE)
 print(my_new_matrix)
 
+#############################
 #LISTS
+#############################
 
 # lists are atomic vectors but each element
 # can hold things that are different types and different sizes
@@ -39,16 +41,20 @@ myList[4]
 
 mylist[4] - 3 # no! Cannot subtract a number from an item on a list
 
+# single brackets gives you only the element in that slot, which is always of type list
+
 myList  [[no]] # use a double bracket
 
+# to grab the object itself, use [[]]
 myList[[4]]
-
 myList[[4]] - 3 # now we have the contents
 
 #if a list has 10 elements it is like a train with 10 cars
 #[[5]] gives you the contents of car #5
 # [5] creates a train with just car 5
 # [c[4,5,6]] gives you a little train with cars 4,5,6
+
+# once the double bracket is called, you can access individual elements as before
 
 myList[[2]]
 myList[[2]][4,1] #give me the contents of the first col, row 4, [1] 7
@@ -59,13 +65,12 @@ myList2 <- list(Tester=FALSE,littleM=matrix(1:9,nrow=3)) #creates a second list,
 # now we can use the name
 
 myList2$little[2,3] # get row 2, column 3
-##ASK....what does th dollar sign mean?
+# named elements can be accessed with dollar sign
 
-myList2$littleM #show whole matrix...DID NOT WORK???
+myList2$littleM #show whole matrix
 myList2$littleM[2,] #take the second row, then after comma nothing, so take all columns
 
-myList2$littleM[2]
-#What does this give you, [1] 2
+myList2$littleM[2] #What does this give you, [1] 2
 #Recognizing the matrix as a vector bc no comma as was included before
 #Can be a problem because now a vector not a matrix
 
@@ -190,7 +195,7 @@ zDframe$V2
 ##############################
 print(zDframe)
 head(zDframe) #look at the top
-zDframe[2,2] <- NA 
+zDframe[2,2] <- NA
 head(zDframe) # contaminate data frame, add an NA into second row and second col to show adding an NA. This is more realistic of actual dataframes
 
 complete.cases(zDframe$V2)
@@ -220,9 +225,9 @@ m[complete.cases(m),] #took values out that were not present, missing first col 
 # common function, cleaning data set
 
 # now get complete cases for only certain columns!
-m[complete.cases(m[,c(1,2)]),] 
+m[complete.cases(m[,c(1,2)]),]
 # matrix, all rows (this is the no number before the , before the c), only col 1 and 2, call complete cases on that, eliminate any row that has a missing value in 1 or 2 col
-m[complete.cases(m[,c(2,3)]),] 
+m[complete.cases(m[,c(2,3)]),]
 #       [,1] [,2] [,3] [,4]
 # [1,]   NA    6   11   16
 # [2,]    2    7   12   17
@@ -239,7 +244,7 @@ m[complete.cases(m[,c(1,4)]),] # drops row 1&4
 
 # same principle applied to both dimesions of a matrix
 m <- matrix(data=1:12,nrow=3) # Build matrix
-dimnames(m) <- list(paste("Species", 
+dimnames(m) <- list(paste("Species",
                             LETTERS[1:nrow(m)],
                             sep=""),
                             paste("Site",1:ncol(m),sep=""))
@@ -285,7 +290,7 @@ m[ , colSums(m) == 22]
 
 #and try this logical for columns
 m["SpeciesA",]<5
-# add this in and select with all rows 
+# add this in and select with all rows
 m[ ,m["SpeciesA", ]<5]
 
 #now combine both
@@ -311,11 +316,11 @@ m2[2,]
 
 # but now this will just pull the second element
 
-# if you are actually trying tp do this, use 
+# if you are actually trying tp do this, use
 m2[2,1]
 print(m2)
 
-# add in the notes here....soooooosleepy! 
+# add in the notes here....soooooosleepy!
 
 m2[m2>0.6,1] <- NA
 print(m2)
