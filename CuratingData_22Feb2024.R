@@ -10,7 +10,7 @@
 # don't need to specify path bc file is at root
 
 # read in file
-my_data <- read.table(file="../OriginalaData/ToyData.csv",
+my_data <- read.table(file="../ComputationalBiology/Bio6100ClassNotes/OriginalData/ToyData.csv",
                       header=TRUE,
                       sep=",",
                       comment.char="#")
@@ -29,7 +29,7 @@ my_data$newVar <- runif(4)
 head(my_data)
 
 write.table(x=my_data,
-            file="../ModifiedToyData.csv"),
+            file="../ModifiedToyData.csv",
             # HEADER=TRUE,
             sep=",")
 
@@ -38,9 +38,10 @@ write.table(x=my_data,
 
 # Special format for keeping R objects
 
-saveRDS(my_data, file"../Converted_csv.RDS") # .RDS suffix is not required, but good for clarity
+saveRDS(my_data, file = "../Converted_csv.RDS") 
+# .RDS suffix is not required, but good for clarity
 
 data_in <- readRDS("../Converted_csv.RDS")
 
-
+# saveRDS and readRDS provide the means to save a single R object to a connection (typically a file) and to restore the object, quite possibly under a different name. This differs from save and load, which save and restore one or more named objects into an environment. They are widely used by R itself, for example to store metadata for a package and to store the help.search databases: the ".rds" file extension is most often used.
 
