@@ -258,10 +258,10 @@ print(m)
 m[1:2,3:4] #gives first and second rows and third and four columns
 
 m[c("SpeciesA","SpeciesB"), c("Site3","Site4")]
+# same subsetting based on character strings (but no negative elements)
 # same as above, better bc more readable, worse bc have to type more
 
 #use blank before or after comma to indicate full rows or cols
-
 m[1:2, ]
 m[ ,3:4]
 
@@ -269,40 +269,45 @@ m[ ,3:4]
 # e.g. select all columns for which the totals are > 15
 
 # first try this logical
-
 colSums(m)
 colSums(m) >15
 
 m[ , colSums(m) > 15]
 
-m[rowSums(m)!=22,]
+m[rowSums(m)!=22, ]
 # e.g. select all rows for which row total is 22
-m[ , colSums(m) == 22]
+m[rowSums(m)==22, ]
 
 # note == for logical equal and != for logic NOT equal
-m[ , colSums(m) == 22]
+m[rowSums(m)!=22, ]
 
-###############
-#Need to go back and edit this from html
+# e.g., choose all rows for which numbers for site 1 are less than 3
+# AND choose all columns for which the numbers for species A are less than 5
 
-#first, try this
-###############
+# first, try out this logical for rows
+m[ ,"Site1"]<3
 
-#and try this logical for columns
-m["SpeciesA",]<5
+# add this in and select with all columns
+m[m[ ,"Site1"]<3, ]
+
+# and try this logical for columns
+m["SpeciesA", ]<5
+
 # add this in and select with all rows
 m[ ,m["SpeciesA", ]<5]
 
-#now combine both
-#####NEED TO FIX THIS WITH HTML
-#m[m[ ,"Site1"<5],m["SpeciesA, "]<5}
+# now combine both
+m[m[ ,"Site1"]<3,m["SpeciesA", ]<5]
 
+# and compare with full m
 print(m)
 
 # caution! simple subscripting (is this supposed to be subsetting) to a vector changes the data type
 z <- m[1,]
 print(z)
 str(z)
+
+# to keep this as a matrix, must add the drop=FALSE option
 
 z2 <- m[1, ,drop=FALSE]
 print(z2)
@@ -315,12 +320,34 @@ print(m2)
 m2[2,]
 
 # but now this will just pull the second element
+m2[2]
 
 # if you are actually trying tp do this, use
 m2[2,1]
 print(m2)
 
-# add in the notes here....soooooosleepy!
-
+# also use logicals for assignments, not just subsetting
 m2[m2>0.6,1] <- NA
 print(m2)
+
+# A few changes for working with data frames:
+
+data <-read.csv(file="antcountydata.csv",header=TRUE,sep=",",stringsAsFactors=FALSE)
+str(data)
+
+# the data frame is a list of vectors, so it is set up like a matrix
+data[3,2]
+
+# you can specify just the column names
+
+dataNames <- data[c("state","county")]
+str(dataNames)
+
+# or in matrix style
+dataNames <- data[ ,c("county", "ecoregion")]
+str(dataNames)
+
+
+# as before, with matrices, selecting only a single column changes it
+# from a data frame to a vector
+dataNames <- data[ ,"county"]
