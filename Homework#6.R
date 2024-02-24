@@ -87,10 +87,10 @@ summary(z)
 # Max.   :23.310  
 # NA's   :196 # Going to need to remove these later     
 
+# Do I need to remove NAs here? Yes!
 z<-na.omit(z)
 z$myVar <- z$Length
 
-# Do I need to remove NAs here?
 
 #Plot histogram of data
 p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
@@ -125,7 +125,7 @@ p1 + stat + stat2
 
 #Plot uniform probability density
 stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen", n = length(z$myVar), args = list(min=min(z$myVar), max=max(z$myVar)))
-p1 + stat + stat2 + stat3
+p1 + stat3
 
 #Plot gamma probability density
 gammaPars <- fitdistr(z$myVar,"gamma")
@@ -133,7 +133,7 @@ shapeML <- gammaPars$estimate["shape"]
 rateML <- gammaPars$estimate["rate"]
 
 stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
-p1 + stat + stat2 + stat3 + stat4
+p1 + stat4
 
 #Plot beta probability density
 pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
@@ -148,6 +148,22 @@ shape2ML <- betaPars$estimate["shape2"]
 statSpecial <- stat_function(aes(x = xval, y = ..y..), fun = dbeta, colour="orchid", n = length(z$myVar), args = list(shape1=shape1ML,shape2=shape2ML))
 pSpecial + statSpecial
 
+#As predicted, the gamma fits the data set best
+gammaPars <- fitdistr(z$myVar,"gamma")
+shapeML <- gammaPars$estimate["shape"]
+rateML <- gammaPars$estimate["rate"]
+
+stat4 <- stat_function(aes(x = xval, y = ..y..), fun = dgamma, colour="brown", n = length(z$myVar), args = list(shape=shapeML, rate=rateML))
+p1 + stat4
+
+# But the normal also is a pretty good fit
+meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = meanML, sd = sdML))
+p1 + stat
 
 
 

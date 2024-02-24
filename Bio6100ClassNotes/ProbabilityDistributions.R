@@ -83,7 +83,7 @@ qplot(x=ranPois,color=I("black"),fill=I("goldenrod"))
 
 
 # for real or simulated data, we can use the quantile
-# function to find the empirical  95% confidence interval on the data
+# function to find the empirical 95% confidence interval on the data
 
 quantile(x=ranPois,probs=c(0.025,0.975))
 
@@ -91,13 +91,13 @@ quantile(x=ranPois,probs=c(0.025,0.975))
 #Binomial distribution
 #################################
 
-#for real or simulated data, we can use the quantile
+# for real or simulated data, we can use the quantile
 # function to find empirical 95% 
 
-#p= prob of a dichotomous outcome
+# p= prob of a dichotomous outcome
 # size =- number of trials
 # x= possible outcomes
-# outcome x is bounded betweeen 0 and number of traisl
+# outcome x is bounded between 0 and number of trials
 
 # use "d" binom 
 
@@ -137,8 +137,8 @@ myVec <- dnbinom(x=hits, size=1, prob=0.1)
 qplot(x=hits,y=myVec,geom="col",color=I("black"),fill=I("goldenrod"))
 
 
-#alternatively specify mean = mu of dstribution and size
-# the dispresion nparameter (small is more disperse)
+# alternatively specify mean = mu of distribution and size
+# the dispersion parameter (small is more disperse)
 # this gives us a poisson with a lambda value that varies
 # the dispersion parameter is the shape parameter in the gamma
 # as it increases, the distribution has a smaller variance
@@ -155,10 +155,10 @@ qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
 #Experimental Designs
 ##########################
 
-#uniform distribution
+# uniform distribution
 # params specify minimum and maximum
 
-#runif for randome data
+#runif for random data
 qplot(x=runif(n=100,min=0,max=5),color=I("black"),fill=I("goldenrod"))
 qplot(runif(n=1000,min=0,max=5),color=I("black"),fill=I("goldenrod"))
 
@@ -168,7 +168,7 @@ myNorm <-rnorm(n=100,mean=1000,sd=2)
 qplot(myNorm,color=I("black"),fill=I("goldenrod"))
 
 
-#problems with normal when mean is small but zero is not allowed
+# problems with normal when mean is small but zero is not allowed
 myNorm <- rnorm(n=100,mean=2,sd=2)
 qplot(myNorm,color=I("black"),fill=I("goldenrod"))
 summary(myNorm)
@@ -212,7 +212,7 @@ qplot(rgamma(n=100,shape=0.1,scale=1),color=I("black"),fill=I("goldenrod"))
 qplot(rgamma(n=100,shape=0.1,scale=0),color=I("black"),fill=I("goldenrod"))
 
 ####################
-#beta distribution
+# beta distribution
 ####################
 
 # beta distribution 
