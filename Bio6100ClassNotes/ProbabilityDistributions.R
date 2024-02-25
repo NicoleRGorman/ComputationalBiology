@@ -60,6 +60,11 @@ qplot(x=hits,y=myVec,geom="col",color=I("black"),fill=I("goldenrod"))
 # We could also get this through dpois
 p_0 <- dpois(x=0,lambda=2)
 p_0
+
+
+
+
+
 p_1 <- dpois(x=1,lambda=2)
 p_1
 p_0 + p_1
@@ -71,11 +76,14 @@ p_0 + p_1
 # The q function is the inverse of p
 # What is the number of hits corresponding to 50% of the probability mass
 qpois(p=0.5,lambda=2.5)
+
 qplot(x=0:10,y=dpois(x=0:10,lambda=2.5),geom="col",color=I("black"),fill=I("goldenrod"))
+
 
 
 # but distribution is discrete, so this is not exact
 ppois(q=2,lambda=2.5)
+
 
 # finally, we can simulate individual values from a poisson
 ranPois <- rpois(n=1000,lambda=2.5)
@@ -251,7 +259,6 @@ myBeta <- rbeta(n=1000,shape1=1000,shape2=500)
 qplot(myBeta,xlim=c(0,1),color=I("black"),fill=I("goldenrod"))
 myBeta <- rbeta(n=1000,shape1=10,shape2=5)
 qplot(myBeta,xlim=c(0,1),color=I("black"),fill=I("goldenrod"))
-
 
 # shape parameters less than 1.0 give us a u-shaped distribution
 myBeta <- rbeta(n=1000,shape1=0.1,shape2=0.1)
