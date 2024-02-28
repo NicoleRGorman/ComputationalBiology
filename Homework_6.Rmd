@@ -11,14 +11,14 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## **Simulating and Fitting Data Distributions**
 
-#Open libraries
-```{r open libraries, echo=TRUE, warning=FALSE, results='hide'}
+* **Open libraries**
+```{r open libraries, message=FALSE}
 library(ggplot2) # for graphics
 library(MASS) # for maximum likelihood estimation
 library(dplyr)
 ```
 
-#Read in data vector
+* **Read in data vector**
 
 ```{r echo=TRUE, warning=FALSE, results=TRUE}
 # generate normal distribution to work on the solution set
@@ -101,9 +101,8 @@ pSpecial + statSpecial
 
 ```
 
-#Now with my own dataset
-
-# Read in dataset
+* **Now with my own dataset**
+* **Read in datase*t**
 
 ```{r echo=TRUE, results=TRUE}
 z <- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_ACCTrials.csv",header=TRUE,sep=",")
@@ -130,26 +129,26 @@ z$myVar <- z$Length
 #just by changing any variable name to myVar
 ```
 
-# Plot data
+* **Plot data**
 
 ```{r echo=TRUE, results=TRUE}
-#Plot histogram of data
+# Plot histogram of data
 p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
   geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
 print(p1)
 
-#Add empirical density curve
+# Add empirical density curve
 p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
 print(p1)
 
-#Get maximum likelihood parameters for normal
+# Get maximum likelihood parameters for normal
 normPars <- fitdistr(z$myVar,"normal")
 print(normPars)
 str(normPars)
 normPars$estimate["mean"] # note structure of getting a named attribute
 
-#Plot normal probability density
-meanML <- normPars$estimate["mean"]
+# Plot normal probability density
+# meanML <- normPars$estimate["mean"]
 sdML <- normPars$estimate["sd"]
 
 xval <- seq(0,max(z$myVar),len=length(z$myVar))
@@ -220,7 +219,7 @@ p1 + stat
 
 # Using the best-fitting distribution, go back to the code and get the maximum likelihood parameters. 
 
-# The best fitting distribution is the gamma
+# Both the gamma and the normal distributions fit the data pretty well. I am going to explore both.
 gammaPars <- fitdistr(z$myVar,"gamma")
 # Getting Warning messages...
 # 1: In densfun(x, parm[1], parm[2], ...) : NaNs produced
@@ -294,7 +293,20 @@ str(z$myVar)
 # We generated the randome data set different ways in class
 # I am not sure which one is appropriate, so I will try a couple
 
-qplot(rgamma(n=1004,shape=4.83402,scale=100),color=I("black"),fill=I("goldenrod"))
+qplot(rgamma(n=1004,shape=4.83402,rate=0.4463983),color=I("black"),fill=I("goldenrod"))
+# make a formal ggplot call, then can stack
+# change transparency...caallled alpha
+
+p1 + stat4
+
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+
+qplot(rnorm(n=1004,mean=10.8289333,sd=4.5714441),color=I("black"),fill=I("goldenrod"))
+
+
+#  scale = 1/rate
+# if study is small, can increase n
 # Here one way that we generated a data set
 # I substituted values returned with the calls above
 # $ n       : int 1004
@@ -302,17 +314,17 @@ qplot(rgamma(n=1004,shape=4.83402,scale=100),color=I("black"),fill=I("goldenrod"
 # I am not sure what to do with scale
 # I will leave it at 100 for now
 
-nbiRan <- rnbinom(n=1004,size=.5,mu=4.83402 )
-qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
-nbiRan <- rnbinom(n=1004,size=5,mu=4.83402 )
-qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
-nbiRan <- rnbinom(n=1004,size=50,mu=4.83402 )
-qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
-nbiRan <- rnbinom(n=1004,size=500,mu=4.83402 )
-qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
-nbiRan <- rnbinom(n=1004,size=5000,mu=4.83402 )
-qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
-# I think mu=mean, n was returned in the results above, size returnes NA
+# nbiRan <- rnbinom(n=1004,size=.5,mu=4.83402 )
+# qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
+# nbiRan <- rnbinom(n=1004,size=5,mu=4.83402 )
+# qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
+# nbiRan <- rnbinom(n=1004,size=50,mu=4.83402 )
+# qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
+# nbiRan <- rnbinom(n=1004,size=500,mu=4.83402 )
+# qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
+# nbiRan <- rnbinom(n=1004,size=5000,mu=4.83402 )
+# qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
+# I think mu=mean, n was returned in the results above, size returns NA
 
 #myVec <- dpois(x=hits,lambda=1)
 #qplot(x=hits,y=myVec,geom="col",color=I("black"),fill=I("goldenrod"))
@@ -322,6 +334,10 @@ qplot(nbiRan,color=I("black"),fill=I("goldenrod"))
 ```
 
 * How do the two histogram profiles compare? Do you think the model is doing a good job of simulating realistic data that match your original measurements? Why or why not?
+
+Pretty close
+Not sure about the upper limit outlier
+I am going to try the same with the normal
 
 I am unclear how I created an alternative data set, so I am struggling to answer this question.  
 
