@@ -371,3 +371,5 @@ p1 + stat
 # the slope of the curve from the men is steeper in the simulation 
 # the tails are more protracted/elongated in the simulation
 # additional work might be needed to identify a better fitting model depending on the application
+
+# Is this going to ask to be updated on to GitHub?
