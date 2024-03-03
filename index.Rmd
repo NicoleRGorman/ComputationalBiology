@@ -35,6 +35,6 @@ knitr::opts_chunk$set(echo = TRUE)
 + Click [here](Homework_5.html) for homework #5!
 
 ### Homework #6: Simulating and Fitting Data Distributions
-+ Click [here](Homework_6.html) for homework #6.
++ Click [here](Homework6.html) for homework #6.
 
 # References

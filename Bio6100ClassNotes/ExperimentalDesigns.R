@@ -54,7 +54,7 @@ str(z)
 z
 z$coefficients7
 
-# grab what we need and put into a tidy  list
+# grab what we need and put into a tidy list
 # Bundle everything into a list so don't need a bunch of different things
 # Below are the typical things you want
 # Need to do what was above to figure out which coefficients are which, will be different depending on your model. When you add or change anything, it will change
@@ -116,7 +116,7 @@ str(ANOdata)
 print(ANOdata)
 
 #############
-#xBasic ANOVA in R
+## Basic ANOVA in R
 #############
 
 ANOmodel <- aov(resVar~TGroup,data=ANOdata)
