@@ -85,7 +85,9 @@ stat3 <- stat_function(aes(x = xval, y = ..y..), fun = dunif, colour="darkgreen"
 p1 + stat + stat2 + stat3
 
 #Plot gamma probability density
+# Getting NaN warnings, I think this may be expected and/or ok
 gammaPars <- fitdistr(z$myVar,"gamma")
+
 shapeML <- gammaPars$estimate["shape"]
 rateML <- gammaPars$estimate["rate"]
 
@@ -101,6 +103,8 @@ pSpecial <- ggplot(data=z, aes(x=myVar/(max(myVar + 0.1)), y=..density..)) +
   geom_density(size=0.75,linetype="dotted")
 
 betaPars <- fitdistr(x=z$myVar/max(z$myVar + 0.1),start=list(shape1=1,shape2=2),"beta")
+# Getting more NaN warnings, again I think this may be expected and/or ok
+
 shape1ML <- betaPars$estimate["shape1"]
 shape2ML <- betaPars$estimate["shape2"]
 
