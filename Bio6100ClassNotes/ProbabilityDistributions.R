@@ -225,7 +225,7 @@ qplot(rgamma(n=100,shape=0.1,scale=0),color=I("black"),fill=I("goldenrod"))
 
 # beta distribution 
 # bounded at 0 and 1
-# analagous to a binomial, but result is a continuous distribution of probabilities
+# analogous to a binomial, but result is a continuous distribution of probabilities
 # parameter shape1 = number of successes + 1
 # parameter shape2 = number of failures + 1
 # interpret these in terms of a coin you are tossing

@@ -1,0 +1,125 @@
+---
+title: "Homework7"
+author: "NRG"
+date: "2024-03-03"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Creating Fake Data Sets To Explore Hypotheses
+Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
+
+* To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.  
+<br>
+* Open libraries
+```{r open libraries, message=FALSE}
+library(ggplot2) # for graphics
+library(MASS) # for maximum likelihood estimation
+library(dplyr)
+```
+
+
+```{r echo=TRUE, warnings=FALSE, results=TRUE}
+# Read in the data
+z <- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_ACCTrials.csv",header=TRUE,sep=",")
+
+# Use regular expressions to subset genotype and then add this column to my dataset
+# SEARCH: (\w+_)(\w+),(.*) REPLACE: \2
+
+vecg <- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_ACCTrials_Genotypes.csv",header=TRUE,sep=",")
+
+# subset the genotype column
+genotype <- vecg$Genotype
+
+# add vecg as a column to the dataset
+z$Genotype <- genotype
+
+# I tried this way, but did not get anywhere, might need this later
+# #rownames(dataMatrix) <- c("0","10","100")
+# colnames(dataMatrix) <-c("WT",
+#                          "CCDC22",
+#                          "CCDC93",
+#                          "CCDC22CCDC93",
+#                          "CCDC22RFP",
+#                          "CCDC93RFP")
+# str(dataMatrix)
+# print(dataMatrix)
+
+# predictor variables are vec1 and vc2...these would be treatments
+# column names are response variable
+
+# get the structure and summary metrics of the new dataset
+str(z)
+summary(z)
+
+# take a peek to make sre that the genotype column is all there
+head (z)
+tail (z)
+
+# Remove NAs here
+z<-na.omit(z)
+
+# Use myVar so I can run the code with any response variable by changing the 
+# variable name to myVar
+z$myVar <- z$Length
+
+# define variables for easier downstream analysis
+varA <- z$Plant.ID
+varB <- z$Genotype
+
+head (varA)
+head(varB)
+
+# Plot histogram of data
+p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
+  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+print(p1)
+
+# Add empirical density curve
+p1 <-  p1 +  geom_density(linetype="dotted",size=0.75)
+print(p1)
+
+# Get maximum likelihood parameters for the normal distribution
+normPars <- fitdistr(z$myVar,"normal")
+print(normPars)
+
+str(normPars)
+normPars$estimate["mean"] # get a named attribute, I think this might be redundant with below
+
+# Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. I am going to use the actual parameters from my data set. 
+# I will use the null hypothesis, that ACC has no effect on root growth in mutant plants.
+
+m_length <- mean(z$myVar)
+print(m_length)
+
+sd_length <- sd(z$myVar)
+print(sd_length)
+
+#Plot normal probability density
+#meanML <- normPars$estimate["mean"]
+sdML <- normPars$estimate["sd"]
+
+xval <- seq(0,max(z$myVar),len=length(z$myVar))
+
+stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = m_length, sd = sd_length))
+p1 + stat
+
+# Sample size, n = 10 plants/genotype/treatment, 3 independent biological replicates
+```
+
+Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame with the appropriate structure.
+
+Now write code to analyze the data (probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data.
+
+Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
+
+Now begin adjusting the means of the different groups. Given the sample sizes you have chosen, how small can the differences between the groups be (the “effect size”) for you to still detect a significant pattern (p < 0.05)?
+
+Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a feeling for the effect of random variation in the data.
+
+Write up your results in a markdown file, organized with headers and different code chunks to show your analysis. Be explicit in your explanation and justification for sample sizes, means, and variances.
+
+If you have time, try repeating this exercise with one of the more sophisticated distributions, such as the gamma or negative binomial (depending on the kind of data you have). You will have to spend some time figuring out by trial and error the parameter values you will need to generate appropriate means and variances of the different groups.
