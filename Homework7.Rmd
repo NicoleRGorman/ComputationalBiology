@@ -1,6 +1,6 @@
 ---
 title: "Homework7"
-author: "NRG"
+author: "Nicole R. Gorman"
 date: "2024-03-03"
 output: html_document
 ---
@@ -51,31 +51,40 @@ z$Genotype <- genotype
 # predictor variables are vec1 and vc2...these would be treatments
 # column names are response variable
 
+# Sample size, n = 10 plants/genotype/treatment
+# There are 3 independent biological replicates, but only the first replicate is included with this dataset
+
 # get the structure and summary metrics of the new dataset
 str(z)
 summary(z)
 
-# take a peek to make sre that the genotype column is all there
+# take a peek to make sure that the genotype column is all there
 head (z)
 tail (z)
 
 # Remove NAs here
 z<-na.omit(z)
+# get the structure of z wuithout the NAs
+str(z)
 
-# Use myVar so I can run the code with any response variable by changing the 
-# variable name to myVar
+# Use myVar for my response variable (length) so I can run the code with any response variable by 
+# changing the variable name to myVar
 z$myVar <- z$Length
 
 # define variables for easier downstream analysis
+ID <- seq_len(nrow(z)) # creates a sequence from 1:n (if n > 0!)
 varA <- z$Plant.ID
 varB <- z$Genotype
+myVar <- z$Length
 
+head(ID)
 head (varA)
 head(varB)
+head (myVar)
 
 # Plot histogram of data
 p1 <- ggplot(data=z, aes(x=myVar, y=..density..)) +
-  geom_histogram(color="grey60",fill="cornsilk",size=0.2) 
+  geom_histogram(color="grey60",fill="cornsilk",linewidth=0.2) 
 print(p1)
 
 # Add empirical density curve
@@ -88,6 +97,7 @@ print(normPars)
 
 str(normPars)
 normPars$estimate["mean"] # get a named attribute, I think this might be redundant with below
+normPars$estimate["sd"] # get a named attribute, I think this might be redundant with below
 
 # Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. I am going to use the actual parameters from my data set. 
 # I will use the null hypothesis, that ACC has no effect on root growth in mutant plants.
@@ -107,11 +117,234 @@ xval <- seq(0,max(z$myVar),len=length(z$myVar))
 stat <- stat_function(aes(x = xval, y = ..y..), fun = dnorm, colour="red", n = length(z$myVar), args = list(mean = m_length, sd = sd_length))
 p1 + stat
 
-# Sample size, n = 10 plants/genotype/treatment, 3 independent biological replicates
+# Assume that each of the treatments follows a normal distribution  
+# Get maximum likelihood (ML) parameters for normal distribution for each treatment
+# First get the maximum likelihood parameters for a normal distribution fitted to these data by calling fitsdir 
+# Fit normal distributions for each group defined by 'Genotype'
+
+# Fit normal distributions for each treatment (genotype)
+# norm_pars <- tapply(z$Length, z$Genotype, function(x) fitdistr(x, "normal"))
+
+# Fit normal distributions for each treatment (genotype/hormone treatment)
+norm_pars <- tapply(z$Length, z$Plant.ID, function(x) fitdistr(x, "normal"))
+
+# Come back and do the analysis another time after editing dataset
+# Need to make treatment its own column and add all three reps\
+# For this analysis, simplify and fit normal distribution for each genotype only
+
+norm_pars <- tapply(z$Length, z$Genotype, function(x) fitdistr(x, "normal"))
+
+# these are rough estimates of root length if using both ACC and genotype
+# Save this information for next time :)
+# Skip these data and see below for parameter estimates if using JUST genotype
+
+# mean         sd    
+######### 0nM
+# $`1_1_0nM_WT`
+# 10.700000    4.472109 
+# ( 1.999988) ( 1.414205)
+# $`1_2_0nM_ccdc22`
+# 11.328000    4.436014 
+# ( 1.983846) ( 1.402791)
+# $`1_1_0nM_ccdc93`
+# 13.874000    4.813488 
+# ( 2.152657) ( 1.522158)
+# $`1_2_0nM_ccdc22ccdc93`
+# 13.704000    5.159452 
+# ( 2.307377) ( 1.631562)
+# $`1_2_0nM_ccdc22RFP`
+# 14.682000    5.267760 
+# ( 2.355814) ( 1.665812)
+# $`1_1_0nM_ccdc93RFP`
+# 14.800200    5.222040 
+# ( 2.335368) ( 1.651354)
+
+
+######### 10nM
+# $`1_1_10nM_WT`
+# 13.582000    5.310267 
+# ( 2.374824) ( 1.679254)
+# $`1_1_10nM_ccdc22`
+# 7.300000   3.756972 
+# (1.680169) (1.188059)
+# $`1_1_10nM_ccdc93`
+# 9.972000   3.797154 
+# (1.698139) (1.200765)
+# $`1_1_10nM_ccdc22ccdc93`
+# 8.1960000   1.8234100 
+# (0.8154537) (0.5766129)
+# $`1_1_10nM_ccdc22RFP`
+# 12.638000    4.624255 
+# ( 2.068030) ( 1.462318)
+# $`1_1_10nM_ccdc93RFP`
+# 10.2852000    2.2828781 
+# ( 1.0209341) ( 0.7219095)
+
+######### 100nM
+# $`1_1_100nM_WT`
+# 6.7160000   1.9861279 
+# (0.8882234) (0.6280688)
+# $`1_1_100nM_ccdc22`
+# 7.6620000   3.1125706 
+# (1.3919839) (0.9842813)
+# $`1_1_100nM_ccdc93`
+# 9.5980000   3.1054880 
+# (1.3888165) (0.9820415)
+# $`1_1_100nM_ccdc22ccdc93`
+# 9.934000   3.391782 
+# (1.516851) (1.072576)
+# $`1_1_100nM_ccdc22RFP`
+# 10.2300000    2.3405384 
+# ( 1.0467206) ( 0.7401432)
+# $`1_1_100nM_ccdc93RFP`
+# 7.1680000   1.8515218 
+# (0.8280257) (0.5855026)
+
+######### 1000nM (1uM)
+# $`1_1_1uM_WT`
+# 10.0180000    1.8260164 
+# ( 0.8166194) ( 0.5774371)
+# $`1_1_1uM_ccdc22`
+# 8.3880000   1.7285069 
+# (0.7730118) (0.5466019)
+# $`1_1_1uM_ccdc93`
+# 10.4520000    2.5107003 
+# ( 1.1228193) ( 0.7939531)
+# $`1_1_1uM_ccdc22ccdc93`
+# 8.1420000   2.2386013 
+# (1.0011330) (0.7079079)
+# $`1_1_1uM_ccdc22RFP`
+# 9.9660000   1.9445884 
+# (0.8696464) (0.6149328)
+# $`1_1_1uM_ccdc93RFP`
+# 9.6238000   2.0015200 
+# (0.8951069) (0.6329362)
+
+# View the ML parameters for each treatment
+print(norm_pars)
+summary(norm_pars)
+str (norm_pars)
+
+# These are the ML parameters for genotype only
+
+# $WT
+# mean          sd    
+# 11.8440500    4.6060560 
+# ( 0.3256973) ( 0.2303028)
+#
+# $ccdc22
+# mean         sd    
+# 9.5992222   4.8467498 
+# (0.3612554) (0.2554461)
+# 
+# $ccdc93
+# mean          sd    
+# 11.3043333    4.7605129 
+# ( 0.3548277) ( 0.2509011)
+#
+# $ccdc22ccdc93
+# mean          sd    
+# 10.0921805    4.0788841 
+# ( 0.3536841) ( 0.2500924)
+# 
+# $ccdc22RFP
+# mean          sd    
+# 10.9336154    4.2258974 
+# ( 0.3706357) ( 0.2620790)
+# 
+# $ccdc93RFP
+# mean          sd    
+# 10.9235856    4.2714427 
+# ( 0.3174938) ( 0.2245020)
+
 ```
 
 Using the methods we have covered in class, write code to create a random data set that has these attributes. Organize these data into a data frame with the appropriate structure.
+```{r echo=TRUE, warnings=FALSE, results=TRUE}
+# Using the methods we have covered in class, write code to create a random data set that has these attributes. 
+# Organize these data into a data frame with the appropriate structure
 
+r1 <- rnorm(50,11.8,4.6)
+mean(r1)  
+sd(r1)  
+
+r2 <- rnorm(50,9.6,4.8)
+mean(r2)  
+sd(r2)  
+
+r3 <- rnorm(50,11.3,4.8)
+mean(r3)  
+sd(r3)  
+
+r4 <- rnorm(50,10.1,4.1)
+mean(r4)  
+sd(r4)  
+
+r5 <- rnorm(50,10.9,4.2)
+mean(r5)
+sd(r5)  
+
+r6 <- rnorm(50,10.9,4.3)
+mean(r6)  
+sd(r6) 
+
+# create a dataframe of random variables
+regData <- data.frame(r1,r2,r3,r4,r5,r6)
+head(regData)
+str(regData)
+
+# model
+regModel <- lm(myVar~varB,data=regData) # runs ANOVA
+
+# model output
+regModel # printed output 
+str(regModel) # complicated, but has "coefficients"
+head(regModel$residuals) # contains residuals
+
+# 'summary' of model has elements
+summary(regModel) # 
+summary(regModel)$coefficients
+str(summary(regModel))
+
+# better to examine entire matrix of coefficients
+summary(regModel)$coefficients[] 
+
+# can pull results from this, but a little wordy
+summary(regModel)$coefficients[1,4]   #p value for intercept
+summary(regModel)$coefficients["(Intercept)","Pr(>|t|)"]
+
+# also can unfurl this into a 1D atomic vector with names
+z <- unlist(summary(regModel))
+str(z)
+z$coefficients7
+
+# Combine into a list rather than asking for each separately
+# I think this is pulls specific metrics out of a statistical model
+
+regSum <- list(intercept=z$coefficients1,
+               slope=z$coefficients2,
+               interceptP=z$coefficients7,
+               slopeP=z$coefficients8,
+               r2=z$r.squared)
+
+# easier to use and query regSum than deal with each separately
+print(regSum)
+regSum$r2
+regSum[[5]]
+
+# Use ggplot function to create a basic regression model
+# ggplot must only use a dataframe
+# Pieces of the function van be broken up and combined with the addition sign
+
+regPlot <- ggplot(data=regData) +
+  aes(x=varB,y=myVar) +
+  geom_point() +
+  stat_smooth(method=lm,se=0.50) # default se=0.95
+# all of the above pieces are being put in the object regPlot
+
+print(regPlot)
+
+```
 Now write code to analyze the data (probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. Write code to generate a useful graph of the data.
 
 Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
