@@ -10,12 +10,12 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 ## Creating Fake Data Sets To Explore Hypotheses
-Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
-
-**Study background**
-*Cells must move materials in order to maintain metabolic processes. Some intracellular movement of materials is accomplished with endosomal trafficking. In plants, defects in trafficking pathways can lead to mutant phenotypes such as short roots. A protein complex known as the retriever has been well characterized in humans, but has yet to be completely explored in plants. Building on previous work in the lab, I am currently working on continuing to the characterize the retreiver in Arabidopsis thaliana. One approach to this question is identifying candidate Arabidopsis mutants with short root phenotypes. Identification of mutant phenotypes provides a foundation for exploring the proteins that may be components of the retreiver in this model species. The data set used in this analysis was generated from the observation of root length phenotypes of putative components of retriever.*
+* Think about an ongoing study in your lab (or a paper you have read in a different class), and decide on a pattern that you might expect in your experiment if a specific hypothesis were true.
 
 * To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.  
+**Study background**  
+*Cells must move materials in order to maintain metabolic processes. Some intracellular movement of materials is accomplished with endosomal trafficking. In plants, defects in trafficking pathways can lead to mutant phenotypes such as short roots. A protein complex known as the retriever has been well characterized in humans, but has yet to be completely explored in plants. Building on previous work in the lab, I am currently working on continuing to the characterize the retreiver in Arabidopsis thaliana. One approach to this question is identifying candidate Arabidopsis mutants with short root phenotypes. Identification of mutant phenotypes provides a foundation for exploring the proteins that may be components of the retreiver in this model species. The data set used in this analysis was generated from the observation of root length phenotypes of putative components of retriever.*
+
 <br>
 * Open libraries
 ```{r open libraries, message=FALSE}
