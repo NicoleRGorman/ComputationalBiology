@@ -1,0 +1,42 @@
+---
+title: "Functions"
+author: "Nicole R Gorman"
+date: "07 March 2024"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Anatomy of a User-Defined Function
+
+```
+functionName <- function(parX=defaultX,parY=defaultY) {
+# curly bracket starts the body function
+# lines of R code and annotations
+# May also call other functions
+# May also create functions
+# Can define local variables
+
+return(singleObject)  # re5turns a single object (could be a list)
+# what the function gives back after it runs
+}
+# Curly bracket marks the end of the function body
+# has to end with a closed curly bracket
+
+functionName # print function body
+functionName() # will run function with default values
+functionName(parX=myMatrix,parY="Order",parZ=c(0,1,2,3,4))
+```
+
+## Stylistic Conventions for Writing Functions 
+* Use a prominent hash character fencing at start and finish
+* Give a header with function name, description, inputs and outputs
+* names inside a function can be fairly short and generic
+* functions should be short and simple, no more than about a screenful
+* if bigger, break up into multiple functions
+* provide default values for all function arguments
+* use random number generators as default values for rapid testing
+
+
