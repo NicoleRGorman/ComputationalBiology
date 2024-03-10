@@ -213,7 +213,7 @@ norm_pars <- tapply(z$Length, z$Genotype, function(x) fitdistr(x, "normal"))
 # View the ML parameters for each treatment
 print(norm_pars)
 summary(norm_pars)
-str (norm_pars)
+# str (norm_pars)...woah!
 
 # These are the ML parameters for genotype only
 
@@ -252,6 +252,7 @@ str (norm_pars)
 # Need to make treatment its own column and add all three reps
 ```
 
+# Generate Random Data Set
 Using the methods we have covered in class, write code to create a random data set that has these attributes. 
 
 *For this analysis, I simplified and fit normal distribution for each genotype only, ignoring the hormone treatment.*
@@ -301,6 +302,7 @@ tail(rGen)
 
 ```
 
+# Create Data Frame
 Organize these data into a data frame with the appropriate structure.  
 
 *BUT...now that I have written the code above, I don't think I am actually going to use it. I will create the dataframe and generate the random numbers using the same call from class.*
@@ -334,10 +336,11 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize)
 ANOdata <- data.frame(ID,TGroup,resVar) 
 str(ANOdata)
-print(ANOdata)
+print(ANOdata) # prints the dataset
 
 ```
 
+# Run ANOVA
 Now write code to analyze the data...probably as an ANOVA or regression analysis, but possibly as a logistic regression or contingency table analysis. 
 
 ```{r echo=TRUE, warnings=FALSE, results=TRUE}
@@ -355,6 +358,7 @@ ANOsum <- list(Fval=unlist(z)[7],probF=unlist(z)[9])
 ANOsum  # Pr(>F)1     0.004699716 
 ```
 
+# Create a Box Plot
 Write code to generate a useful graph of the data.
 
 ```{r echo=TRUE, warnings=FALSE, results=TRUE}
@@ -367,6 +371,7 @@ print(ANOPlot)
 
 ```
 <br>
+# Run the Simulation
 Try running your analysis multiple times to get a feeling for how variable the results are with the same parameters, but different sets of random numbers.
 
 ```{r echo=TRUE, warnings=FALSE, results=TRUE}
@@ -394,7 +399,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize) # TGruop = genotype
 ANOdata <- data.frame(ID,TGroup,resVar) # create dataframe
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 # the aggregate function calculates the mean of resVar (root length)for each level 
@@ -461,6 +466,7 @@ Commenting out this first method of generating random normal numbers for each ge
 # 
 ```
 
+# Adjust the Mean and sd to Explore the Experimental Design
 Now begin adjusting the means of the different groups. 
 *First, the mean was adjusted to fit the model. Then, the code was run with smaller root length differences to determine how much of a difference is statically different. Finally, the sd was adjusted to an average across all genotypes to determine the effect of variation with each genotype on the outcome.* 
 
@@ -495,7 +501,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize)
 ANOdata <- data.frame(ID,TGroup,resVar) 
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 ANOmodel <- aov(resVar~TGroup,data=ANOdata)
@@ -543,7 +549,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize)
 ANOdata <- data.frame(ID,TGroup,resVar) 
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 ANOmodel <- aov(resVar~TGroup,data=ANOdata)
@@ -591,7 +597,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize)
 ANOdata <- data.frame(ID,TGroup,resVar) 
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 ANOmodel <- aov(resVar~TGroup,data=ANOdata)
@@ -642,7 +648,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize)
 ANOdata <- data.frame(ID,TGroup,resVar) 
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 ANOmodel <- aov(resVar~TGroup,data=ANOdata)
@@ -673,9 +679,12 @@ Given the sample sizes you have chosen, how small can the differences between th
 
 *A difference of 2mm in average root length among the genotypes reliably generated a significant difference. However, a difference of 1mm  generated a significant result only some of the time. This implies that there is enough variability in average root length within each genotype that some value between 1-2 mm average root length difference is required to reject the null. In other words, a difference of greater than 1mm is needed to conclude that there is a difference in root length between wildtype and the mutant genotypes.*
 
+# Explore Sample Size
+
 Alternatively, for the effect sizes you originally hypothesized, what is the minimum sample size you would need in order to detect a statistically significant effect? Again, run the model a few times with the same parameter set to get a feeling for the effect of random variation in the data.
 
 *A sample size of 75 is needed to generate a reliable statistically significant results with the give ML parameters.This is a large sample size compared to the typical design that has been used in the past. This experiment needs an additional trails and perhaps an adjustment of the treatments to detemine whether root length is a mutant phenotype for CCDC93 and CCDC22. For example, seedlings may need to be grown with an opsmotic stress treatment to use the root length phenotype for analysis.*
+
 
 ```{r echo=TRUE, warnings=FALSE, results=TRUE}
 
@@ -707,7 +716,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize) # TGruop = genotype
 ANOdata <- data.frame(ID,TGroup,resVar) # create dataframe
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 # the aggregate function calculates the mean of resVar (root length)for each level 
@@ -765,7 +774,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize) # TGruop = genotype
 ANOdata <- data.frame(ID,TGroup,resVar) # create dataframe
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 # the aggregate function calculates the mean of resVar (root length)for each level 
@@ -822,7 +831,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize) # TGruop = genotype
 ANOdata <- data.frame(ID,TGroup,resVar) # create dataframe
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 # the aggregate function calculates the mean of resVar (root length)for each level 
@@ -879,7 +888,7 @@ resVar <- c(rnorm(n=nSize[1],mean=nMean[1],sd=nSD[1]),
 TGroup <- rep(nName,nSize) # TGruop = genotype
 ANOdata <- data.frame(ID,TGroup,resVar) # create dataframe
 str(ANOdata)
-print(ANOdata)
+# print(ANOdata)
 
 # Run basic ANOVA
 # the aggregate function calculates the mean of resVar (root length)for each level 
@@ -911,4 +920,4 @@ print(ANOPlot)
 
 If you have time, try repeating this exercise with one of the more sophisticated distributions, such as the gamma or negative binomial (depending on the kind of data you have). You will have to spend some time figuring out by trial and error the parameter values you will need to generate appropriate means and variances of the different groups.
 
-*I'll try at some point,but in the interest of time, I will submit this now :)*
+*I'll try at some point, but in the interest of time, I am submitting this now :)*
