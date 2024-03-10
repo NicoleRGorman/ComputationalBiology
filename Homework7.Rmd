@@ -17,7 +17,7 @@ knitr::opts_chunk$set(echo = TRUE)
 **Study background**  
 *Cells must move materials in order to maintain metabolic processes. Some intracellular movement of materials is accomplished with endosomal trafficking. In plants, defects in trafficking pathways can lead to mutant phenotypes such as short roots. A protein complex known as the retriever has been well characterized in humans, but has yet to be completely explored in plants. Building on previous work in the lab, I am currently working on continuing to the characterize the retreiver in Arabidopsis thaliana. One approach to this question is identifying candidate Arabidopsis mutants with short root phenotypes. Identification of mutant phenotypes provides a foundation for exploring the proteins that may be components of the retreiver in this model species. The data set used in this analysis was generated from the observation of root length phenotypes of putative components of retriever.*  
 <br>
-*The typical sample size for analysis of root length phenotypes is n = 10 plants/genotype/treatment. For this dataset, there are 3 independent biological replicates. For this particular dataset, the data need to be reformatted, so only the first replicate is included with this analysis to help simplify. In the future, data will be formatted differently to simplify downstream analyses.*
+*The typical sample size for analysis of root length phenotypes is n = 10 plants/genotype/treatment with 3 independent biological replicates. For this particular dataset, the data need to be reformatted, so only the first replicate is included with this analysis to help simplify. In the future, data will be formatted differently to simplify downstream analyses.*
 
 * Open libraries
 ```{r open libraries, message=FALSE}
