@@ -390,6 +390,381 @@ screenful</li>
 <li>use random number generators as default values for rapid
 testing</li>
 </ul>
+<pre class="r"><code>#################
+#Part 1: Online lecture
+################
+
+# load library
+library(ggplot2)
+
+# everything in R is a function
+
+sum(3,2) # a &quot;prefix&quot; function</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>3 + 2 # an &quot;operator&quot;, but it is actually a function</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>`+`(3,2) # the operator is an &quot;infix&quot; function</code></pre>
+<pre><code>## [1] 5</code></pre>
+<pre class="r"><code>y &lt;- 3
+print (y)</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>`&lt;-` (yy,3) # another &quot;infix&quot; function
+
+# to see the contents of a function, print it
+print(read.table)</code></pre>
+<pre><code>## function (file, header = FALSE, sep = &quot;&quot;, quote = &quot;\&quot;&#39;&quot;, dec = &quot;.&quot;, 
+##     numerals = c(&quot;allow.loss&quot;, &quot;warn.loss&quot;, &quot;no.loss&quot;), row.names, 
+##     col.names, as.is = !stringsAsFactors, tryLogical = TRUE, 
+##     na.strings = &quot;NA&quot;, colClasses = NA, nrows = -1, skip = 0, 
+##     check.names = TRUE, fill = !blank.lines.skip, strip.white = FALSE, 
+##     blank.lines.skip = TRUE, comment.char = &quot;#&quot;, allowEscapes = FALSE, 
+##     flush = FALSE, stringsAsFactors = FALSE, fileEncoding = &quot;&quot;, 
+##     encoding = &quot;unknown&quot;, text, skipNul = FALSE) 
+## {
+##     if (missing(file) &amp;&amp; !missing(text)) {
+##         file &lt;- textConnection(text, encoding = &quot;UTF-8&quot;)
+##         encoding &lt;- &quot;UTF-8&quot;
+##         on.exit(close(file))
+##     }
+##     if (is.character(file)) {
+##         file &lt;- if (nzchar(fileEncoding)) 
+##             file(file, &quot;rt&quot;, encoding = fileEncoding)
+##         else file(file, &quot;rt&quot;)
+##         on.exit(close(file))
+##     }
+##     if (!inherits(file, &quot;connection&quot;)) 
+##         stop(&quot;&#39;file&#39; must be a character string or connection&quot;)
+##     if (!isOpen(file, &quot;rt&quot;)) {
+##         open(file, &quot;rt&quot;)
+##         on.exit(close(file))
+##     }
+##     pbEncoding &lt;- if (encoding %in% c(&quot;&quot;, &quot;bytes&quot;, &quot;UTF-8&quot;)) 
+##         encoding
+##     else &quot;bytes&quot;
+##     numerals &lt;- match.arg(numerals)
+##     if (skip &gt; 0L) 
+##         readLines(file, skip)
+##     nlines &lt;- n0lines &lt;- if (nrows &lt; 0L) 
+##         5
+##     else min(5L, (header + nrows))
+##     lines &lt;- .External(C_readtablehead, file, nlines, comment.char, 
+##         blank.lines.skip, quote, sep, skipNul)
+##     if (encoding %in% c(&quot;UTF-8&quot;, &quot;latin1&quot;)) 
+##         Encoding(lines) &lt;- encoding
+##     nlines &lt;- length(lines)
+##     if (!nlines) {
+##         if (missing(col.names)) 
+##             stop(&quot;no lines available in input&quot;)
+##         rlabp &lt;- FALSE
+##         cols &lt;- length(col.names)
+##     }
+##     else {
+##         if (all(!nzchar(lines))) 
+##             stop(&quot;empty beginning of file&quot;)
+##         if (nlines &lt; n0lines &amp;&amp; file == 0L) {
+##             pushBack(c(lines, lines, &quot;&quot;), file, encoding = pbEncoding)
+##             on.exit((clearPushBack(stdin())))
+##         }
+##         else pushBack(c(lines, lines), file, encoding = pbEncoding)
+##         first &lt;- scan(file, what = &quot;&quot;, sep = sep, quote = quote, 
+##             nlines = 1, quiet = TRUE, skip = 0, strip.white = TRUE, 
+##             blank.lines.skip = blank.lines.skip, na.strings = character(0), 
+##             comment.char = comment.char, allowEscapes = allowEscapes, 
+##             encoding = encoding, skipNul = skipNul)
+##         col1 &lt;- if (missing(col.names)) 
+##             length(first)
+##         else length(col.names)
+##         col &lt;- numeric(nlines - 1L)
+##         if (nlines &gt; 1L) 
+##             for (i in seq_along(col)) col[i] &lt;- length(scan(file, 
+##                 what = &quot;&quot;, sep = sep, quote = quote, nlines = 1, 
+##                 quiet = TRUE, skip = 0, strip.white = strip.white, 
+##                 blank.lines.skip = blank.lines.skip, comment.char = comment.char, 
+##                 allowEscapes = allowEscapes, encoding = encoding, 
+##                 skipNul = skipNul))
+##         cols &lt;- max(col1, col)
+##         rlabp &lt;- (cols - col1) == 1L
+##         if (rlabp &amp;&amp; missing(header)) 
+##             header &lt;- TRUE
+##         if (!header) 
+##             rlabp &lt;- FALSE
+##         if (header) {
+##             .External(C_readtablehead, file, 1L, comment.char, 
+##                 blank.lines.skip, quote, sep, skipNul)
+##             if (missing(col.names)) 
+##                 col.names &lt;- first
+##             else if (length(first) != length(col.names)) 
+##                 warning(&quot;header and &#39;col.names&#39; are of different lengths&quot;)
+##         }
+##         else if (missing(col.names)) 
+##             col.names &lt;- paste0(&quot;V&quot;, 1L:cols)
+##         if (length(col.names) + rlabp &lt; cols) 
+##             stop(&quot;more columns than column names&quot;)
+##         if (fill &amp;&amp; length(col.names) &gt; cols) 
+##             cols &lt;- length(col.names)
+##         if (!fill &amp;&amp; cols &gt; 0L &amp;&amp; length(col.names) &gt; cols) 
+##             stop(&quot;more column names than columns&quot;)
+##         if (cols == 0L) 
+##             stop(&quot;first five rows are empty: giving up&quot;)
+##     }
+##     if (check.names) 
+##         col.names &lt;- make.names(col.names, unique = TRUE)
+##     if (rlabp) 
+##         col.names &lt;- c(&quot;row.names&quot;, col.names)
+##     nmColClasses &lt;- names(colClasses)
+##     if (is.null(nmColClasses)) {
+##         if (length(colClasses) &lt; cols) 
+##             colClasses &lt;- rep_len(colClasses, cols)
+##     }
+##     else {
+##         tmp &lt;- rep_len(NA_character_, cols)
+##         names(tmp) &lt;- col.names
+##         i &lt;- match(nmColClasses, col.names, 0L)
+##         if (any(i &lt;= 0L)) 
+##             warning(&quot;not all columns named in &#39;colClasses&#39; exist&quot;)
+##         tmp[i[i &gt; 0L]] &lt;- colClasses[i &gt; 0L]
+##         colClasses &lt;- tmp
+##     }
+##     what &lt;- rep.int(list(&quot;&quot;), cols)
+##     names(what) &lt;- col.names
+##     colClasses[colClasses %in% c(&quot;real&quot;, &quot;double&quot;)] &lt;- &quot;numeric&quot;
+##     known &lt;- colClasses %in% c(&quot;logical&quot;, &quot;integer&quot;, &quot;numeric&quot;, 
+##         &quot;complex&quot;, &quot;character&quot;, &quot;raw&quot;)
+##     what[known] &lt;- lapply(colClasses[known], do.call, list(0))
+##     what[colClasses %in% &quot;NULL&quot;] &lt;- list(NULL)
+##     keep &lt;- !sapply(what, is.null)
+##     data &lt;- scan(file = file, what = what, sep = sep, quote = quote, 
+##         dec = dec, nmax = nrows, skip = 0, na.strings = na.strings, 
+##         quiet = TRUE, fill = fill, strip.white = strip.white, 
+##         blank.lines.skip = blank.lines.skip, multi.line = FALSE, 
+##         comment.char = comment.char, allowEscapes = allowEscapes, 
+##         flush = flush, encoding = encoding, skipNul = skipNul)
+##     nlines &lt;- length(data[[which.max(keep)]])
+##     if (cols != length(data)) {
+##         warning(&quot;cols = &quot;, cols, &quot; != length(data) = &quot;, length(data), 
+##             domain = NA)
+##         cols &lt;- length(data)
+##     }
+##     if (is.logical(as.is)) {
+##         as.is &lt;- rep_len(as.is, cols)
+##     }
+##     else if (is.numeric(as.is)) {
+##         if (any(as.is &lt; 1 | as.is &gt; cols)) 
+##             stop(&quot;invalid numeric &#39;as.is&#39; expression&quot;)
+##         i &lt;- rep.int(FALSE, cols)
+##         i[as.is] &lt;- TRUE
+##         as.is &lt;- i
+##     }
+##     else if (is.character(as.is)) {
+##         i &lt;- match(as.is, col.names, 0L)
+##         if (any(i &lt;= 0L)) 
+##             warning(&quot;not all columns named in &#39;as.is&#39; exist&quot;)
+##         i &lt;- i[i &gt; 0L]
+##         as.is &lt;- rep.int(FALSE, cols)
+##         as.is[i] &lt;- TRUE
+##     }
+##     else if (length(as.is) != cols) 
+##         stop(gettextf(&quot;&#39;as.is&#39; has the wrong length %d  != cols = %d&quot;, 
+##             length(as.is), cols), domain = NA)
+##     do &lt;- keep &amp; !known
+##     if (rlabp) 
+##         do[1L] &lt;- FALSE
+##     for (i in (1L:cols)[do]) {
+##         data[[i]] &lt;- if (is.na(colClasses[i])) 
+##             type.convert(data[[i]], as.is = as.is[i], dec = dec, 
+##                 numerals = numerals, na.strings = character(0L), 
+##                 tryLogical = tryLogical)
+##         else if (colClasses[i] == &quot;factor&quot;) 
+##             as.factor(data[[i]])
+##         else if (colClasses[i] == &quot;Date&quot;) 
+##             as.Date(data[[i]])
+##         else if (colClasses[i] == &quot;POSIXct&quot;) 
+##             as.POSIXct(data[[i]])
+##         else methods::as(data[[i]], colClasses[i])
+##     }
+##     compactRN &lt;- TRUE
+##     if (missing(row.names)) {
+##         if (rlabp) {
+##             row.names &lt;- data[[1L]]
+##             data &lt;- data[-1L]
+##             keep &lt;- keep[-1L]
+##             compactRN &lt;- FALSE
+##         }
+##         else row.names &lt;- .set_row_names(as.integer(nlines))
+##     }
+##     else if (is.null(row.names)) {
+##         row.names &lt;- .set_row_names(as.integer(nlines))
+##     }
+##     else if (is.character(row.names)) {
+##         compactRN &lt;- FALSE
+##         if (length(row.names) == 1L) {
+##             rowvar &lt;- (1L:cols)[match(col.names, row.names, 0L) == 
+##                 1L]
+##             row.names &lt;- data[[rowvar]]
+##             data &lt;- data[-rowvar]
+##             keep &lt;- keep[-rowvar]
+##         }
+##     }
+##     else if (is.numeric(row.names) &amp;&amp; length(row.names) == 1L) {
+##         compactRN &lt;- FALSE
+##         rlabp &lt;- row.names
+##         row.names &lt;- data[[rlabp]]
+##         data &lt;- data[-rlabp]
+##         keep &lt;- keep[-rlabp]
+##     }
+##     else stop(&quot;invalid &#39;row.names&#39; specification&quot;)
+##     data &lt;- data[keep]
+##     if (is.object(row.names) || !(is.integer(row.names))) 
+##         row.names &lt;- as.character(row.names)
+##     if (!compactRN) {
+##         if (length(row.names) != nlines) 
+##             stop(&quot;invalid &#39;row.names&#39; length&quot;)
+##         if (anyDuplicated(row.names)) 
+##             stop(&quot;duplicate &#39;row.names&#39; are not allowed&quot;)
+##         if (anyNA(row.names)) 
+##             stop(&quot;missing values in &#39;row.names&#39; are not allowed&quot;)
+##     }
+##     class(data) &lt;- &quot;data.frame&quot;
+##     attr(data, &quot;row.names&quot;) &lt;- row.names
+##     data
+## }
+## &lt;bytecode: 0x10d4af9f8&gt;
+## &lt;environment: namespace:utils&gt;</code></pre>
+<pre class="r"><code># three different ways to call (approach) a function
+# 1. print the function
+sd # prints the contents of function</code></pre>
+<pre><code>## function (x, na.rm = FALSE) 
+## sqrt(var(if (is.vector(x) || is.factor(x)) x else as.double(x), 
+##     na.rm = na.rm))
+## &lt;bytecode: 0x10d994888&gt;
+## &lt;environment: namespace:stats&gt;</code></pre>
+<pre class="r"><code># 2. calling function with inputs
+sd(c(3,2)) # function calling another function, calling data, calls function with parameters</code></pre>
+<pre><code>## [1] 0.7071068</code></pre>
+<pre class="r"><code># 3. Call with no inputs for defaults
+# commenting out call immediately below because file will not knit with error
+# sd() #call function with default parameters, does not work if function needs data inputs
+
+#################
+#Part 2: Online lecture
+################
+
+#################################################################
+# FUNCTION h_weinberg
+# calculates Hardy-Weinberg equilibrium values
+# input: an allele frequency p (0,1)
+# output : p and the frequencies of the three genotypes AA, AB, BB
+#----------------------------------------------------------------
+h_weinberg &lt;- function(p=runif(1)) {
+  q &lt;- 1 - p
+  f_AA &lt;- p^2
+  f_AB &lt;- 2*p*q
+  f_BB &lt;- q^2
+  vec_out &lt;- signif(c(p=p, AA=f_AA,AB=f_AB,BB=f_BB),
+                    digits=3)
+  return(vec_out)
+}
+#################################################################
+
+h_weinberg() # try with default values</code></pre>
+<pre><code>##      p     AA     AB     BB 
+## 0.1850 0.0344 0.3020 0.6630</code></pre>
+<pre class="r"><code># go into console and then use up arrow and return several times to test function with default values
+h_weinberg(p=0.05) # pass value to the input</code></pre>
+<pre><code>##      p     AA     AB     BB 
+## 0.0500 0.0025 0.0950 0.9020</code></pre>
+<pre class="r"><code># commenting out call immediately below because file will not knit with error
+# print(p) # not found because p is a local variable inside function
+pp &lt;- 0.6
+h_weinberg(p=pp)</code></pre>
+<pre><code>##    p   AA   AB   BB 
+## 0.60 0.36 0.48 0.16</code></pre>
+<pre class="r"><code>print(pp)</code></pre>
+<pre><code>## [1] 0.6</code></pre>
+<pre class="r"><code>p &lt;- 0.7 # this is a global variable, so can use as a parameter
+h_weinberg(p=p)</code></pre>
+<pre><code>##    p   AA   AB   BB 
+## 0.70 0.49 0.42 0.09</code></pre>
+<pre class="r"><code># can write functions with multiple return values
+
+#################################################################
+# FUNCTION h_weinberg2
+# calculates Hardy-Weinberg equilibrium values
+# input: an allele frequency p (0,1)
+# output : p and the frequencies of the three genotypes AA, AB, BB
+#----------------------------------------------------------------
+h_weinberg2 &lt;- function(p=runif(1)) {
+  if (p &gt; 1.0 | p &lt; 0.0) {
+    return(&quot;Function failure: p must be &gt;= 0 amd &lt;= 1.0&quot;)
+  } # end of if statement
+  q &lt;- 1 - p
+  f_AA &lt;- p^2
+  f_AB &lt;- 2*p*q
+  f_BB &lt;- q^2
+  vec_out &lt;- signif(c(p=p, AA=f_AA,AB=f_AB,BB=f_BB),
+                    digits=3)
+  return(vec_out)
+} # end of h_weinberg function
+#################################################################
+
+h_weinberg() # first run with default</code></pre>
+<pre><code>##        p       AA       AB       BB 
+## 0.971000 0.942000 0.056800 0.000855</code></pre>
+<pre class="r"><code>h_weinberg2(1.1) # OK gives message</code></pre>
+<pre><code>## [1] &quot;Function failure: p must be &gt;= 0 amd &lt;= 1.0&quot;</code></pre>
+<pre class="r"><code>z &lt;- h_weinberg2(1.10) # hmmmm, no error message
+print(z) # ugh, z contains the message</code></pre>
+<pre><code>## [1] &quot;Function failure: p must be &gt;= 0 amd &lt;= 1.0&quot;</code></pre>
+<pre class="r"><code>#################
+#Part 3: Online lecture
+################
+
+# programming for errors
+# do not necessarily need if not intending to distribute code
+# can make code difficult to read
+
+# proper call for error trapping is the stop function
+# do not use multiple return statement
+#################################################################
+# FUNCTION h_weinberg3
+# calculates Hardy-Weinberg equilibrium values
+# input: an allele frequency p (0,1)
+# output : p and the frequencies of the three genotypes AA, AB, BB
+#----------------------------------------------------------------
+h_weinberg3 &lt;- function(p=runif(1)) {
+  if (p &gt; 1.0 | p &lt; 0.0) {
+    stop(&quot;Function failure: p must be &gt;= 0 amd &lt;= 1.0&quot;)
+  } # end of if statement
+  q &lt;- 1 - p
+  f_AA &lt;- p^2
+  f_AB &lt;- 2*p*q
+  f_BB &lt;- q^2
+  vec_out &lt;- signif(c(p=p, AA=f_AA,AB=f_AB,BB=f_BB),
+                    digits=3)
+  return(vec_out)
+} # end of h_weinberg function
+#################################################################
+
+# commenting out call immediately below because file will not knit with error
+#zz &lt;- h_weinberg3(1.1)
+# commenting out call immediately below because file will not knit with error
+#print(zz) # Good! No object which means program terminated in the correct way</code></pre>
+</div>
+<div id="scoping-rules" class="section level2">
+<h2>Scoping Rules</h2>
+<ul>
+<li>global variables visibke to all parts of the code; declared in main
+body</li>
+<li>can find them in the environmnet pane</li>
+<li>local variables are visible only within a function; declared in
+function or passed to function through parameters</li>
+<li>functions can “see” global variable, but should not use them because
+this may cause the funtion to behave differently depending on the
+environment</li>
+<li>global environment cannot “see” variables in function
+environment</li>
+<li>“what happens in the fuction stays in the function”</li>
+</ul>
 </div>
 
 

@@ -92,3 +92,37 @@ print(z) # ugh, z contains the message
 #################
 #Part 3: Online lecture
 ################
+
+# programming for errors
+# do not necessarily need if not intending to distribute code
+# can make code difficult to read
+
+# proper call for error trapping is the stop function
+# do not use multiple return statement
+#################################################################
+# FUNCTION h_weinberg3
+# calculates Hardy-Weinberg equilibrium values
+# input: an allele frequency p (0,1)
+# output : p and the frequencies of the three genotypes AA, AB, BB
+#----------------------------------------------------------------
+h_weinberg3 <- function(p=runif(1)) {
+  if (p > 1.0 | p < 0.0) {
+    stop("Function failure: p must be >= 0 amd <= 1.0")
+  } # end of if statement
+  q <- 1 - p
+  f_AA <- p^2
+  f_AB <- 2*p*q
+  f_BB <- q^2
+  vec_out <- signif(c(p=p, AA=f_AA,AB=f_AB,BB=f_BB),
+                    digits=3)
+  return(vec_out)
+} # end of h_weinberg function
+#################################################################
+
+zz <- h_weinber3(1.1)
+print(zz) # Good! No object which means program terminated in the correct way
+
+## Scoping Rules
+# explore scoping and local variables
+my_func <- f
+
