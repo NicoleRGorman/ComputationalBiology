@@ -175,8 +175,92 @@ h_weinberg3 <- function(p=runif(1)) {
 * "what happens in the fuction stays in the function"
 
 ```{r echo=TRUE, results=TRUE}
+## Scoping Rules
+# explore scoping and local variables
+my_func <- function(a=3,b=4){
+  z <- a + b
+  return(z)
+}
+my_func()
 
 
+my_func_bad <- function (a=3){
+  z <- a + b
+  return(z)
+}
+# commenting out call immediately following so will knit in the Rmd file
+# my_func_bad()
+# Error in my_func_bad() : object 'b' not found
+b <- 100
+my_func_bad() # runs because b is in global, but this is NOT good
+
+# fine to create variables locally
+
+my_func_OK <- function(a=3){
+  bb <-100
+  z <- a + bb
+  return (z)
+}
+my_func_OK()
+# commenting out call immediately following so will knit in the Rmd file
+# print(bb)
+# not found because bb lives inside function
 
 ```
 
+```{r, echo=TRUE, results=TRUE}
+
+#################
+#Part 4: Online lecture
+################
+
+###########################################################
+# FUNCTION fit_linear
+# fits a simple linear regression line
+# inputs: numeric vector of predictor(x) and response(y)
+# outputs: slope and p-value
+#---------------------------------------------------------
+fit_linear <-function(x=runif(20),y=runif(20)) {
+  my_model <- lm(y~x)
+  my_out <- c(slope=summary(my_model)$coefficients[2,1],
+              pval=summary(my_model)$coefficients[2,4])
+  #plot(x=x,y=y) #quick and dirtly plot to check output
+  z <- ggplot2::qplot(x=x,y=y)
+  plot(z)
+  return(my_out)
+}
+###########################################################
+fit_linear()
+
+###########################################################
+# FUNCTION fit_linear2
+# fits a simple linear regression line
+# inputs: numeric vector of predictor(x) and response(y)
+# outputs: slope and p-value
+#---------------------------------------------------------
+fit_linear2 <-function(p=NULL) {
+  if(is.null(p)) {
+    p <- list(x=runif(20),y=runif(20))
+  } # end of input NULL case
+  my_model <- lm(p$y~p$x)
+  my_out <- c(slope=summary(my_model)$coefficients[2,1],
+              pval=summary(my_model)$coefficients[2,4])
+  #plot(x=x,y=y) #quick and dirtly plot to check output
+  z <- ggplot2::qplot(x=p$x,y=p$y)
+  plot(z)
+  return(my_out)
+}
+###########################################################
+fit_linear2()
+my_pars <- list(x=1:10,y=runif(10))
+fit_linear2(my_pars)
+
+z <- c(runif(99),NA) # 99 values with an NA
+
+# go to help to explore parameters of mean
+mean(z) # doesn't work if NA is present
+mean(z,na.rm=TRUE) # change default value!
+mean(z,na.rm=TRUE,trim=0.05) # throws out extreme values, trims 5% of the tails
+my_pars <- list(x=z,na.rm=TRUE,trim=0.05)
+do.call(mean,my_pars) # works for a function and a list of parameters
+```
