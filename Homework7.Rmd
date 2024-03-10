@@ -15,8 +15,9 @@ knitr::opts_chunk$set(echo = TRUE)
 * To start simply, assume that the data in each of your treatment groups follow a normal distribution. Specify the sample sizes, means, and variances for each group that would be reasonable if your hypothesis were true. You may need to consult some previous literature and/or an expert in the field to come up with these numbers.  
 <br> 
 **Study background**  
-*Cells must move materials in order to maintain metabolic processes. Some intracellular movement of materials is accomplished with endosomal trafficking. In plants, defects in trafficking pathways can lead to mutant phenotypes such as short roots. A protein complex known as the retriever has been well characterized in humans, but has yet to be completely explored in plants. Building on previous work in the lab, I am currently working on continuing to the characterize the retreiver in Arabidopsis thaliana. One approach to this question is identifying candidate Arabidopsis mutants with short root phenotypes. Identification of mutant phenotypes provides a foundation for exploring the proteins that may be components of the retreiver in this model species. The data set used in this analysis was generated from the observation of root length phenotypes of putative components of retriever.*
+*Cells must move materials in order to maintain metabolic processes. Some intracellular movement of materials is accomplished with endosomal trafficking. In plants, defects in trafficking pathways can lead to mutant phenotypes such as short roots. A protein complex known as the retriever has been well characterized in humans, but has yet to be completely explored in plants. Building on previous work in the lab, I am currently working on continuing to the characterize the retreiver in Arabidopsis thaliana. One approach to this question is identifying candidate Arabidopsis mutants with short root phenotypes. Identification of mutant phenotypes provides a foundation for exploring the proteins that may be components of the retreiver in this model species. The data set used in this analysis was generated from the observation of root length phenotypes of putative components of retriever.*  
 <br>
+*The typical sample size for analysis of root length phenotypes is n = 10 plants/genotype/treatment. For this dataset, there are 3 independent biological replicates. For this particular dataset, the data need to be reformatted, so only the first replicate is included with this analysis to help simplify. In the future, data will be formatted differently to simplify downstream analyses.*
 
 * Open libraries
 ```{r open libraries, message=FALSE}
@@ -24,8 +25,6 @@ library(ggplot2) # for graphics
 library(MASS) # for maximum likelihood estimation
 library(dplyr)
 ```
-
-*This data is from a characterization of a mutant phenotype in Arabidopsis thaliana. The typical sample size for analysis of root length phenotypes is n = 10 plants/genotype/treatment. For this dataset, there are 3 independent biological replicates, but only the first replicate is included with this analysis to help simplify. For this particular dataset, the data need to be reformatted. In the future, data will be formatted differently to simplify downstream alalyses.*  
 
 * Read in and plot the data  
 
