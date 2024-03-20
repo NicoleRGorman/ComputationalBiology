@@ -8,25 +8,21 @@
 library(tidyverse) # has dplyer in it
 
 # Core verbs/functions to use
-# filter()
-
-# arrange()
-
-#select()
-
-#summarize and group_by()
-
-#mutate()
+  # filter()
+  # arrange()
+  #select()
+  #summarize and group_by()
+  #mutate()
 
 data("starwars")
-class(starwars)
+class(starwars) # tibble is a modern re imagining of a data frame
 
 #tibbles do less, as a trade off to make code simpler and prone to crashing. Don't have to use them but sometimes easier to work with a tibble (but can just do a dataframe)
 
 glimpse(starwars) #glimpse is similar to head
 head(starwars) # another way to look at just a part of the data
 
-#Cleaning our data
+#Cleaning our data, clean dataset first
 #complete.cases is. not part of dplyr, but it is useful
 
 starwarsClean<-starwars[complete.cases(starwars[,1:10]),] #all rows but only one through ten columns
@@ -54,31 +50,36 @@ arrange(starwarsClean, by=height) #defaults to ascending order
 arrange(starwarsClean, by=desc(height))
 # Second column to "break ties"
 arrange(starwarsClean, height, desc(mass))
-
-starwars1<-arrange(starwars, height) #missing values are at the end, note we have not been assigning anithing to a variable, just prointing (until now)
+starwars1<-arrange(starwars, height) #missing values are at the end, note we have not been assigning anything to a variable, just printing (until now)
 tail(starwars1)
 
-#select function:: choose variables their names
+#select () function
+#choose variables their names
 #All of these do the same thing (subset)
 starwarsClean[ ,1:10] # using base R
 select(starwarsClean, 1:10) # can use column numbers
 select(starwarsClean, name:species) #can use column names
+select(starwarsClean, -(films:starships)) #subset everything except these particular variables, these three
 
-select(starwarsClean, -(films:starships)) #subset everytiong except these particular variables
+# Rearrange columns
+select(starwarsClean, homeworld, name, gender, species)
 
-# Rarrange columns
-select(starwarsClean, homeworld, name, gender, spoecies, everything()) #using everything() helper function if you only have a few variables to move ta the beginning
+select(starwarsClean, homeworld, name, gender, species, everything()) #using everything() helper function if you only have a few variables to move ta the beginning
 
 select(starwarsClean, contains("color")) #Helper functions include: ends_with, start_with, matches (reg ex), num_range
 
-# not sure if this is right?
-#select(starwars, haircolor=hair_color) #keeps all the variables
+select(starwars, haircolor=hair_color) # helpful to rename functions but only keeps specified variable
 
+rename(starwarsClean, haircolor=hair_color) # just to rename without selecting
+
+#select(starwars, haircolor=hair_color)
 rename(starwars, haircolor=hair_color) #keeps all the variables
 
-#mutate() function : create new variables woith functions of existing variables
+#mutate() function
+#create new variables with functions of existing variables
+# Adding new columns. New variables with functions of existing variables
 
-#crteate a new column of height divoded by mass
+#create a new column of height divided by mass
 
 x<-mutate(starwarsClean, ratio=height/mass) # note we use arithmetic operators
 
@@ -86,37 +87,39 @@ starwars_lbs<-mutate(starwarsClean, mass_lbs*2.2)
 
 select(starwars_lbs, 1:3, mass_lbs, everything()) # bringing mass_lbs to the beginiing using select()
 
-transmutate(starwarsClean, mass, mass_lbs=mass*2.2) # you  mention variablkes you want to keep in the new datasetcan
+transmute(starwarsClean, mass_lbs=mass*2.2) # just single column
 
-#### missed sometjhjing here?
-summarize(starwarsClean, meanHeight=mean)
+transmutate(starwarsClean, mass, mass_lbs=mass*2.2) # you can mention variables you want to keep in the new dataset
 
-#summarize() and group_by() :collapses many values down to a single summary
-summarize(starwars, meanHeight=mean)
-summarize(starwars, mean(height, na.rm=TRUE), TotalNumber=n())
+# Summarize and group_by. Collapsing many values down to a single summary
+summarize(starwarsClean, meanHeight=mean(height)) # gives summary stats for the entire tibble
 
+# Summarize and group_by. Collapsing many values down to a single summary
+summarize(starwarsClean, meanHeight=mean(height)) # gives summary stats for the entire tibble
 
-#########
+# Cannot summarize with NAs
+summarize(starwars, meanHeight=mean(height)) # error
+summarize(starwars, meanHeight=mean(height, na.rm=TRUE),TotalNumber=n()) # na.rm, remove any NAs
+summarize(starwarsClean, meanHeight=mean(height), number=n())
 
-
-#use group_by in conjuntion with summarize()
-starwarsGenders<-group_by(starwars, gender)
+# Use group_by in conjuction with summarize()
+starwarsGenders <- group_by(starwars, gender)
 
 summarize(starwarsGenders, meanHeight=mean(height, na.rm=TRUE), number=n())
 
 #pipe statements
-#are use to create a sequnece of actions
-#passes an iontermediate reult onto the next functrions
+#are use to create a sequence of actions
+#passes an intermediate result onto the next functions
 #think of the pipe statement as "and then"
-# warmings: avoid when you need to manipulate more than one object at a timme or there are  emaningful intermediate objects
-#frmatting: should alwyas have a space before it and ususlly a new line (usually auomatically indent)
+# warnings: avoid when you need to manipulate more than one object at a time or there are  meaningful intermediate objects
+#formatting: should always have a space before it and usually a new line (usually automatically indent)
 
 starwarsClean %>%
   group_by(gender)%_%
   summaraize(meanHeight=mean(height, na.rm=T), number=n())
 
 
-#use the case_when( when you have multiple ifelse statements)
+#use the case_when (when you have multiple ifelse statements)
  starwarsClean %>%
    mutate(sp= case_when(species=="Human" ~ "Human", TRUE ~ "Non-Human")) %>%
    select(name, sp, everything())
@@ -151,4 +154,4 @@ pivotSW
 glimpse(wideSW)
 
 wideSW %>%
-  pivot_longer(cols=male:female, names_to = "sex", values_to="height", values_drop_na=T)
+  pivot_longer(cols=male:female, names_to = "sex", values_to= "height", values_drop_na=T)
