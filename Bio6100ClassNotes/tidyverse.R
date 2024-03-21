@@ -31,7 +31,7 @@ starwarsClean<-starwars[complete.cases(starwars[,1:10]),] #all rows but only one
 is.na(starwarsClean[ ,1]) #Useful for only a few observations since it returns a list of true/false
 anyNA(starwarsClean[,1:10])
 
-#Filter function() : pick/subset observations by gtheor values
+#Filter function() : pick/subset observations by their values
 #uses >, >=, <, <=, !=, == (not just one!) for comparison
 #logical operators: & | (or) !(not/negative)
 #filter automatically excludes NAs, have to ask for them specifically
@@ -83,13 +83,13 @@ rename(starwars, haircolor=hair_color) #keeps all the variables
 
 x<-mutate(starwarsClean, ratio=height/mass) # note we use arithmetic operators
 
-starwars_lbs<-mutate(starwarsClean, mass_lbs*2.2)
+starwars_lbs<-mutate(starwarsClean, mass_lbs=mass*2.2)
 
 select(starwars_lbs, 1:3, mass_lbs, everything()) # bringing mass_lbs to the beginiing using select()
 
 transmute(starwarsClean, mass_lbs=mass*2.2) # just single column
 
-transmutate(starwarsClean, mass, mass_lbs=mass*2.2) # you can mention variables you want to keep in the new dataset
+transmute(starwarsClean, mass, mass_lbs=mass*2.2) # you can mention variables you want to keep in the new dataset
 
 # Summarize and group_by. Collapsing many values down to a single summary
 summarize(starwarsClean, meanHeight=mean(height)) # gives summary stats for the entire tibble
@@ -115,7 +115,7 @@ summarize(starwarsGenders, meanHeight=mean(height, na.rm=TRUE), number=n())
 #formatting: should always have a space before it and usually a new line (usually automatically indent)
 
 starwarsClean %>%
-  group_by(gender)%_%
+  group_by(gender)%>%
   summaraize(meanHeight=mean(height, na.rm=T), number=n())
 
 
@@ -155,3 +155,4 @@ glimpse(wideSW)
 
 wideSW %>%
   pivot_longer(cols=male:female, names_to = "sex", values_to= "height", values_drop_na=T)
+
