@@ -48,7 +48,7 @@ tail (z)
 
 # Remove NAs here
 z<-na.omit(z)
-# get the structure of z wuithout the NAs
+# get the structure of z without the NAs
 str(z)
 
 # Use myVar for my response variable (length) so I can run the code with any response variable by 

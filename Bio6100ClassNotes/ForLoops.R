@@ -335,5 +335,27 @@ model_frams$S <- NA
 
 for (i in 1:length(c_pars)) {
   for (j in 1:length(z_pars))
-    model_frame[model_frame$c==c_pars[i] & model_frame$z==z_pars{j},"S"))]
+    model_frame[model_frame$c==c_pars[i] & model_frame$z==z_pars[j],"S")) <- species_area_curve(A=area,c=c_pars[i],z=z_pars[j])
+  }
 }
+
+for (i in 1:nrow(model_frame))  {
+  model_frame[i,"S"] <- species_area_curve (A=model_frame,
+                                            c= model_frame$c[i],
+                                            z=model_frame)$z[i]
+}
+
+####### miising code chunk here
+
+## Class notes 28 March
+library(ggplot2)
+
+p1 <- ggplot(data=model_frame)
+# p1 + geom_point(mapping= aes(x=A,y=S))
+p1 + geom_line(mapping= aes(x=A,y=S)) +
+facet_grid(c~z)
+# returns multi-pane graph, can plot 4 dimensions of data
+
+p2 <- p1
+p2 + geom_line(mapping=aes(x=A,y=S,group=z)) +
+  facet_grid(.~c)
