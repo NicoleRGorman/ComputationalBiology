@@ -23,6 +23,8 @@
 
  # } # end of for loop
 
+#var is a counter variable that will hold the current value of the loop
+#seq is an integer vector (or a vector of character strings) that defines the starting and ending values of the loop
 # naming conventions
 # when you specify value for var, use i, j, k
 # comes from statistical conventions
@@ -39,8 +41,13 @@ for (i in 1:5) {
 # cat print character strings, prints results, \n is a line return
 # do 5 times in a row bc of the length of the loop
 # third element in loop is the thing that changes for each iteration
+#It is traditional in the statistics literature to use variables i,j,k to indicate counters
+
 
 print(i)
+## [1] 5
+
+#Instead, we want to use a counter variable that maps to the position of each element
 
 my_dogs <- c("chow", "akita", "malamute", "husky","samoyed")
 for (i in 1:length(my_dogs)){
@@ -48,6 +55,7 @@ for (i in 1:length(my_dogs)){
 }
 #increases the value of i for each iteration of the loop
 
+#This is the typical way we make a loop. One potential hazard is if the vector we are working with is empty
 # be careful that the vector is specified
 # does not throw an error, but likely a mistake....vector is "empty"
 my_bad_dogs <- NULL
@@ -56,22 +64,29 @@ for (i in seq_along(my_dogs)){
 }
 
 # instead do this
+#So, a safer way is to use seq_along function:
 for (i in seq_along(my_dogs)){
   cat("i=",i,"my_bad_dogs[1] =" ,my_dogs[i], "\n")
 }
 
+#But notice now what happens when the vector is empty:
+# This time we correctly skip my_bad_dogs and do not make the loop
+for (i in seq_along(my_bad_dogs)){
+  cat("i =",i,"my_bad_dogs[i] =" ,my_bad_dogs[i],"\n")
+}
 #try it with a vector that has a missing value
 my_bad_dogs <- NA
 for (i in seq_along(my_dogs)){
   cat("i=",i,"my_bad_dogs[1] =" ,my_dogs[i], "\n")
 }
 
+#Alternatively, we may have a constant that we use to define the length of the vector:
 zz <- 5
 for (i in seq_len(zz)){
   cat("i=",i,"my_bad_dogs[1] =" ,my_dogs[i], "\n")
 }
 
-#Dont do thngs in a loop if you dont have to
+#IMPORTANT TIP#1: Dont do things in a loop if you dont have to
 for (i in 1:length(my_dogs)){
   my_dogs[i] <- toupper(my_dogs[i])
   cat("i=",i,"my_dogs[1] =" ,my_dogs[i], "\n")
@@ -81,6 +96,7 @@ my_dogs <- tolower(my_dogs)
 print(my_dogs)
 
 
+#IMPORTANT Tip #2: Do not change object dimensions (cbind,rbind,c,list) in the loop!
 # dont resize objects inside of a for loop
 
 my_dat <-runif(1)
@@ -89,23 +105,26 @@ for (i in 2:10){
   my_dat <- c(my_dat,temp) # do not change vector size in loop
   cat("loop number =",i,"vector element=",my_dat[i], "\n")
 }
+print(my_dat)
 
-#always vectorize when you can instead of loopoing
-###############
+#IMPORTANT Tip #3: Do not write a loop if you can vectorize an operation
+#always vectorize when you can instead of looping
+
 my_dat <- 1:10
-for (i in seq_along(my_dat)){
-  my_dat[i]
+for (i in seq_along(my_dat)) {
+  my_dat[i] <-  my_dat[i] + my_dat[i]^2
+  cat("loop number =",i,"vector element =", my_dat[i],"\n")
+}
 
-################
-
+# No loop is needed here!
 z <- 1:10
 z <- z + z^2
 print(z)
 
-
+#IMPORTANT Tip #4: Always be alert to the distinction between the counter variable i and the vector element z[i]
 z <- c(10,2,4)
-for (i in seq_along(z)){
-  cat("i=",i,(z[i],"\n")
+for (i in seq_along(z)) {
+  cat("i=",i,z[i],"\n")
 }
 ################
 
@@ -116,17 +135,28 @@ for (i in seq_along(z)){
   print(i)
 }
 
-# another methods, probably faster (why?)
-z <-1:20
-zsub <- z[z %% 2!=0]
-############################
-length(z)
+# What is value of i at this point?
+print(i)
+
+#IMPORTANT Tip #5: Use next to skip certain elements in the loop
+
+z <- 1:20
+# What if we want to work with only the odd-numbered elements?
+for (i in seq_along(z)) {
   if(i %% 2==0) next
   print(i)
 }
 
-############################
+# another method, probably faster (why?)
+z <-1:20
+zsub <- z[z %% 2!=0] # contrast with logical expression in previous if statement!
+length(z)
 
+for (i in seq_along(zsub)) {
+  cat("i = ",i,"zsub[i] = ",zsub[i],"\n")
+}
+
+/Bio381/Lectures/ForLoops_I.html
 
 # use break to set up a conditional break out of loop early
 
@@ -359,3 +389,11 @@ facet_grid(c~z)
 p2 <- p1
 p2 + geom_line(mapping=aes(x=A,y=S,group=z)) +
   facet_grid(.~c)
+# period is part of the ggplot language
+
+p3 <- p1
+p3 + geom_line(mapping=aes(x=A,y=S,group=c)) +
+  facet_grid(z~.)
+# flips from col to row arrangement
+
+
