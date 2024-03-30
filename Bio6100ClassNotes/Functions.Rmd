@@ -19,7 +19,7 @@ functionName <- function(parX=defaultX,parY=defaultY) {
 # May also create functions
 # Can define local variables
 
-return(singleObject)  # re5turns a single object (could be a list)
+return(singleObject)  # returns a single object (could be a list)
 # what the function gives back after it runs
 }
 # Curly bracket marks the end of the function body

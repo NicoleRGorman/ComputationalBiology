@@ -7,21 +7,29 @@ library(tidyverse)
 library(ggplot2)
 library(MASS)
 
+# Read in the data
+# z <- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_HW9_ACCTrials.csv",header=TRUE,sep=",")
 
 ##########################################################################
 # FUNCTION cln_dat
-# reads in data and removes NAs 
+# read in and clean data by removing NAs 
 # input: dataset
 # output: dataset with NAs removed
 #----------------------------------------------------------------
 
-cln_dat <- function(z=read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_HW9_ACCTrials.csv",header=TRUE,sep=",")) {
+cln_dat <- function(z) {
+  if (missing(z)) {
+  z<- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_HW9_ACCTrials.csv",
+               header=TRUE,sep=",")
+}
 
   cln_z<-na.omit(z)
+  # remove NAs to clean data
+  
   return(cln_z)
 }
 
-# end of cln-dat function
+# end of cln_dat function
 ##########################################################################
 
 
@@ -30,23 +38,73 @@ str(cln_dat())
 
 cln_dat() # how would i make default values or what would be useful here?
 
+##########################################################################
+# FUNCTION my_vars
+# reasign generic variable names for easier downstream analysis 
+# input: dataset with original variable names
+# output: dataset with generic variable names
+#----------------------------------------------------------------
+
+my_vars <- function(z) {
+  ID <- seq_len(nrow(z))
+  # Create sequence for ID
+
+  varA <- z$Plant.ID
+  varB <- z$Genotype
+  resVar <- z$Length
+  # assign variables for easier downstream analysis
+
+  return(data.frame(ID, varA, varB, resVar))
+}
+# end of my_vars function
+##########################################################################
+
+head(my_vars(z))
+str(my_vars(z))
+
+# Global variables
+# How can I edit the function so that mI can change my response variable and run the same code?
+
+resVar <- my_vars(z)$Length
 
 ##########################################################################
 # FUNCTION dat_stat
-# returns summary statistics 
-# input: clean data (NAs removed)
-# output: summary statistics
+# returns histogram and summary statistics 
+# input: clean data (NAs removed), response variable name
+# output: list of summary statistics
 #----------------------------------------------------------------
 
-dat_stat <- function(z=cln_dat()) {
+dat_stat <- function(z, resVar) {
+  require(ggplot2)
+  require(MASS)
   
-  stats<-summary(z)
-  stats2<-c(mean(z),sd(z))
-  return(stats2)
+  # Plot histogram of data with empirical density curve to smooth out the profile of the distribution
+  # alpha adjusts bar transparency, bins are intervals
+  p1 <- ggplot(data = z, aes_string(x=resVar, y="..density..")) +
+    geom_histogram(color="grey60",fill="cornsilk", alpha = 0.7, bins = 30) +
+    geom_density(linetype="dotted",linewidth=0.75)
+  print(p1)
+  
+# Get summary stats
+  sum_stats <-summary(z[[resVar]])
+
+# Get maximum likelihood parameters for the normal distribution
+  normPars <- fitdistr(z[[resVar]],"normal")
+
+return(list(summary = sum_stats, norm_pars = normPars$estimate))
 }
 
-# end of cln-dat function
+# end of dat-stat function
 ##########################################################################
 
-print(dat_stat())
-dat_stat()
+str(z) 
+
+print(dat_stat(z))
+dat_stat(z)
+
+
+
+
+
+
+
