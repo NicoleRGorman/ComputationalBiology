@@ -27,11 +27,15 @@ library(ggplot2)
 library(MASS)
 
 
+# call the new functions with my dataset as an argument
+
+cleaned_data <- cln_dat(z) 
+# returns clean dataset with no NAs
+
+gen_data <- my_vars(cleaned_data)
+# returns dataset with generic variable names 
+
+dat_stats <- dat_stat(gen_data)
+# plots dataset and returns stats mean and sd
 
 
-
-cleaned_data <- cln_dat() 
-proc_data <- my_vars(cleaned_data)
-
-# call this function with your dataset as an argument
-# It should return the dataset with the generic variable names 

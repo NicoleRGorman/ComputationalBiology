@@ -63,6 +63,7 @@ head(my_vars(z))
 str(my_vars(z))
 
 # Global variables
+#Do I specify a global variable here? Seems like better at the beginning...
 # How can I edit the function so that mI can change my response variable and run the same code?
 
 resVar <- my_vars(z)$Length
@@ -74,22 +75,22 @@ resVar <- my_vars(z)$Length
 # output: list of summary statistics
 #----------------------------------------------------------------
 
-dat_stat <- function(z, resVar) {
+dat_stat <- function(z, Length) {
   require(ggplot2)
   require(MASS)
   
   # Plot histogram of data with empirical density curve to smooth out the profile of the distribution
   # alpha adjusts bar transparency, bins are intervals
-  p1 <- ggplot(data = z, aes_string(x=resVar, y="..density..")) +
-    geom_histogram(color="grey60",fill="cornsilk", alpha = 0.7, bins = 30) +
-    geom_density(linetype="dotted",linewidth=0.75)
+  p1 <- ggplot(data = z, aes(x=Length, y=..density..)) +
+    geom_histogram(color="grey60",fill="cornsilk", alpha = 0.7 , bins=20, linewidth=0.2) +
+    geom_density(linetype="dotted",linewidth=1.0)
   print(p1)
   
-# Get summary stats
-  sum_stats <-summary(z[[resVar]])
+  # Get summary stats
+  sum_stats <-summary(z[[Length]])
 
 # Get maximum likelihood parameters for the normal distribution
-  normPars <- fitdistr(z[[resVar]],"normal")
+  normPars <- fitdistr(z[[Length]],"normal")
 
 return(list(summary = sum_stats, norm_pars = normPars$estimate))
 }
@@ -102,6 +103,8 @@ str(z)
 print(dat_stat(z))
 dat_stat(z)
 
+# 1: Removed 196 rows containing non-finite values (`stat_bin()`). 
+# 2: Removed 196 rows containing non-finite values (`stat_density()`). 
 
 
 
