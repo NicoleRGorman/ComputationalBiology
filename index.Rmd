@@ -37,7 +37,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #6: Simulating and Fitting Data Distributions
 + Click [here](Homework6.html) for homework #6.
 
-### Homework #7: Simulating and Fitting Data Distributions
+### Homework #7: Creating Fake Data Sets To Explore Hypotheses
 + Click [here](Homework7.html) for homework #7.
+
+### Homework #8: Data manipulations using the dplyr package
++ Click [here](Homework8.html) for homework #8.
+
+### Homework #9: Organizing Code with Structured Programming
++ Click [here](Homework9.html) for homework #9.
 
 # References
