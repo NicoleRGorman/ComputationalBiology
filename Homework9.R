@@ -12,14 +12,6 @@
 # The program body should be only a few lines of code that call the appropriate functions and run them in the correct order. 
 # Make sure that the output from one function serves as the input to the next. You can either daisy-chain the functions or write separate lines of code to hold elements in temporary variables and pass them along.
 
-# Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. 
-# Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
-# Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
-
-# Optional. If time permits and you have the skills, try putting your program inside of a for loop and repeat the analysis with a different stochastic data set 
-# (each time you call a function that invokes the random number generator, it will create a new set of data for you to process). 
-# Can you create a data structure to store the summary statistics created in each pass through the loop? 
-# If not, your program will work, but it will only show the results from the final replicate (the previous results will be written over each time you traverse the loop).
 
 # Call in the libraries
 library(tidyverse)
@@ -37,5 +29,28 @@ gen_data <- my_vars(cleaned_data)
 
 dat_stats <- dat_stat(gen_data)
 # plots dataset and returns stats mean and sd
+
+# Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. 
+# Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
+# Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
+
+
+# call the second set of functions with my dataset as an argument
+
+cleaned_data2 <- cln_dat(z) 
+# returns clean dataset with no NAs
+
+gen_data2 <- my_vars(cleaned_data)
+# returns dataset with generic variable names 
+
+dat_stats2 <- dat_stat(gen_data)
+# plots dataset and returns stats mean and sd
+
+
+# Optional. If time permits and you have the skills, try putting your program inside of a for loop and repeat the analysis with a different stochastic data set 
+# (each time you call a function that invokes the random number generator, it will create a new set of data for you to process). 
+# Can you create a data structure to store the summary statistics created in each pass through the loop? 
+# If not, your program will work, but it will only show the results from the final replicate (the previous results will be written over each time you traverse the loop).
+
 
 
