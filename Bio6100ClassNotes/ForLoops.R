@@ -7,7 +7,7 @@
 # FOR LOOPS
 ##########
 
-# the workhouse function for doing repetitive tasks
+# the workhorse function for doing repetitive tasks
 # universal in all computer languages
 # Controversial in R
 

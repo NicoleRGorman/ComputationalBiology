@@ -8,89 +8,61 @@ library(ggplot2)
 library(MASS)
 
 # Read in the data
-# z <- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_HW9_ACCTrials.csv",header=TRUE,sep=",")
+setwd("~/Documents/UVM_Research/UVM Rotation Project/ACC Trials")
+x<-list.files(pattern="HW9")
 
 ##########################################################################
 # FUNCTION cln_dat
-# read in and clean data by removing NAs 
-# input: dataset
-# output: dataset with NAs removed
+# read in data, omit NAs, and reassign generic variable names for downstream analysis 
+# input: data set with original variable names
+# output: cleaned data set with generic variable names
 #----------------------------------------------------------------
 
-cln_dat <- function(z) {
-  if (missing(z)) {
-  z<- read.csv("/Users/nicolegorman/Documents/UVM_Research/UVM Rotation Project/ACC Trials/CBIO_HW9_ACCTrials.csv",
-               header=TRUE,sep=",")
-}
-
-  cln_z<-na.omit(z)
-  # remove NAs to clean data
+cln_dat <- function(filename, varA, varB, resVar) {
+  data<-read.csv(filename)
   
-  return(cln_z)
+  data<-na.omit(data)  # remove NAs to clean data
+  ID <- seq_len(nrow(data)) # Create sequence for ID
+  
+  a <- data [[varA]]
+  b <- data [[varB]]
+  res <- data [[resVar]]
+  # assign variables for easier downstream analysis
+  
+  my_data<-data.frame(ID, testA=a, testB=b, resVar=res)  
+  # create dataframe
+  
+  return(my_data)
 }
-
 # end of cln_dat function
 ##########################################################################
 
+# Read in and clean data
+my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
 
-head(cln_dat())
-str(cln_dat())
-
-cln_dat() # how would i make default values or what would be useful here?
-
-##########################################################################
-# FUNCTION my_vars
-# reasign generic variable names for easier downstream analysis 
-# input: dataset with original variable names
-# output: dataset with generic variable names
-#----------------------------------------------------------------
-
-my_vars <- function(z) {
-  ID <- seq_len(nrow(z))
-  # Create sequence for ID
-
-  varA <- z$Plant.ID
-  varB <- z$Genotype
-  resVar <- z$Length
-  # assign variables for easier downstream analysis
-
-  return(data.frame(ID, varA, varB, resVar))
-}
-# end of my_vars function
-##########################################################################
-
-head(my_vars(z))
-str(my_vars(z))
-
-# Global variables
-#Do I specify a global variable here? Seems like better at the beginning...
-# How can I edit the function so that mI can change my response variable and run the same code?
-
-resVar <- my_vars(z)$Length
 
 ##########################################################################
 # FUNCTION dat_stat
 # returns histogram and summary statistics 
-# input: clean data (NAs removed), response variable name
-# output: list of summary statistics
+# input: clean data, response variable (= "response")
+# output: list of summary statistics and histogram
 #----------------------------------------------------------------
 
-dat_stat <- function(z, Length) {
-  require(ggplot2)
-  require(MASS)
+dat_stat <- function(my_data, resVar) {
   
   # Plot histogram of data with empirical density curve to smooth out the profile of the distribution
-  # alpha adjusts bar transparency, bins are intervals
-  p1 <- ggplot(data = z, aes(x=Length, y=..density..)) +
-    geom_histogram(color="grey60",fill="cornsilk", alpha = 0.7 , bins=20, linewidth=0.2) +
-    geom_density(linetype="dotted",linewidth=1.0)
+  p1 <- ggplot(data = my_data, aes(x=.data[[resVar]])) +
+    geom_histogram(aes(y = ..density..), color="grey60",fill="cornsilk", alpha = 0.7 , bins=20, linewidth=0.2) +
+    geom_density(linetype="dotted",linewidth=1.0) + 
+    stat_function(fun = dnorm, args = list(mean = mean(my_data[[resVar]]), sd = sd(my_data[[resVar]])), color="red")
+
   print(p1)
   
   # Get summary stats
-  sum_stats <-summary(z[[Length]])
+  sum_stats <-summary(my_data[[resVar]])
 
 # Get maximum likelihood parameters for the normal distribution
-  normPars <- fitdistr(z[[Length]],"normal")
+  normPars <- fitdistr(my_data[[resVar]],"normal")
 
 return(list(summary = sum_stats, norm_pars = normPars$estimate))
 }
@@ -98,16 +70,42 @@ return(list(summary = sum_stats, norm_pars = normPars$estimate))
 # end of dat-stat function
 ##########################################################################
 
-str(z) 
-
-print(dat_stat(z))
-dat_stat(z)
-
-# 1: Removed 196 rows containing non-finite values (`stat_bin()`). 
-# 2: Removed 196 rows containing non-finite values (`stat_density()`). 
+result <- dat_stat(my_data,"resVar")
+print(result)
 
 
+##########################################################################
+# FUNCTION anova
+# sets up data frame and then returns anova results 
+# input: clean data, response variable (= "response", # treatment groups, treatment groups names)
+# output: anova results and box plot
 
+anova <- function(my_data, resVar, nGroup, nName) {
+  
+  # Data frame construction for one-way ANOVA
+  TGroup <- rep(nName, each = nGroup * nrow(my_data) / length(nName))
+  ANOdata <- data.frame(TGroup = TGroup, response = my_data[[resVar]])
+  
+  # Run basic ANOVA
+  ANOmodel <- aov(response ~ TGroup, data = ANOdata)
+  
+  summary(ANOmodel)
+  
+  mean_data <- aggregate(response ~ TGroup, data = ANOdata, FUN=mean)
+  f_val <- summary(ANOmodel)[[1]]$"F value"[1]
 
+  # Use ggplot to visualize the ANOVA data
+  ANOPlot <- ggplot(data = ANOdata) + 
+    aes(x = TGroup, y = response, fill = TGroup) +
+    geom_boxplot()
 
+return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
+}
+
+# end of anova function
+##########################################################################
+
+ANOplot <- anova(my_data, "response", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
+print(ANOplot)
+print(ANOsum)
 

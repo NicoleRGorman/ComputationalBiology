@@ -13,22 +13,27 @@
 # Make sure that the output from one function serves as the input to the next. You can either daisy-chain the functions or write separate lines of code to hold elements in temporary variables and pass them along.
 
 
-# Call in the libraries
+# Call in libraries
 library(tidyverse)
 library(ggplot2)
 library(MASS)
 
+# Read in the data
+setwd("~/Documents/UVM_Research/UVM Rotation Project/ACC Trials")
+x<-list.files(pattern="HW9")
 
-# call the new functions with my dataset as an argument
+# call the new functions with my data set as an argument
 
-cleaned_data <- cln_dat(z) 
-# returns clean dataset with no NAs
+my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
+# returns clean data set
 
-gen_data <- my_vars(cleaned_data)
-# returns dataset with generic variable names 
+result <- dat_stat(my_data,"response")
+print(result)
+# returns histogram and summary statistics 
 
-dat_stats <- dat_stat(gen_data)
-# plots dataset and returns stats mean and sd
+ANOplot <- anova(my_data, "response", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
+print(ANOplot)
+# returns anova results
 
 # Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. 
 # Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
@@ -43,8 +48,7 @@ cleaned_data2 <- cln_dat(z)
 gen_data2 <- my_vars(cleaned_data)
 # returns dataset with generic variable names 
 
-dat_stats2 <- dat_stat(gen_data)
-# plots dataset and returns stats mean and sd
+
 
 
 # Optional. If time permits and you have the skills, try putting your program inside of a for loop and repeat the analysis with a different stochastic data set 

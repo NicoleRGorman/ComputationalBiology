@@ -1,0 +1,78 @@
+---
+title: "Homework #10"
+author: "Nicole R Gorman"
+date: "5 April 2024"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+```
+#For loops and randomization tests  
+
+* Open libraries
+```{r open libraries, message=FALSE}
+library(tidyverse)
+library(ggplot2)
+library(MASS)
+```
+
+1. Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the vector. Finally, use return(counter) for the output.
+
+```{r echo=TRUE}
+
+z <- rbinom(n=5, size=1, 0.5)
+
+counter <- 0
+
+count_zeros <- function(vec) {
+ for (i in seq_along(z)) {
+ if(z[i]==0) {
+  counter <- i + 1
+}
+   return(counter)
+}
+}
+
+count_zeros(z)
+
+```
+
+2. Use subsetting instead of a loop to rewrite the function as a single line of code.
+
+```{r echo=TRUE}
+
+z <- rbinom(n=5, size=1, 0.5)
+z <- if(z[i]==0), z + 1)
+print(z)
+
+```
+
+
+
+Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+
+Now let’s practice calling custom functions within a for loops. Use the code from previous lectures on loops and functions to complete the following steps:
+
+Simulate a dataset with 3 groups of data, each group drawn from a distribution with a different mean. The final data frame should have 1 column for group and 1 column for the response variable.
+
+Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
+
+Use a for loop to repeat the function in b 100 times. Store the results in a data frame that has 1 column indicating the replicate number and 1 column for each new group mean, for a total of 4 columns.
+
+Use qplot() to create a histogram of the means for each reshuffled group. Or, if you want a challenge, use ggplot() to overlay all 3 histograms in the same figure. How do the distributions of reshuffled means compare to the original means?
+
+
+```
+#Let's talk about tea
+# Is milk added first or not?
+# H0 vs HA
+# Blind test
+# can reshuffle the data to repeat the experiment rather than actually redoing the experiment
+```
+
+```
+# question 3 is going to require double for loop
+```
