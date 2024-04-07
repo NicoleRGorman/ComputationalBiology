@@ -84,19 +84,19 @@ anova <- function(my_data, resVar, nGroup, nName) {
   
   # Data frame construction for one-way ANOVA
   TGroup <- rep(nName, each = nGroup * nrow(my_data) / length(nName))
-  ANOdata <- data.frame(TGroup = TGroup, response = my_data[[resVar]])
+  ANOdata <- data.frame(TGroup = TGroup, resVar = my_data[[resVar]])
   
   # Run basic ANOVA
-  ANOmodel <- aov(response ~ TGroup, data = ANOdata)
+  ANOmodel <- aov(resVar ~ TGroup, data = ANOdata)
   
   summary(ANOmodel)
   
-  mean_data <- aggregate(response ~ TGroup, data = ANOdata, FUN=mean)
+  mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
   f_val <- summary(ANOmodel)[[1]]$"F value"[1]
 
   # Use ggplot to visualize the ANOVA data
   ANOPlot <- ggplot(data = ANOdata) + 
-    aes(x = TGroup, y = response, fill = TGroup) +
+    aes(x = TGroup, y = resVar, fill = TGroup) +
     geom_boxplot()
 
 return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
@@ -105,7 +105,6 @@ return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
 # end of anova function
 ##########################################################################
 
-ANOplot <- anova(my_data, "response", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
+ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
 print(ANOplot)
-print(ANOsum)
 

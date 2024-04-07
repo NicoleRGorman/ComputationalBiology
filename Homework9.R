@@ -27,11 +27,11 @@ x<-list.files(pattern="HW9")
 my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
 # returns clean data set
 
-result <- dat_stat(my_data,"response")
+result <- dat_stat(my_data,"resVar")
 print(result)
 # returns histogram and summary statistics 
 
-ANOplot <- anova(my_data, "response", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
+ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
 print(ANOplot)
 # returns anova results
 

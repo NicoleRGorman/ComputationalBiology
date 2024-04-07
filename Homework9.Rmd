@@ -5,42 +5,55 @@ date: "2024-03-30"
 output: html_document
 ---
 
----
-title: "Homework 9"
-author: "Nicole R. Gorman"
-date: "2024-03-27"
-output: html_document
----
-
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-###Organizing Code With Structured Programming
+##Organizing Code With Structured Programming
 
 * Open libraries
-```{r open libraries, message=FALSE}
+```{r openLibraries, message=FALSE}
 library(tidyverse)
 library(ggplot2)
 library(MASS)
 ```
 
 * Use the code that you worked on in Homework #7 (creating fake data sets), and re-organize it following the principles of structured programming.  
-# Do all the work in a single chunk in your R markdown file, just as if you were writing a single R script. 
+* Do all the work in a single chunk in your R markdown file, just as if you were writing a single R script. 
 * Start with all of your annotated functions, preliminary calls, and global variables. 
 * The program body should be only a few lines of code that call the appropriate functions and run them in the correct order. 
 * Make sure that the output from one function serves as the input to the next. You can either daisy-chain the functions or write separate lines of code to hold elements in temporary variables and pass them along.
 
-```{r echo=TRUE, warnings=FALSE, results=TRUE}
+```{r readInData, warnings=FALSE, echo=TRUE, results='hide'}
+# Read in the data
+setwd("~/Documents/UVM_Research/UVM Rotation Project/ACC Trials")
+x<-list.files(pattern="HW9")
 
-cleaned_data <- cln_dat(z) 
-# returns clean dataset with no NAs
+```
 
-gen_data <- my_vars(cleaned_data)
-# returns dataset with generic variable names 
+```{r cln_dat, cln_dat, warnings=FALSE, echo=TRUE, results='hide'}
 
-dat_stats <- dat_stat(gen_data)
-# plots dataset and returns stats mean and sd
+# call the new functions with my data set as an argument
+source("Homework9Functions.R")
+
+my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
+# returns clean data set
+
+```
+
+```{r dat_stat, echo=TRUE, results=TRUE}
+
+result <- dat_stat(my_data,"resVar")
+print(result)
+# returns histogram and summary statistics 
+
+```
+
+```{r ANOVA, echo=TRUE, results=TRUE}
+
+ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
+print(ANOplot)
+# returns anova results
 
 ```
 
@@ -48,16 +61,16 @@ dat_stats <- dat_stat(gen_data)
 * Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
 * Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
 
-```{r echo=TRUE, warnings=FALSE, results=TRUE}
+```{r echo=TRUE, results=TRUE}
 
-cleaned_data2 <- cln_dat(z) 
-# returns clean dataset with no NAs
-
-gen_data2 <- my_vars(cleaned_data)
-# returns dataset with generic variable names 
-
-dat_stats2 <- dat_stat(gen_data)
-# plots dataset and returns stats mean and sd
+# cleaned_data2 <- cln_dat(z) 
+# # returns clean dataset with no NAs
+# 
+# gen_data2 <- my_vars(cleaned_data)
+# # returns dataset with generic variable names 
+# 
+# dat_stats2 <- dat_stat(gen_data)
+# # plots dataset and returns stats mean and sd
 
 ```
 
@@ -67,7 +80,7 @@ dat_stats2 <- dat_stat(gen_data)
 * Can you create a data structure to store the summary statistics created in each pass through the loop? 
 * If not, your program will work, but it will only show the results from the final replicate (the previous results will be written over each time you traverse the loop).
 
-```{r echo=TRUE, warnings=FALSE, results=TRUE}
+```{r echo=TRUE, results=TRUE}
  
 
 ```
