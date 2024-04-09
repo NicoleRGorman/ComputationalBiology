@@ -46,7 +46,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #9: Organizing Code with Structured Programming
 + Click [here](Homework9.html) for homework #9.
 
-### Homework #10: Organizing Code with Structured Programming
+### Homework #10: For Loops and Randomization Tests
 + Click [here](Homework10.html) for homework #10.
 
 # References

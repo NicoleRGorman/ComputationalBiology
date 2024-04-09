@@ -135,3 +135,49 @@ p1 <- ggplot(data=d, mapping=aes(displ,y=cty)) +
 print(p1)
 
 
+# Basic barplot
+
+ggplot(data=d) +
+  aes(x=fl) +
+  geom_bar(color="black",fill="thistle")
+
+# build a bar plot with specified values
+
+x_treatment <- c("Control","Low", "High")
+y_response <- c(12,2.5,22.9)
+summary_data <- data.frame(x_treatment,y_response)
+
+#not used as open, sparse
+#ggplot((data=summary_data) +
+#         aes(x=x_treatment,y=y_response) +
+#         geom_col(fill=c("grey50","goldenrod","goldenrod"),col="black")
+
+# basic
+my_vec <- seq(1,100,by=0.1)
+
+#plot
+d_frame <- data.frame(x=my_vec##########)
+                      ggplot(data=d_frame) +
+                      aes(x=x,y=y) +
+                      geom_line()
+
+# Plot probs
+d_frame <- data.frame(x=my_vec,y=dgamma(my_vec,shape=5,scale=3))
+ggplot(data-d_frame)
+###more hgere
+
+
+#plot own function
+# something goes here
+
+
+
+
+
+
+
+
+
+
+
+

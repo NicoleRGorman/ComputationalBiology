@@ -9,7 +9,6 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-```
 #For loops and randomization tests  
 
 * Open libraries
@@ -23,40 +22,147 @@ library(MASS)
 
 ```{r echo=TRUE}
 
-z <- rbinom(n=5, size=1, 0.5)
-
+vec <- rbinom (n=5, size=1, 0.5)
 counter <- 0
+# create a vector w/ 0's and set up a counter variable
+
+##########################################################################
+# FUNCTION count_zeros
+# count the number of zeros in a vector
+# input: vector with zeros
+# output: number of variables = 0
+#----------------------------------------------------------------
 
 count_zeros <- function(vec) {
- for (i in seq_along(z)) {
- if(z[i]==0) {
-  counter <- i + 1
+ for (i in vec) {
+   if(i==0) {
+   counter <- counter + 1
 }
    return(counter)
 }
 }
 
-count_zeros(z)
+# end of count_zeros function
+##########################################################################
+
+count_zeros(vec)
 
 ```
 
 2. Use subsetting instead of a loop to rewrite the function as a single line of code.
 
-```{r echo=TRUE}
+```{r echo=TRUE, results=TRUE}
 
-z <- rbinom(n=5, size=1, 0.5)
-z <- if(z[i]==0), z + 1)
-print(z)
+vec <- rbinom (n=5, size=1, 0.5)
+counter <- 0
 
+##########################################################################
+# FUNCTION count_zeros2
+# count the number of zeros in a vector
+# input: vector with zeros
+# output: number of variables = 0
+#----------------------------------------------------------------
+
+count_zeros2 <- function(vec) {
+   return(sum(vec==0))
+}
+
+# end of count_zeros2 function
+##########################################################################
+
+result <- count_zeros2(vec)
+print (result)
+# call function and print result
 ```
 
 
 
 Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
 
+```{r echo=TRUE}
+
+##########################################################################
+# FUNCTION prod_matrix
+# create matrix with elements as products of row and column
+# input: number of rows and columns
+# output: matrix of products
+#----------------------------------------------------------------
+
+prod_matrix <- function(nRow,nCol) {
+   my_mat <- matrix(0, nrow = nRow, ncol = nCol)
+  
+  for (i in 1:nRow) {
+    for (j in 1:nCol) {
+       my_mat[i,j] <- i * j
+  }
+  
+}
+  return(my_mat)
+}
+
+# end of prod_matrix function
+##########################################################################
+
+my_matrix <- prod_matrix(3,4)
+print (my_matrix)
+
+```
+
 Now let’s practice calling custom functions within a for loops. Use the code from previous lectures on loops and functions to complete the following steps:
 
 Simulate a dataset with 3 groups of data, each group drawn from a distribution with a different mean. The final data frame should have 1 column for group and 1 column for the response variable.
+
+```{r echo=TRUE}
+
+# Set seed for reproducibility
+set.seed(1)
+
+# Number of observations per group
+n_per_group <- 50
+
+# Simulate data for each group
+group1 <- rnorm(n_per_group, mean = 10, sd = 1)
+group2 <- rnorm(n_per_group, mean = 15, sd = 1)
+group3 <- rnorm(n_per_group, mean = 20, sd = 1)
+
+# Combine data into a single dataframe
+data <- data.frame(
+  group = rep(c("Group1", "Group2", "Group3"), each = n_per_group),
+  response = c(group1, group2, group3)
+)
+
+head(data)
+tail(data)
+
+```
+
+Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
+
+```{r echo=TRUE}
+##########################################################################
+# FUNCTION means
+# reshuffle response variable, calculate the mean of each group, store the means in a vector of length 3.
+# input: dataset with 3 groups
+# output: three group means as vector
+#----------------------------------------------------------------
+
+data2 <- function(data) {
+   res2 <- sample(response)
+  
+  mean
+  
+}
+  return(my_mat)
+}
+
+# end of prod_matrix function
+##########################################################################
+
+my_matrix <- prod_matrix(3,4)
+print (my_matrix)
+
+```
+
 
 Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
 

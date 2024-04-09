@@ -357,12 +357,11 @@ display: none;
 </div>
 
 
-<pre><code>#For loops and randomization tests  
-
-* Open libraries
-
-```r
-library(tidyverse)
+<p>#For loops and randomization tests</p>
+<ul>
+<li>Open libraries</li>
+</ul>
+<pre class="r"><code>library(tidyverse)
 library(ggplot2)
 library(MASS)</code></pre>
 <ol style="list-style-type: decimal">
@@ -371,27 +370,88 @@ in a numeric vector. Before entering the loop, set up a counter variable
 counter &lt;- 0. Inside the loop, add 1 to counter each time you have a
 zero in the vector. Finally, use return(counter) for the output.</li>
 </ol>
-<pre class="r"><code>z &lt;- rbinom(n=5, size=1, 0.5)
-
+<pre class="r"><code>vec &lt;- rbinom (n=5, size=1, 0.5)
 counter &lt;- 0
+# create a vector w/ 0&#39;s and set up a counter variable
+
+##########################################################################
+# FUNCTION count_zeros
+# count the number of zeros in a vector
+# input: vector with zeros
+# output: number of variables = 0
+#----------------------------------------------------------------
 
 count_zeros &lt;- function(vec) {
- for (i in seq_along(z)) {
- if(z[i]==0) {
-  counter &lt;- i + 1
+ for (i in vec) {
+   if(i==0) {
+   counter &lt;- counter + 1
 }
    return(counter)
 }
 }
 
-count_zeros(z)</code></pre>
-<pre><code>## [1] 2</code></pre>
-<p>Use subsetting instead of a loop to rewrite the function as a single
-line of code.</p>
+# end of count_zeros function
+##########################################################################
+
+count_zeros(vec)</code></pre>
+<pre><code>## [1] 1</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Use subsetting instead of a loop to rewrite the function as a single
+line of code.</li>
+</ol>
+<pre class="r"><code>vec &lt;- rbinom (n=5, size=1, 0.5)
+counter &lt;- 0
+
+##########################################################################
+# FUNCTION count_zeros2
+# count the number of zeros in a vector
+# input: vector with zeros
+# output: number of variables = 0
+#----------------------------------------------------------------
+
+count_zeros2 &lt;- function(vec) {
+   return(sum(vec==0))
+}
+
+# end of count_zeros2 function
+##########################################################################
+
+result &lt;- count_zeros2(vec)
+print (result)</code></pre>
+<pre><code>## [1] 0</code></pre>
+<pre class="r"><code># call function and print result</code></pre>
 <p>Write a function that takes as input two integers representing the
 number of rows and columns in a matrix. The output is a matrix of these
 dimensions in which each element is the product of the row number x the
 column number.</p>
+<pre class="r"><code>##########################################################################
+# FUNCTION prod_matrix
+# create matrix with elements as products of row and column
+# input: number of rows and columns
+# output: nmatrix of products
+#----------------------------------------------------------------
+
+prod_matrix &lt;- function(nRow,nCol) {
+   my_mat &lt;- matrix(0, nrow = nRow, ncol = nCol)
+  
+  for (i in 1:nRow) {
+    for (j in 1:nCol) {
+       my_mat[i,j] &lt;- i * j
+  }
+  
+}
+  return(my_mat)
+}
+
+# end of prod_matrix function
+##########################################################################
+
+my_matrix &lt;- prod_matrix(3,4)
+print (my_matrix)</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]    1    2    3    4
+## [2,]    2    4    6    8
+## [3,]    3    6    9   12</code></pre>
 <p>Now let’s practice calling custom functions within a for loops. Use
 the code from previous lectures on loops and functions to complete the
 following steps:</p>
