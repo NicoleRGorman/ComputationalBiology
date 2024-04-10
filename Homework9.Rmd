@@ -16,6 +16,7 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 library(MASS)
+library(dplyr)
 ```
 
 * Use the code that you worked on in Homework #7 (creating fake data sets), and re-organize it following the principles of structured programming.  
@@ -36,7 +37,7 @@ x<-list.files(pattern="HW9")
 # call the new functions with my data set as an argument
 source("Homework9Functions.R")
 
-my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
+my_data <- cln_dat("ACCData_HW9.csv", "genotype", "treatment", "length")
 # returns clean data set
 
 ```
