@@ -18,18 +18,18 @@ x<-list.files(pattern="HW9")
 # output: cleaned data set with generic variable names
 #----------------------------------------------------------------
 
-cln_dat <- function(filename, varA, varB, resVar) {
+cln_dat <- function(filename, treatment, genotype, resVar) {
   data<-read.csv(filename)
   
   data<-na.omit(data)  # remove NAs to clean data
   ID <- seq_len(nrow(data)) # Create sequence for ID
   
-  a <- data [[varA]]
-  b <- data [[varB]]
-  res <- data [[resVar]]
+  trt <- data [[treatment]]
+  geno <- data [[genotype]]
+  resVar <- data [[resVar]]
   # assign variables for easier downstream analysis
   
-  my_data<-data.frame(ID, testA=a, testB=b, resVar=res)  
+  my_data<-data.frame(ID, genotype, treatment, resVar)  
   # create dataframe
   
   return(my_data)
@@ -38,8 +38,8 @@ cln_dat <- function(filename, varA, varB, resVar) {
 ##########################################################################
 
 # Read in and clean data
-my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
-
+my_data <- cln_dat("ACCData_HW9.csv", "genotype", "treatment", "length")
+print(my_data)
 
 ##########################################################################
 # FUNCTION dat_stat
@@ -73,7 +73,6 @@ return(list(summary = sum_stats, norm_pars = normPars$estimate))
 result <- dat_stat(my_data,"resVar")
 print(result)
 
-
 ##########################################################################
 # FUNCTION anova
 # sets up data frame and then returns anova results 
@@ -91,7 +90,10 @@ anova <- function(my_data, resVar, nGroup, nName) {
   
   summary(ANOmodel)
   
-  mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
+# mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
+  mean_data <- ANOdata %>%
+    group_by(TGroup) %>%
+    summarize(Mean = mean(resVar))
   f_val <- summary(ANOmodel)[[1]]$"F value"[1]
 
   # Use ggplot to visualize the ANOVA data
@@ -107,4 +109,3 @@ return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
 
 ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
 print(ANOplot)
-
