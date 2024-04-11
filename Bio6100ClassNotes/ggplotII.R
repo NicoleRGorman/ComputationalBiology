@@ -174,10 +174,125 @@ m1 <- ggplot(data=mpg) +
 
 m1 + facet_grid(class~fl)
 
+# basic faceting with variables split by row, col, or both
+m1 <- ggplot(data=mpg) +
+  aes(x=displ,y=cty) +
+  geom_point()
+
+m1 + facet_grid(class~fl)
+m1 + facet_grid(fl~class)
+
+# allows the different axis scales to be optimized for the individual plats within the grid
+m1 + facet_grid(fl~class, scales="free_y")
+m1 + facet_grid(fl~class, scales="free")
+
+m1 + facet_grid(.~class)
+m1 + facet_grid(class~.)
+
+# use facet wrap when variables are not crossed
+#only specify one group
+# works fine for a single factor
+m1 + facet_wrap(~class)
+
+#drops empty categories/plots
+m1 + facet_wrap(~class + fl)
+
+# add to call (drop=FALSE) if want to show empty plots
+m1 + facet_wrap(~class+ fl, drop=FALSE)
+
+# use
+m1 <- ggplot(data=mpg) +
+      aes(x=displ,y=cty,color=drv) +
+  geom_point()
+
+m1 + facet_grid(.~class)
+
+m1 <- ggplot(data=mpg) +
+aes(x=displ,y=cty,color=drv) +
+  geom_smooth(se=FALSE,method="lm")
+
+m1 + facet_grid(.~class)
+
+#boxplot
+m1 <- ggplot(data=mpg) +
+  aes(x=displ,y=cty) +
+  geom_boxplot()
+
+m1 + facet_grid(.~class)
+
+# add a group and fill
+m1 <- ggplot(data=mpg) +
+  aes(x=displ,y=cty,fill=drv) +
+  geom_boxplot()
+
+m1 + facet_grid(.~class)
+
+#fine scale manipulation to deal with groupmiings inside facet plots
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty) +
+  geom_point() +
+  geom_smooth()
+print(p1)
 
 
+# break into groups
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty,group=drv) +
+  geom_point() +
+geom_smooth()
+print(p1)
+
+# break out the drive types (note what color affects)
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty,color=drv) +
+  geom_point() +
+  geom_smooth()
+print(p1)
+
+# break out the drive types (note what fill affects)
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty,fill=drv) +
+  geom_point() +
+  geom_smooth()
+print(p1)
+
+# use if both
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty,color=drv,fill=drv) +
+  geom_point() +
+  geom_smooth()
+print(p1)
 
 
+# subset on the fly
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=cty,color=drv) +
+  geom_point(data=d[d$drv=="4",]) + geom_smooth()
+#comma with nothing means only subsetting on the rows
+print(p1)
+
+# instead of subsetting, just map an aesthetic
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=hwy) +
+  geom_point(aes(color=drv)) + geom_smooth(color="black")
+print(p1)
+
+
+# map the smoother not the points
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=hwy) +
+  geom_point() + geom_smooth(aes(color=drv))
+print(p1)
+
+p1 <- ggplot(data=d) +
+  aes(x=displ,y=hwy) +
+  geom_point() + geom_smooth(aes(color=drv))
+print(p1)
+
+p1 <- ggplot(data=d[d$drv=="4",]) +
+  aes(x=displ,y=hwy) +
+  geom_point() + geom_smooth(aes(color=drv))
+print(p1)
 
 
 
