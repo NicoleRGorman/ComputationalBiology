@@ -18,6 +18,23 @@ x<-list.files(pattern="HW9")
 # output: cleaned data set with generic variable names
 #----------------------------------------------------------------
 
+
+
+data<-read.csv("ACCData_HW9.csv")
+
+data<-na.omit(data)  # remove NAs to clean data
+ID <- seq_len(nrow(data)) # Create sequence for ID
+
+a <- data [["treatment"]]
+b <- data [["genotype"]]
+res <- data [["length"]]
+# assign variables for easier downstream analysis
+
+my_data<-data.frame(ID, testA=a, testB=b, resVar=res)  
+
+
+
+
 cln_dat <- function(filename, varA, varB, resVar) {
   data<-read.csv(filename)
   
@@ -38,7 +55,7 @@ cln_dat <- function(filename, varA, varB, resVar) {
 ##########################################################################
 
 # Read in and clean data
-my_data <- cln_dat("ACCData_HW9.csv", "Plant.ID", "Genotype", "Length")
+my_data <- cln_dat("ACCData_HW9.csv", "treatment", "genotype", "length")
 
 
 ##########################################################################
@@ -91,7 +108,9 @@ anova <- function(my_data, resVar, nGroup, nName) {
   
   summary(ANOmodel)
   
-  mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
+#  mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
+  my_data <- my_data %>%
+    mutate(mean = rowMeans(select([[testA]], resVar)))
   f_val <- summary(ANOmodel)[[1]]$"F value"[1]
 
   # Use ggplot to visualize the ANOVA data

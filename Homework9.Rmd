@@ -32,15 +32,16 @@ x<-list.files(pattern="HW9")
 
 ```
 
-```{r cln_dat, cln_dat, warnings=FALSE, echo=TRUE, results='hide'}
+```{r cln_dat, cln_dat, warnings=FALSE, echo=TRUE, results=TRUE}
 
 # call the new functions with my data set as an argument
 source("Homework9Functions.R")
 
 my_data <- cln_dat("ACCData_HW9.csv", "genotype", "treatment", "length")
 # returns clean data set
-
+# not working correctly, renaming individual samples with generic names in dataframe. I must have something flipped?
 ```
+
 
 ```{r dat_stat, echo=TRUE, results=TRUE}
 
@@ -55,14 +56,17 @@ print(result)
 ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
 print(ANOplot)
 # returns anova results
-
+# not working correctly, cannot get the mean of each group(genotype), calculating the mean of the entire dataset instead
 ```
+
+**I did not get to this second part...still working on correcting the errors in question #1**
 
 * Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. 
 * Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
 * Once your new functions are written, add some more lines of program code, calling a mixture of your previous functions and your new functions to get the job done.
 
 ```{r echo=TRUE, results=TRUE}
+
 
 # cleaned_data2 <- cln_dat(z) 
 # # returns clean dataset with no NAs

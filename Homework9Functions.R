@@ -6,6 +6,7 @@
 library(tidyverse)
 library(ggplot2)
 library(MASS)
+library(dplyr)
 
 # Read in the data
 setwd("~/Documents/UVM_Research/UVM Rotation Project/ACC Trials")
@@ -39,7 +40,6 @@ cln_dat <- function(filename, treatment, genotype, resVar) {
 
 # Read in and clean data
 my_data <- cln_dat("ACCData_HW9.csv", "genotype", "treatment", "length")
-print(my_data)
 
 ##########################################################################
 # FUNCTION dat_stat
@@ -56,7 +56,7 @@ dat_stat <- function(my_data, resVar) {
     geom_density(linetype="dotted",linewidth=1.0) + 
     stat_function(fun = dnorm, args = list(mean = mean(my_data[[resVar]]), sd = sd(my_data[[resVar]])), color="red")
 
-  print(p1)
+ invisible(print(p1)) # Suppress plot output
   
   # Get summary stats
   sum_stats <-summary(my_data[[resVar]])
@@ -70,8 +70,8 @@ return(list(summary = sum_stats, norm_pars = normPars$estimate))
 # end of dat-stat function
 ##########################################################################
 
-result <- dat_stat(my_data,"resVar")
-print(result)
+#result <- dat_stat(my_data,"resVar")
+#print(result)
 
 ##########################################################################
 # FUNCTION anova
@@ -101,11 +101,11 @@ anova <- function(my_data, resVar, nGroup, nName) {
     aes(x = TGroup, y = resVar, fill = TGroup) +
     geom_boxplot()
 
-return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
+  return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
 }
 
 # end of anova function
 ##########################################################################
 
 ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
-print(ANOplot)
+#print(ANOplot)
