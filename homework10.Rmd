@@ -16,6 +16,15 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 library(MASS)
+library(gridExtra)
+```
+
+```
+# Let's talk about tea
+# Is milk added first or not?
+# H0 vs HA
+# Blind test
+# Can reshuffle the data to repeat the experiment rather than actually redoing the experiment
 ```
 
 1. Using a for loop, write a function to calculate the number of zeroes in a numeric vector. Before entering the loop, set up a counter variable counter <- 0. Inside the loop, add 1 to counter each time you have a zero in the vector. Finally, use return(counter) for the output.
@@ -76,8 +85,7 @@ print (result)
 ```
 
 
-
-Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
+3. Write a function that takes as input two integers representing the number of rows and columns in a matrix. The output is a matrix of these dimensions in which each element is the product of the row number x the column number.
 
 ```{r echo=TRUE}
 
@@ -108,26 +116,23 @@ print (my_matrix)
 
 ```
 
-Now let’s practice calling custom functions within a for loops. Use the code from previous lectures on loops and functions to complete the following steps:
+4. Now let’s practice calling custom functions within a for loops. Use the code from previous lectures on loops and functions to complete the following steps:
 
-Simulate a dataset with 3 groups of data, each group drawn from a distribution with a different mean. The final data frame should have 1 column for group and 1 column for the response variable.
+a. Simulate a dataset with 3 groups of data, each group drawn from a distribution with a different mean. The final data frame should have 1 column for group and 1 column for the response variable.
 
 ```{r echo=TRUE}
 
 # Set seed for reproducibility
 set.seed(1)
 
-# Number of observations per group
-n_per_group <- 50
-
 # Simulate data for each group
-group1 <- rnorm(n_per_group, mean = 10, sd = 1)
-group2 <- rnorm(n_per_group, mean = 15, sd = 1)
-group3 <- rnorm(n_per_group, mean = 20, sd = 1)
+group1 <- rnorm(50, mean = 10, sd = 1)
+group2 <- rnorm(50, mean = 15, sd = 1)
+group3 <- rnorm(50, mean = 20, sd = 1)
 
 # Combine data into a single dataframe
 data <- data.frame(
-  group = rep(c("Group1", "Group2", "Group3"), each = n_per_group),
+  group = rep(c("Group1", "Group2", "Group3"), each = 50),
   response = c(group1, group2, group3)
 )
 
@@ -136,49 +141,114 @@ tail(data)
 
 ```
 
-Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
+```{r echo=TRUE}
+
+# Convert mean values to numeric if necessary
+# group1 <- as.numeric(group1)
+# group2 <- as.numeric(group2)
+# group3 <- as.numeric(group3)
+# 
+# # Create histograms of the means for each group using qplot
+# Ori_Group1 <- qplot(data = data, x = group1, geom = "histogram", binwidth = 1, alpha = I(0.3),fill = "green") +
+#   labs(title = "Original Mean Group1", x = "Mean", y = "Frequency")
+# 
+# Ori_Group2 <- qplot(data = data, x = group2, geom = "histogram", binwidth = 1, alpha = I(0.3), fill = "blue") +
+#   labs(title = "Original Mean Group2", x = "Mean", y = "Frequency")
+# 
+# Ori_Group3 <- qplot(data = data, x = group3, geom = "histogram", binwidth = 1, alpha = I(0.3), fill = "red") +
+#   labs(title = "Original Mean Group3", x = "Mean", y = "Frequency")
+# 
+# # Arrange histograms
+# grid.arrange(Ori_Group1, Ori_Group2, Ori_Group3, ncol = 3)
+```
+
+
+b. Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
 
 ```{r echo=TRUE}
 ##########################################################################
-# FUNCTION means
+# FUNCTION shuffle_mean
 # reshuffle response variable, calculate the mean of each group, store the means in a vector of length 3.
 # input: dataset with 3 groups
 # output: three group means as vector
 #----------------------------------------------------------------
 
-data2 <- function(data) {
-   res2 <- sample(response)
+shuffle_mean <- function(data, resVar, groupVar) {
+   
+  # reshuffle response variable
+  resVar2 <- sample(data[[resVar]])
+   
+  # calculate the mean of each group in data2
+  meanGroup <- tapply(resVar2, data[[groupVar]], mean)
   
-  mean
+  # Convert mean_group to a vector of length 3
+  meanVector <- numeric(3)
+  for (i in 1:3) {
+    meanVector[i] <- meanGroup[[i]]
+  }
   
-}
-  return(my_mat)
+  # Return the vector of means
+  return(meanVector)
 }
 
-# end of prod_matrix function
+# end of shuffle_mean function
 ##########################################################################
 
-my_matrix <- prod_matrix(3,4)
-print (my_matrix)
+meanVector <- shuffle_mean(data, "response", "group")
+
+# Print the vector of means
+print(meanVector)
 
 ```
 
 
-Write a custom function that 1) reshuffles the response variable, and 2) calculates the mean of each group in the reshuffled data. Store the means in a vector of length 3.
+c. Use a for loop to repeat the function in b 100 times. Store the results in a data frame that has 1 column indicating the replicate number and 1 column for each new group mean, for a total of 4 columns.
 
-Use a for loop to repeat the function in b 100 times. Store the results in a data frame that has 1 column indicating the replicate number and 1 column for each new group mean, for a total of 4 columns.
+```{r echo=TRUE}
 
-Use qplot() to create a histogram of the means for each reshuffled group. Or, if you want a challenge, use ggplot() to overlay all 3 histograms in the same figure. How do the distributions of reshuffled means compare to the original means?
+# Create an empty data frame to store results
+# z <- rep(1:100)
+df <- data.frame(repNum = 1:100, Group1 = numeric(100), Group2 = numeric(100), Group3 = numeric(100))
 
+# Repeat the function 100 times
+for (i in 1:100) {
+  
+  # Call function
+  meanVector <- shuffle_mean(data, "response", "group")
+  
+  # Add the means to the data frame
+  df[i, -1] <- meanVector
+}
+
+# Rename columns
+colnames(df)[-1] <- paste0("Group", 1:3)
+
+# Print the results data frame
+print(df)
 
 ```
-#Let's talk about tea
-# Is milk added first or not?
-# H0 vs HA
-# Blind test
-# can reshuffle the data to repeat the experiment rather than actually redoing the experiment
+
+
+d. Use qplot() to create a histogram of the means for each reshuffled group. Or, if you want a challenge, use ggplot() to overlay all 3 histograms in the same figure. 
+
+```{r echo=TRUE}
+
+# Create histograms of the means for each group using qplot
+hist_Group1 <- qplot(data = df, x = Group1, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3),fill = "green") +
+  labs(title = "Shuffled Mean Group1", x = "Mean", y = "Frequency")
+
+hist_Group2 <- qplot(data = df, x = Group2, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = "blue") +
+  labs(title = "Shuffled Mean Group2", x = "Mean", y = "Frequency")
+
+hist_Group3 <- qplot(data = df, x = Group3, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = "red") +
+  labs(title = "Shuffled Mean Group3", x = "Mean", y = "Frequency")
+
+# Arrange histograms
+grid.arrange(hist_Group1, hist_Group2, hist_Group3, ncol = 3)
 ```
 
-```
-# question 3 is going to require double for loop
+How do the distributions of reshuffled means compare to the original means?
+
+```{r echo=TRUE}
+# Still working oin the answer to this question...
 ```
