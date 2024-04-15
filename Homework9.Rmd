@@ -16,7 +16,6 @@ knitr::opts_chunk$set(echo = TRUE)
 library(tidyverse)
 library(ggplot2)
 library(MASS)
-library(dplyr)
 ```
 
 * Use the code that you worked on in Homework #7 (creating fake data sets), and re-organize it following the principles of structured programming.  
@@ -35,13 +34,11 @@ x<-list.files(pattern="HW9")
 ```{r cln_dat, cln_dat, warnings=FALSE, echo=TRUE, results=TRUE}
 
 # call the new functions with my data set as an argument
-source("Homework9Functions.R")
+source("Homework9Function.R")
 
 my_data <- cln_dat("ACCData_HW9.csv", "genotype", "treatment", "length")
 # returns clean data set
-# not working correctly, renaming individual samples with generic names in dataframe. I must have something flipped?
 ```
-
 
 ```{r dat_stat, echo=TRUE, results=TRUE}
 
@@ -53,13 +50,10 @@ print(result)
 
 ```{r ANOVA, echo=TRUE, results=TRUE}
 
-ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
-print(ANOplot)
-# returns anova results
-# not working correctly, cannot get the mean of each group(genotype), calculating the mean of the entire dataset instead
-```
+results <- do_anova(my_data, "resVar", "testB")
+# Perform ANOVA and create box plot
 
-**I did not get to this second part...still working on correcting the errors in question #1**
+```
 
 * Once your code is up and working, modify your program to do something else: record a new summary variable, code a new statistical analysis, or create a different set of random variables or output graph. 
 * Do not rewrite any of your existing functions. Instead, copy them, rename them, and then modify them to do new things. 
@@ -67,25 +61,30 @@ print(ANOplot)
 
 ```{r echo=TRUE, results=TRUE}
 
+# call original do_ANOVA function with boxplot, change grouping
 
-# cleaned_data2 <- cln_dat(z) 
-# # returns clean dataset with no NAs
-# 
-# gen_data2 <- my_vars(cleaned_data)
-# # returns dataset with generic variable names 
-# 
-# dat_stats2 <- dat_stat(gen_data)
-# # plots dataset and returns stats mean and sd
+results <- do_anova(my_data, "resVar", "testB")
+# Perform ANOVA and create box plot
+# Grouping by hormone treatment instead on genotype
+
+print(results$ANOVA_summary)
+# Print ANOVA summary
+
+print(results$boxplot)
+# Print box plot
 
 ```
 
-
-* Optional. If time permits and you have the skills, try putting your program inside of a for loop and repeat the analysis with a different stochastic data set 
-# (each time you call a function that invokes the random number generator, it will create a new set of data for you to process). 
-* Can you create a data structure to store the summary statistics created in each pass through the loop? 
-* If not, your program will work, but it will only show the results from the final replicate (the previous results will be written over each time you traverse the loop).
-
 ```{r echo=TRUE, results=TRUE}
- 
+
+# call a modified function to make a bargraph instead of a boxplot. 
+# Pretty lame, but I finally got the code to run...considering this a victory :)
+
+results <- do_anova2(my_data, "resVar", "testB")
+# Perform ANOVA and create bar plot
+# Using hormone treatment for grouping
+
+print(results$barplot)
+# Print bar plot
 
 ```

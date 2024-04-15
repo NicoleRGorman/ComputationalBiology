@@ -18,23 +18,6 @@ x<-list.files(pattern="HW9")
 # output: cleaned data set with generic variable names
 #----------------------------------------------------------------
 
-
-
-data<-read.csv("ACCData_HW9.csv")
-
-data<-na.omit(data)  # remove NAs to clean data
-ID <- seq_len(nrow(data)) # Create sequence for ID
-
-a <- data [["treatment"]]
-b <- data [["genotype"]]
-res <- data [["length"]]
-# assign variables for easier downstream analysis
-
-my_data<-data.frame(ID, testA=a, testB=b, resVar=res)  
-
-
-
-
 cln_dat <- function(filename, varA, varB, resVar) {
   data<-read.csv(filename)
   
@@ -57,7 +40,6 @@ cln_dat <- function(filename, varA, varB, resVar) {
 # Read in and clean data
 my_data <- cln_dat("ACCData_HW9.csv", "treatment", "genotype", "length")
 
-
 ##########################################################################
 # FUNCTION dat_stat
 # returns histogram and summary statistics 
@@ -69,7 +51,7 @@ dat_stat <- function(my_data, resVar) {
   
   # Plot histogram of data with empirical density curve to smooth out the profile of the distribution
   p1 <- ggplot(data = my_data, aes(x=.data[[resVar]])) +
-    geom_histogram(aes(y = ..density..), color="grey60",fill="cornsilk", alpha = 0.7 , bins=20, linewidth=0.2) +
+    geom_histogram(aes(y = after_stat(density)), color="grey60",fill="cornsilk", alpha = 0.7 , bins=20, linewidth=0.2) +
     geom_density(linetype="dotted",linewidth=1.0) + 
     stat_function(fun = dnorm, args = list(mean = mean(my_data[[resVar]]), sd = sd(my_data[[resVar]])), color="red")
 
@@ -90,40 +72,91 @@ return(list(summary = sum_stats, norm_pars = normPars$estimate))
 result <- dat_stat(my_data,"resVar")
 print(result)
 
-
 ##########################################################################
-# FUNCTION anova
+# FUNCTION do_anova
 # sets up data frame and then returns anova results 
 # input: clean data, response variable (= "response", # treatment groups, treatment groups names)
 # output: anova results and box plot
 
-anova <- function(my_data, resVar, nGroup, nName) {
+# Define the function
+do_anova <- function(my_data, resVar, groupVar) {
   
-  # Data frame construction for one-way ANOVA
-  TGroup <- rep(nName, each = nGroup * nrow(my_data) / length(nName))
-  ANOdata <- data.frame(TGroup = TGroup, resVar = my_data[[resVar]])
+  # Construct the dataframe for one-way ANOVA
+  ANOdata <- data.frame(Group = my_data[[groupVar]], resVar = my_data[[resVar]])
   
-  # Run basic ANOVA
-  ANOmodel <- aov(resVar ~ TGroup, data = ANOdata)
+  # Perform one-way ANOVA
+  ANOVA_result <- aov(resVar ~ Group, data = ANOdata)
   
-  summary(ANOmodel)
+  # Summary of ANOVA results
+  ANOVA_summary <- summary(ANOVA_result)
   
-#  mean_data <- aggregate(resVar ~ TGroup, data = ANOdata, FUN=mean)
-  my_data <- my_data %>%
-    mutate(mean = rowMeans(select([[testA]], resVar)))
-  f_val <- summary(ANOmodel)[[1]]$"F value"[1]
-
-  # Use ggplot to visualize the ANOVA data
-  ANOPlot <- ggplot(data = ANOdata) + 
-    aes(x = TGroup, y = resVar, fill = TGroup) +
-    geom_boxplot()
-
-return(list(plot = ANOPlot, mean_data = mean_data, F_val = f_val))
+  # Create a box plot using ggplot
+  boxplot <- ggplot(ANOdata, aes(x = Group, y = resVar, fill = Group)) +
+             geom_boxplot() +
+             labs(title = "Response Variable by Genotype", x = groupVar, y = resVar)
+  
+  # Return a list containing ANOVA results and the box plot
+  return(list(ANOVA_summary = ANOVA_summary, boxplot = boxplot))
 }
 
-# end of anova function
+# end of do_anova function
 ##########################################################################
 
-ANOplot <- anova(my_data, "resVar", 6, c("WT", "CCDC22", "CCDC93", "CCDC22CCDC93", "CCDC22RFP", "CCDC93RFP"))
-print(ANOplot)
+# Perform ANOVA and create box plot
+results <- do_anova(my_data, "resVar", "testB")
+
+# Print ANOVA summary
+print(results$ANOVA_summary)
+
+# Display box plot
+print(results$boxplot)
+
+##########################################################################
+# FUNCTION do_anova2
+# sets up data frame and then returns anova results 
+# input: clean data, response variable (= "response", # treatment groups, treatment groups names)
+# output: anova results and bar plot
+
+# Define the function
+do_anova2 <- function(my_data, resVar, groupVar) {
+  
+  # Construct the dataframe for one-way ANOVA
+  ANOdata <- data.frame(Group = my_data[[groupVar]], resVar = my_data[[resVar]])
+  
+  # Perform one-way ANOVA
+  ANOVA_result <- aov(resVar ~ Group, data = ANOdata)
+  
+  # Summary of ANOVA results
+  ANOVA_summary <- summary(ANOVA_result)
+  
+  # Create a barplot, change grouping
+  barplot <- ggplot(ANOdata, aes(x = Group, y = resVar)) +
+    geom_bar(stat = "identity") +
+    labs(title = "Mean Response by Treatment", x = "Treatment", y = "Mean Response")
+
+  # Display the plot
+  print(barplot)
+  
+  # Return a list containing ANOVA results and the box plot
+  return(list(ANOVA_summary = ANOVA_summary, boxplot = boxplot))
+}
+
+# end of do_anova function
+##########################################################################
+
+# Perform ANOVA and create box plot
+results <- do_anova2(my_data, "resVar", "testB")
+
+
+
+
+
+
+
+
+
+
+
+
+
 

@@ -29,7 +29,7 @@ p1 <- ggplot(d) +
   aes(x=drv,fill=fl) +
   geom_bar(color="black",fill="cornsilk")
 print(p1)
-  
+
 
 p1 <- ggplot(d) +
 aes(x=drv,fill=fl) +
@@ -45,13 +45,13 @@ print(p1)
 # better to use position
 p1 <- ggplot(d) +
   aes(x=drv,fill=fl) +
-  geom_bar(position="fill") 
+  geom_bar(position="fill")
 print(p1)
 
 # better to use position=dodge
 p1 <- ggplot(d) +
   aes(x=drv,fill=fl) +
-  geom_bar(position="dodge", color="black", linewidth=0.5) 
+  geom_bar(position="dodge", color="black", linewidth=0.5)
 print(p1)
 
 # more typical....
@@ -63,7 +63,7 @@ d_tiny <- cbind(fl=row.names(d_tiny),d_tiny)
 d_tiny <- data.frame(hwy=d_tiny)
 
 
-######## FIX THIS
+######## FIX THIS with posted notes
 p1 <- ggplot(d) +
   aes(x=fl,y=hwy) +
   geom_boxplot(fill="thistle",outlier.shape=NA) +
