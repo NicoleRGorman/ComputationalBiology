@@ -13,13 +13,13 @@ setwd ("~/Documents/UVM_Coursework/ComputationalBiology/Original Data")
 filelist <- list.files("~/Documents/UVM_Coursework/ComputationalBiology/Original Data", pattern="BART") 
 filelist
 
-# will gather strings
+#will gather strings
 #paste0() function
 #paste0("here is", " the", " filepath:", filelist[1])
 
 # use a loop for number of files that I am concerned with, pull out files
 filenames <- c()
-for (i in 1:9){
+for (i in seq_along(filelist)) {
   setwd(paste0("~/Documents/UVM_Coursework/ComputationalBiology/Original Data", "/", filelist[i]))
   
   filenames[i] <- list.files(pattern="countdata")
@@ -32,26 +32,61 @@ data.frame <- c("countdata")
 # Starting with pseudo-code, generate functions for 1) Cleaning the data for any empty/missing cases, 2) Extract the year from each file name, 3) Calculate Abundance for each year (Total number of individuals found), 4) Calculate Species Richness for each year(Number of unique species found)
 
 ##########################################################################
-# FUNCTION cln_dat
+# FUNCTION clean_data
 # read in data, omit NAs
 # input: data set 
 # output: cleaned data set 
 #----------------------------------------------------------------
-
-for (i in 1:9){
-  (paste0("~/Documents/UVM_Coursework/ComputationalBiology/Original Data", "/", filelist[i])) 
-  
-  cln_dat <- function(filenames) {
-  my_data<-read.csv(filenames[[i]])
-    
-  my_data<-na.omit(data)  # remove NAs to clean data
-}
-}  
+  clean_data <- function(my_data) {
+  my_data <- my_data[complete.cases(my_data$scientificName),]  # remove NAs to clean data
   return(my_data)
+  }
 
-# end of cln_dat function
+ mylist<-list()
+for (i in seq_along(filelist)) {
+  setwd(paste0("~/Documents/UVM_Coursework/ComputationalBiology/Original Data", "/", filelist[i])) 
+  x<-read.csv(filenames[[i]])
+  my_data<-clean_data(x)
+  mylist[i]<-my_data
+}
+ 
+# end of clean_data function
 ##########################################################################
-cln_dat()
+
+my_data <- filelist
+  
+clean_data(my_data)
+
+
+# 2) Extract the year from each file name
+
+##########################################################################
+# FUNCTION year
+# Extract the year from each file name
+# input: data set 
+# output: list of years
+#----------------------------------------------------------------
+
+filelist <- list.files("~/Documents/UVM_Coursework/ComputationalBiology/Original Data", pattern="BART") 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ##########################################################################
