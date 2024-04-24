@@ -7,7 +7,7 @@ library(ggthemes)
 library(patchwork)
 d <- mpg # load data
 
-# multi panel plots handeled in patchwork
+# multi panel plots handled in patchwork
 
 g1 <- ggplot(data=d) +
   aes(x=displ,y=cty) +
@@ -17,14 +17,14 @@ print(g1)
 
 g2 <- ggplot(data=d) +
   aes(x=fl) +
-  geom_bar() +
-  theme()
+  geom_bar(fill="tomato",color="black")+
+  theme(legend.position="none")
 print(g2)
 
 g3 <- ggplot(data=d) +
-  aes(x=fl) +
-  geom_bar() +
-  theme()
+  aes(x=displ) +
+  geom_histogram(fill="royalblue",
+                 color="black")
 print(g3)
 
 g4 <- ggplot(data=d) +

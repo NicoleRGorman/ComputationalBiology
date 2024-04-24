@@ -94,3 +94,125 @@ head(df2)
 ######
 # missed a bunch here
 
+# split/apply/combine for groups in a data frame
+
+
+# missed more here
+# really having a hard time staying with the game rn
+
+print(out_g)
+
+# tapply solution
+
+z <-tapply(X=df2$x,
+           INDEX=df2$treatment,
+           FUN=function(x) sd(x)/mean(x))
+print(z)
+
+
+# April 23, 2024 class notes
+
+
+#Needs functtion information Here
+################################################
+
+# Fourth Task: replicate a stochastic process
+
+pop_gen <- function(z=sample.int(n=10,size=1)) {
+  n <- runif(z)
+
+  return(n) # notes returns a numeric vector of stochastic length
+
+} # end of pop_gen
+#________________________________________________________________
+
+pop_gen()
+
+# for loop solution
+# has to be a list bc different number of items every time it is run
+n_reps <- 20
+list_out <- vector("list",n_reps)
+for(i in seq_len(n_reps)){
+  list_out[[i]] <- pop_gen()
+}
+head(list_out)
+}
+
+
+# using replicate do the same thing
+# replicate(n,expr)
+# n is the number of times te operation is to be repeated
+# expr is a function (base, or user-defines), or an expression
+################ needs mores here
+
+z_out <- replicate(n=5,
+                   expr=pop_gen())
+print(z_out)
+
+# Fifth task: Sweep function with all parameter combinations
+# ADD COMMENTS HERE
+
+a_pars <- 1:10
+c_pars <- c(100,150,125)
+z_pars <- c(0.10,0.16,1.26,0.30)
+df <- expand.grid(a=a_pars,c=c_pars,z=z_pars)
+head(df)
+df_out <-cbind(df,s=NA)
+
+head(df_out)
+
+for(i in seq_len(nrow(df))) {
+  df_out$s[i] <- df$c[i]*(df$a[i]^df$z[i])
+}
+head(df_out)
+
+
+# mapply function
+# needs notes here
+df_out$s <- mapply(FUN=function(a,c,z) c*(a^c), df$a,df$c,df$z)
+
+head(df_out)
+
+mapply(FUN=function(a,c,z) c*(a^c), df$a,df$c,df$z)
+
+# would not use the last two
+# "correct" solution
+
+df_out$c*(df_out$a^df_out$z)
+
+# creating functions that call functions
+
+my_sum <- function(a,b) a+b
+my_dif <- function(a,b) a-b
+my_mult <- function(a,b) a*b
+
+# we already know...
+funct_1 <-function(a=3,b=2) sum(a,b)
+funct_1()
+
+funct_2 <-function(a=3,b=2) my_sum(a,b)
+funct_2()
+
+funct_3 <-function(a=3,b=2) my_mult(a,b)
+funct_3()
+
+
+algebra <- function(x=my_sum,a=3,b=2) x(a,b)
+
+algebra(x=my_sum)
+algebra(x=my_dif)
+algebra(x=my_mult)
+
+#####clumsy_function(func_name="my_sum") {
+####  if
+####}
+
+algebra(x=sum)
+
+# but this will not work?
+algebra(x=mean)
+
+# thi sneeds more...see class code
+
+
+
