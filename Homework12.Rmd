@@ -178,7 +178,7 @@ homeworld_vehicles <- starwars %>%
 # print(p5)
 ```
 
-* Change the labels on a facet plot so that they are more readable informative than the variable names that are supplied from your data frame. 
+* Change the labels on a facet plot so that they are more readable/informative than the variable names that are supplied from your data frame. 
 * Note that figure shows a trend that other life forms are more dense than both humans and droids.
 
 ``` {r echo=TRUE, results=TRUE} 
@@ -205,7 +205,7 @@ starwars <- starwars %>%
 ggplot(starwars, aes(x = height, y = mass)) +
   geom_point(alpha = 0.5, color = "darkgreen", size =5) +
   facet_wrap(~ species_group, scales = "free") +
-  labs(x = "Height", y = "Mass", title = "Life Form Density") +
+  labs(x = "Height", y = "Mass", title = "Multiverse Life Form Density") +
   theme(plot.title = element_text(size = 20, hjust = .5))  
 
 ```
