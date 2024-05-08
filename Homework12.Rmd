@@ -1,0 +1,63 @@
+---
+title: "Homework12"
+author: "Nicole R Gorman"
+date: "2024-05-04"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#For loops and randomization tests  
+
+* Open libraries
+
+```{r open libraries, message=FALSE}
+library(dplyr)
+library(ggplot2)
+library(ggthemes)
+library(patchwork)
+```
+
+```
+For this exercise, use your newly-developed ggplot chops to create some nice graphs from your own data (If you do not have a good data frame to use for graphics, use one of the many built-in data frames from R (other than mpg, which we are using in class)). Experiment with different themes, theme base sizes, aesthetics, mappings, and faceting. When you are finished, try exporting them to high quality pdfs, jpgs, eps files, or other formats that you would use for submission to a journal.
+```
+```
+Components of a ggplot layer
+data frame
+variables mapped to aesthetics
+geom = geometric used to draw the layer
+stat = takes raw data and transforms it for useful plotting)
+position = adjustment prevents overplotting
+```
+```{r echo=TRUE, results=FALSE}
+# use built in starwars data frame because it's May 4th
+data <- data(starwars) 
+data <- data.frame(starwars) 
+str(data)
+```
+```{r echo=TRUE, results=TRUE}
+table(data$height)
+```
+
+```{r echo=TRUE, results=TRUE}
+ggplot(data=data) +
+      aes(x=mass) +
+      geom_histogram()
+```      
+
+```
+Change the labels on a facet plot so that they are more informative than the variable names that are supplied from your data frame.
+```
+
+```
+Add text annotations, lines and arrows to a graph
+```
+
+```
+Use custom colors for your fills and lines
+```
+
+
+

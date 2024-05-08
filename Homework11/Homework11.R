@@ -2,17 +2,37 @@
 # Date 10 April 2024
 # NRG
 
+# load libraries
 library(log4r)
 library(TeachingDemos)
 library(tidyverse)
 library(pracma)
 library(ggmosaic)
 
-# Question #1. ----
+setwd("/Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/barracudar")
 
+# source barracudar function files
+source("QContour.R")
+source("QBub.R")
+source("QScat.R")
+source("Qcon2.R")
+source("Qcon1.R")
+source("QBox.R")
+source("QLogis.R")
+source("QHist.R")
+source("AddFolder.R")
+source("BuildFunction.R")
+source("CreatePaddedLabel.R")
+source("DataTableTemplate.R")
+source("InitiateSeed.R")
+source("MetaDataTemplate.R")
+source("SetUpLog.R")
+source("SourceBatch.R")
+
+# Question #1. ----
 ## Download dataset ----
-## Set working directory ----
-dir <- "~/Documents/UVM_Coursework/ComputationalBiology/Original Data"
+# create original data folder
+# ~/Documents/UVM_Coursework/ComputationalBiology/Original Data
 
 # Question #2. ----
 # Within each year’s folder, you will only be using a file from each year labeled “countdata” in its title. Using for loops, iterate through each year’s folders to gather the file names of these “countdata” .csv files.
@@ -20,21 +40,41 @@ dir <- "~/Documents/UVM_Coursework/ComputationalBiology/Original Data"
 # iterate through each folder-go through each folder-go to levels down each time 
 # pattern ="countdata"
 
-filenames <- list.files(dir, pattern ="countdata", recursive = TRUE, full.names = TRUE) 
-print(filenames)
+## Set working directory ----
+setwd("~/Documents/UVM_Coursework/ComputationalBiology/Original Data")
+
+filelist <- list.files("~/Documents/UVM_Coursework/ComputationalBiology/Original Data") 
+print(filelist)
+
+###########
+# was not able to use a loop to pull out countdata files, kept getting an error message about setting a working directory in a for loop
+
+# filenames <- c()
+# 
+# for (i in seq_along(filelist)) {
+#   setwd(paste0("~/Documents/UVM_Coursework/ComputationalBiology/Original Data","/", filelist[i]))
+#   
+#   filenames[i] <- list.files(pattern="countdata") # pulls out any file with "countdata"
+# }
+# 
+# print(filenames)  
+###########
+
+# code below worked, but not in a loop
+# List all files recursively
+all_files <- list.files(recursive = TRUE)
+
+# Select all files with "countdata" in their name
+filelist <- all_files[grep("countdata", all_files)]
+
+# Print the filenames
+print(filelist)
 
 # Read in the data
 # data_list contains dataframes
-data_list <- lapply(filenames, read.csv) 
-
-# use a loop to pull out files
-my_files <- c()
-
-for (i in seq_along(filenames)) {
-   my_files <- c(my_files, filenames[i])
- }
- 
- print(my_files)
+# not sure I need this
+data_list <- lapply(filelist, read.csv) 
+data_list
 
 # Question #3. ----
 ### Step 1: Create Pseudo-code ----
@@ -44,6 +84,13 @@ for (i in seq_along(filenames)) {
 ##### 1) Cleaning the data ----
 # for any empty/missing cases 
 
+for (i in 1:8){
+  setwd(paste0("/Users/nicole/Desktop/BIOL6100_Homework11/OriginalData", "/", filelist[i]))
+  a=read.csv(file = filenames[i], na.strings = c("","NA"))
+  b=a[complete.cases(a["scientificName"]), ]
+  setwd("/Users/nicole/Desktop/BIOL6100_Homework11/CleanedData")
+  write.csv(b,paste0("CleanedData_",years[i],".csv"))
+}
 ##########################################################################
 # FUNCTION clean_data
 # read in data, omit NAs
@@ -52,8 +99,16 @@ for (i in seq_along(filenames)) {
 #__________________________________________________________________________
 
 clean_data <- function(data) {
-  cleaned <- data[complete.cases(data$scientificName), ]  # remove NAs to clean data
-  return(cleaned)
+  cleaned_data_list <- list() # create empty list
+  
+  for (i in seq_along(filelist)) {
+    data <- read.csv(filenames[i], row.names = NULL) # Read CSV file
+    cleaned <- data[complete.cases(data$scientificName), ]  # remove NAs to clean data
+    cleaned_data_list[[i]] <- cleaned_data # Store cleaned data in the list
+    setwd("~/Documents/UVM_Coursework/ComputationalBiology/CleanedData")
+    write.csv(cleaned,paste0("CleanedData_",filenames[i],".csv"))
+    
+    return(cleaned_data_list)
   }
 
 # end of clean_data function
@@ -61,20 +116,12 @@ clean_data <- function(data) {
 
 # I could not get this to work inside the function
 
-cleaned_data_list <- list() # create empty list
-
-for (i in seq_along(filenames)) {
-  data <- read.csv(filenames[i], row.names = NULL) # Read CSV file
-  
-  cleaned_data <- clean_data(data) 
-  
-  # Store cleaned data in the list
-  cleaned_data_list[[i]] <- cleaned_data
+cleaned_data <- clean_data(data) 
+ 
 }
 
-head (cleaned_data)
+head (cleaned_data_list)
 
-# Now cleaned_data_list contains the cleaned data for each file
 
 ##### 2) Extract the year ----
 # from each file name
