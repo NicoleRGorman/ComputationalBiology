@@ -49,7 +49,11 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #10: For Loops and Randomization Tests
 + Click [here](Homework10.html) for homework #10.
 
-### Homework #11: For Loops and Randomization Tests
-+ Click [here](Homework11.html) for homework #11.
+### Homework #11: Batch Processing
++ Click [here](file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html) for homework #11.
+
+### Homework #12: ggplot
++ Click [here](Homework12.html) for homework #12.
 
 # References
+
