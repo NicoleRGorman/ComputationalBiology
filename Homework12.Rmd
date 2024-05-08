@@ -203,9 +203,10 @@ starwars <- starwars %>%
 
 # Create the facet plot
 ggplot(starwars, aes(x = height, y = mass)) +
-  geom_point(alpha = 0.7, color = "black", size =5) +
+  geom_point(alpha = 0.5, color = "darkgreen", size =5) +
   facet_wrap(~ species_group, scales = "free") +
-  labs(x = "Height", y = "Mass", title = "Height vs. Mass by Species Group")
+  labs(x = "Height", y = "Mass", title = "Height vs. Mass by Species Group") +
+  theme(plot.title = element_text(size = 20, hjust = .5))  
 
 ```
 
