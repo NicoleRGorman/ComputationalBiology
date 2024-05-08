@@ -9,9 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-#For loops and randomization tests  
-
-* Open libraries
+* Load libraries
 
 ```{r open libraries, message=FALSE}
 library(dplyr)
@@ -23,40 +21,192 @@ library(patchwork)
 ```
 For this exercise, use your newly-developed ggplot chops to create some nice graphs from your own data (If you do not have a good data frame to use for graphics, use one of the many built-in data frames from R (other than mpg, which we are using in class)). Experiment with different themes, theme base sizes, aesthetics, mappings, and faceting. When you are finished, try exporting them to high quality pdfs, jpgs, eps files, or other formats that you would use for submission to a journal.
 ```
+**Components of a ggplot layer**
+
 ```
-Components of a ggplot layer
-data frame
-variables mapped to aesthetics
-geom = geometric used to draw the layer
-stat = takes raw data and transforms it for useful plotting)
-position = adjustment prevents overplotting
-```
-```{r echo=TRUE, results=FALSE}
-# use built in starwars data frame because it's May 4th
-data <- data(starwars) 
-data <- data.frame(starwars) 
-str(data)
-```
-```{r echo=TRUE, results=TRUE}
-table(data$height)
+1. data frame: load data, create dataframe
+2. variables mapped to aesthetics
+3. geom = geometric used to draw the layer
+4. stat = takes raw data and transforms it for useful plotting
+5. position = adjustment prevents overplotting
 ```
 
+```{r echo=TRUE, results=FALSE}
+# May 4th demands use of built in starwars data frame
+# read in/load data
+
+data(starwars) 
+data <- data.frame(starwars) 
+```
+
+
+```{r echo=TRUE, results=FALSE}
+# explore the data just a bit to see what might be interesting to plot
+
+str(data)
+print(data)
+table(data$height)
+table(data$mass) 
+table(data$species)
+```
+
+* It looks like I need to create some categories and/or summary statistics of the data for plotting. I'll try that in a bit. For now, I'll take a quick look at a basic histogram looking at species.
+
 ```{r echo=TRUE, results=TRUE}
-ggplot(data=data) +
-      aes(x=mass) +
-      geom_histogram()
+p1 <- ggplot(data=data) +
+      aes(x=species) +
+      geom_bar(fill="khaki",color="black") +
+      labs(title="Wow! This Graph Is Terrible",
+          subtitle="Let's see what I can do to fix it...",
+          x="Species",
+          y="Character Count")
+print(p1)
 ```      
 
-```
-Change the labels on a facet plot so that they are more informative than the variable names that are supplied from your data frame.
-```
+* I can use a summary statistic to make some sense of the data and also add some elements to the plot for a better visual summmary of the data. Add text annotations to a graph.
+
+```{r echo=TRUE, results=TRUE}
+
+# First I need to filter out missing values
+starwars <- starwars %>% filter(!is.na(height))
+
+# Now some summary stats
+# Calculate the mean height standard error (insufficient data to find standard deviation) for each species 
+species_height <- starwars %>%
+  group_by(species) %>%
+  summarize(avg_height = mean(height, na.rm = TRUE),
+            se_height = sd(height, na.rm = TRUE) / sqrt(n()))
+
+# Sort the data by average height
+species_height <- species_height[order(species_height$avg_height), ]
+
+# Create the bar plot to visualize the relationship of height and species
+p2 <- ggplot(species_height, aes(x = species, y = avg_height)) +
+      geom_bar(stat = "identity", fill = "skyblue") +
+      geom_errorbar(aes(ymin = avg_height - se_height, ymax = avg_height + 
+                    se_height), width = 0.3, color = "blue") + 
+      theme(axis.text.x = element_text(angle = 45, hjust = 1),
+      plot.title = element_text(face = "bold", size = 14), 
+      axis.title.x = element_text(face = "bold", size = 11),  
+      axis.title.y = element_text(face = "bold", size = 11)) + 
+      labs(x = "Species", y = "Mean Height (cm)", 
+           title = "Mean Height of Star Wars Character Species",
+           subtitle="Still could use some help, but much better!")
+print(p2)
+
+# I tried to add a note at the bottom to point out interesting data, but I was not able to adjust the height appropriately so it would not interfere with the bar plot. It is commented out below.
+
+# p1 + annotate("text", x = Inf, y = -Inf, hjust = 1, vjust = -.75, 
+#             label = "*Note relatively large error bar for droids may reflect phenotypic variability or small sample size", size = 3) +
+#  theme(plot.margin = margin(b = -1.1, unit = "lines"))
 
 ```
-Add text annotations, lines and arrows to a graph
+
+* Compare the plots
+
+```{r echo=TRUE, results=TRUE}
+# Place the plots vertically for easier comparison
+  p1 + p2 + plot_layout(ncol=1)
 ```
 
+* Explore another type of geom
+
+```{r echo=TRUE, results=TRUE}
+
+# I have to convert 'homeworld' to numeric in order to show a trend line
+data$homeworld_numeric <- as.numeric(factor(data$homeworld))
+
+# Check the structure of the data 
+# str(data)
+
+# Create a jitter dot plot
+# Make dots transparent to visualize overlap/clustering
+
+p3 <- ggplot(data = data, aes(x = homeworld, y = species)) +
+      geom_jitter(alpha = 0.35, color = "blue", size = 4) +
+       labs(x = "Homeworld", y = "Species", 
+       title = "Identification of Species Adaptive Radiation Potential 
+       Based on Prevalence in Multiple Homeworlds") +
+       theme(plot.title = element_text(size = 17,hjust = .3))  
+       # Change title size and center 
+
+# Rotate x-axis labels by 45 degrees
+p3 <- p3 + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
+                 axis.text.y = element_text(size = 7))
+
+print(p3)
 ```
-Use custom colors for your fills and lines
+
+Change theme for a more engaging visual. Spacig between labels and title still needs to be adjusted, but theme improves visual impact.
+
+```{r echo=TRUE, results=TRUE}
+
+# histogram
+p4 <- ggplot(data=data) +
+       aes(x=homeworld) +
+       geom_bar (fill="khaki",color="black")
+       
+# many specialized themes
+p4 + theme_economist() +
+     theme(axis.text.x = element_text(angle = 45, hjust = .05, vjust = .08, size = 7, margin = margin(0, 0, 0, 0.05, "cm"))) +
+     labs(title="Patterns of Distribution of Star Wars Characters",
+         subtitle="Not sure what I could say here, but something to help clarify the purpose of this plot",
+         x="Homeworld",
+         y="Number of Characters") 
+```
+ 
+* I tried to look at transportation, but couldn't quite get my mind around what might be interesting to compare. 
+
+```{r echo=TRUE, results=TRUE} 
+
+# Get unique vehicles
+unique_vehicles <- unique(unlist(starwars$vehicles))
+
+# Create a summary data frame with homeworld and number of vehicles
+homeworld_vehicles <- starwars %>%
+  group_by(homeworld) %>%
+  summarize(total_vehicles = sum(!is.na(vehicles)))
+
+# None of the plots I tried showed anything worth looking at, but it seems like there should be something here.
+# 
+#     labs(title = "The Relative Frequency of Motorized Transportation by Homeworld",
+#     subtitle = "An extended subtitle that will print below the main title",
+#            x = "Homeworld",
+#            y = "Total Vehicles") 
+
+# Print the plot
+# print(p5)
+```
+
+* Change the labels on a facet plot so that they are more readable informative than the variable names that are supplied from your data frame. 
+* Note that figure shows a trend that other life forms are more dense than both humans and droids.
+
+``` {r echo=TRUE, results=TRUE} 
+ 
+# Filter out missing values
+starwars <- starwars %>% filter(!is.na(height) & !is.na(mass))
+
+# Not a great option because the other category need additional sorting criteria
+# However, with additional sorting this could be a valuable tool for analysis
+
+# Change "Unknown" to "Other life forms" in the species column
+starwars <- starwars %>% 
+  mutate(species = case_when(
+    species == "Unknown" ~ "Other Life Forms",
+    TRUE ~ species
+  ))
+
+# Categorize species to try and identify a relationship between mass and height related to species
+starwars <- starwars %>% 
+  mutate(species = ifelse(species == "", "Unknown", species)) %>% 
+  mutate(species_group = ifelse(species %in% c("Human", "Droid", "Other Life Forms"), species, "Other"))
+
+# Create the facet plot
+ggplot(starwars, aes(x = height, y = mass)) +
+  geom_point(alpha = 0.7, color = "black", size =5) +
+  facet_wrap(~ species_group, scales = "free") +
+  labs(x = "Height", y = "Mass", title = "Height vs. Mass by Species Group")
+
 ```
 
 
