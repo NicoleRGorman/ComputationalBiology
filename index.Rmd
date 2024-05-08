@@ -49,4 +49,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ### Homework #10: For Loops and Randomization Tests
 + Click [here](Homework10.html) for homework #10.
 
+### Homework #11: For Loops and Randomization Tests
++ Click [here](Homework11.html) for homework #11.
+
 # References

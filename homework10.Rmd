@@ -128,7 +128,7 @@ set.seed(1)
 # Simulate data for each group
 group1 <- rnorm(50, mean = 10, sd = 1)
 group2 <- rnorm(50, mean = 15, sd = 1)
-group3 <- rnorm(50, mean = 20, sd = 1)
+group3 <- rnorm(50, mean = 25, sd = 1)
 
 # Combine data into a single dataframe
 data <- data.frame(
@@ -143,23 +143,24 @@ tail(data)
 
 ```{r echo=TRUE}
 
-# Convert mean values to numeric if necessary
-# group1 <- as.numeric(group1)
-# group2 <- as.numeric(group2)
-# group3 <- as.numeric(group3)
-# 
-# # Create histograms of the means for each group using qplot
-# Ori_Group1 <- qplot(data = data, x = group1, geom = "histogram", binwidth = 1, alpha = I(0.3),fill = "green") +
-#   labs(title = "Original Mean Group1", x = "Mean", y = "Frequency")
-# 
-# Ori_Group2 <- qplot(data = data, x = group2, geom = "histogram", binwidth = 1, alpha = I(0.3), fill = "blue") +
-#   labs(title = "Original Mean Group2", x = "Mean", y = "Frequency")
-# 
-# Ori_Group3 <- qplot(data = data, x = group3, geom = "histogram", binwidth = 1, alpha = I(0.3), fill = "red") +
-#   labs(title = "Original Mean Group3", x = "Mean", y = "Frequency")
-# 
-# # Arrange histograms
-# grid.arrange(Ori_Group1, Ori_Group2, Ori_Group3, ncol = 3)
+# Create histograms of the means for each group using qplot
+foo<-subset(data,group=="Group1")
+Ori_Group1 <- qplot(data = foo, x = response, geom = "histogram", 
+              binwidth = 1, alpha = I(0.3),fill = I("green")) +
+   labs(title = "Original Mean Group1", x = "Mean", y = "Frequency")
+
+foo2<-subset(data,group=="Group2")
+Ori_Group2 <- qplot(data = foo2, x = response, geom = "histogram", 
+              binwidth = 1, alpha = I(0.3), fill = I("blue")) +
+   labs(title = "Original Mean Group2", x = "Mean", y = "Frequency")
+ 
+foo3<-subset(data,group=="Group3")
+Ori_Group3 <- qplot(data = foo3, x = response, geom = "histogram", 
+               binwidth = 1, alpha = I(0.3), fill = I("red")) +
+   labs(title = "Original Mean Group3", x = "Mean", y = "Frequency")
+ 
+ # Arrange histograms
+grid.arrange(Ori_Group1, Ori_Group2, Ori_Group3, ncol = 3)
 ```
 
 
@@ -234,21 +235,24 @@ d. Use qplot() to create a histogram of the means for each reshuffled group. Or,
 ```{r echo=TRUE}
 
 # Create histograms of the means for each group using qplot
-hist_Group1 <- qplot(data = df, x = Group1, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3),fill = "green") +
+new_Group1 <- qplot(data = df, x = Group1, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3),fill =I ("green"), show.legend = FALSE) 
   labs(title = "Shuffled Mean Group1", x = "Mean", y = "Frequency")
 
-hist_Group2 <- qplot(data = df, x = Group2, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = "blue") +
+new_Group2 <- qplot(data = df, x = Group2, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = I("blue"), show.legend = FALSE) 
   labs(title = "Shuffled Mean Group2", x = "Mean", y = "Frequency")
 
-hist_Group3 <- qplot(data = df, x = Group3, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = "red") +
+new_Group3 <- qplot(data = df, x = Group3, geom = "histogram", cex = .3, binwidth = 1, alpha = I(0.3), fill = I("red"), show.legend = FALSE) 
   labs(title = "Shuffled Mean Group3", x = "Mean", y = "Frequency")
 
 # Arrange histograms
-grid.arrange(hist_Group1, hist_Group2, hist_Group3, ncol = 3)
+grid.arrange(new_Group1, new_Group2, new_Group3, ncol = 3)
 ```
 
 How do the distributions of reshuffled means compare to the original means?
 
 ```{r echo=TRUE}
-# Still working oin the answer to this question...
+# The original and shuffled histograms should be similar, with the same mean and sd assuming that 50 is an adequate sample size.
+
+# Arrange histograms
+grid.arrange(Ori_Group1, Ori_Group2, Ori_Group3, new_Group1, new_Group2, new_Group3, ncol = 3)
 ```
