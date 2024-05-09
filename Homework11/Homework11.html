@@ -358,31 +358,30 @@ display: none;
 
 
 <div id="batch-processing" class="section level1">
-<h1>Batch Processing</h1>
-<ul>
-<li>Open libraries</li>
-</ul>
-<pre class="r"><code>library(log4r)
+<h1><strong>Batch Processing</strong></h1>
+<pre class="r"><code># install libraries
+library(log4r)
 library(TeachingDemos)
 library(tidyverse)
 library(pracma)
 library(ggmosaic)</code></pre>
-<div id="question-1." class="section level3">
-<h3>Question #1.</h3>
+<div id="question-1" class="section level4">
+<h4>Question #1</h4>
 <pre class="r"><code>## Download dataset ----
 ## Set working directory ----
 dir &lt;- &quot;~/Documents/UVM_Coursework/ComputationalBiology/Original Data&quot;</code></pre>
 </div>
-<div id="question-2." class="section level3">
-<h3>Question #2.</h3>
-<div id="within-each-years-folder-you-will-only-be-using-a-file-from-each-year-labeled-countdata-in-its-title.-using-for-loops-iterate-through-each-years-folders-to-gather-the-file-names-of-these-countdata-.csv-files." class="section level4">
-<h4>Within each year’s folder, you will only be using a file from each
+<div id="question-2" class="section level4">
+<h4>Question #2</h4>
+<div id="within-each-years-folder-you-will-only-be-using-a-file-from-each-year-labeled-countdata-in-its-title.-using-for-loops-iterate-through-each-years-folders-to-gather-the-file-names-of-these-countdata-.csv-files." class="section level5">
+<h5>Within each year’s folder, you will only be using a file from each
 year labeled “countdata” in its title. Using for loops, iterate through
 each year’s folders to gather the file names of these “countdata” .csv
-files.</h4>
-<pre class="r"><code># I don&#39;t think I have this set up correctly, and I am not even sure if I need it, but I was not able to set a working directory in the for loop without throwing an error
-# I tried to use the recursive argument, but I am not sure I am using it properly
-# I used `full.names` to keep track of the pathname because that is what I was struggling with
+files.</h5>
+<pre class="r"><code># I struggled with this step. I was able to get the file names but had trouble going down into each individual directory. I don&#39;t think I have it set up correctly, and I am not if I need all the components of the code. It threw me off because I was not able to set a working directory in the for loop without throwing an error.
+
+# I ended up trying to use the recursive argument, but I am not sure I am using it properly
+# I used `full.names` to keep track of the pathname because it seems like that is what I was struggling with and I thought it would be helpful if I could see the path
 
 # iterate through each folder-go through each folder-go to levels down each time 
 # pattern =&quot;countdata&quot;
@@ -394,30 +393,37 @@ print(filenames)
 # data_list contains dataframes
 data_list &lt;- lapply(filenames, read.csv) 
 
-# use a loop to pull out files
+
 # create empty object, then fill it in the loop
 my_files &lt;- c()
 
+# use a loop to pull out files
+# fill the object I created above
+# I am still a bit unclear how to properly write a loop
+
 for (i in seq_along(filenames)) {
-   my_files &lt;- c(my_files, filenames[i])
+  my_files &lt;- c(my_files, filenames[i])
  }
  
  print(my_files)</code></pre>
 </div>
 </div>
-<div id="question-3." class="section level3">
-<h3>Question #3.</h3>
-<div id="step-1-create-pseudo-code" class="section level4">
-<h4>Step 1: Create Pseudo-code</h4>
-<pre class="r"><code># Starting with pseudo-code, generate functions for 1) Cleaning the data for any empty/missing cases 2) Extract the year from each file name, 3) Calculate Abundance for each year (Total number of individuals found), 4) Calculate Species Richness for each year(Number of unique species found)
+<div id="question-3" class="section level4">
+<h4>Question #3</h4>
+<div id="starting-with-pseudo-code-generate-functions-for-1-cleaning-the-data-for-any-emptymissing-cases-2-extract-the-year-from-each-file-name-3-calculate-abundance-for-each-year-total-number-of-individuals-found-4-calculate-species-richness-for-each-yearnumber-of-unique-species-found" class="section level5">
+<h5>Starting with pseudo-code, generate functions for 1) Cleaning the
+data for any empty/missing cases 2) Extract the year from each file
+name, 3) Calculate Abundance for each year (Total number of individuals
+found), 4) Calculate Species Richness for each year(Number of unique
+species found)</h5>
+<pre class="r"><code># Step 1: Create Pseudo-code
+# Step 2: Write function for each list item 
 
-### Step 2: Write function for each list item ----
-##### 1) Cleaning the data ----
-# for any empty/missing cases 
+# 1) Cleaning the data for any empty/missing cases 
 
 ##########################################################################
 # FUNCTION clean_data
-# read in data, omit NAs
+# create empty list, read in data, omit NAs, return data list with NAs removed
 # input: data set 
 # output: cleaned data set 
 #__________________________________________________________________________
@@ -429,9 +435,11 @@ clean_data &lt;- function(data) {
     data &lt;- read.csv(filenames[i], row.names = NULL) # Read CSV file
     cleaned &lt;- data[complete.cases(data$scientificName), ]  # remove NAs to clean data
   
-# I know I need to store cleaned data in the list, not sure how to do this
+# I know I need to store cleaned data in the list, but I am not sure how to do this
 # Cleaned_data_list is supposed to contain the cleaned data for each file
-#    cleaned_data_list[[i]] &lt;- cleaned_data
+
+# tried several iterations, maybe something like this should be in the loop
+# cleaned_data_list[[i]] &lt;- cleaned_data
 }
     
     return(cleaned_data_list)
@@ -440,25 +448,25 @@ clean_data &lt;- function(data) {
 # end of clean_data function
 ##########################################################################
 
+# check the function and take a peek at the new dataset
 cleaned_data &lt;- clean_data(data)
 head (cleaned_data)</code></pre>
 <pre><code>## list()</code></pre>
-<pre class="r"><code>##### 2) Extract the year ----
-# from each file name
+<pre class="r"><code># 2) Extract the year from each file name
 
 ##########################################################################
 # FUNCTION extract_year
-# Extract year from each file name, &quot;_countdata&quot; followed by date &quot;YYYY-MM&quot;, replaces filenames w/ only year
+# Extract year from each file name w/ &quot;countdata&quot; using reg expressions, convert years, make a vector, print list
 # input: data set 
 # output: list of years
 #__________________________________________________________________________
 
 extract_year &lt;- function(filename) {
  
-  years &lt;- gsub(&quot;.*_countdata\\.(\\d{4})-\\d{2}.*\\.csv&quot;, &quot;\\1&quot;, filename)  # Extract the year from each filename
-  years &lt;- as.numeric(years)   # Convert the years to numeric
+  years &lt;- gsub(&quot;.*_countdata\\.(\\d{4})-\\d{2}.*\\.csv&quot;, &quot;\\1&quot;, filename)  # Extract  year from each filename
+  years &lt;- as.numeric(years)   # Convert the years to numeric vector
   years_list &lt;- as.list(years)   # Convert the numeric vector to a list
-  print(years_list) # Print the extracted years
+  print(years_list) # Print  extracted years
   
   return(years)
 }
@@ -466,21 +474,22 @@ extract_year &lt;- function(filename) {
 # end of clean_data function
 ##########################################################################
 
-#results &lt;- extract_year()
-#print(results)
+# Rmd file would not run with the following two lines of code
+# I may be using an improper argument for the new function 
+# results &lt;- extract_year()
+# print(results)
 
-##### 3) Calculate Abundance ----
-# for each year (Total number of individuals found), 
+#3) Calculate Abundance for each year (Total number of individuals found), 
 
 ##########################################################################
 # FUNCTION abundance
-# Read count data from each file and calculate abundance for each year (total number of individuals found)
+# create empty vector, read in files, extract year, calculate abundance, return abundance
 # input: data set, years 
 # output: abundance for each year
 #__________________________________________________________________________
 
 abundance &lt;- function(filename) {
-  year_abundance &lt;- numeric()  # Create an empty numeric vector to store abundance for each year
+  year_abundance &lt;- numeric()  # Create empty numeric vector to store abundance for each year
   count_data &lt;- read.csv(filename) # Read count data from file
   year &lt;- extract_year(filename)  # Extract year from filename
   year_abundance[year] &lt;- sum(count_data$Count) # Calculate abundance
@@ -490,15 +499,16 @@ abundance &lt;- function(filename) {
 # end of abundance function
 ##########################################################################
 
-#results &lt;- abundance(&quot;NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv&quot;)
-#tail (results)
+# Rmd file would not run with the following two lines of code calling the new function
+# I may be using an improper argument for the new function 
+# results &lt;- abundance(&quot;NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv&quot;)
+# tail (results)
 
-##### 4) Calculate Species Richness ----
-# for each year (Number of unique species found)
+# 4) Calculate Species Richness for each year (Number of unique species found)
 
 ##########################################################################
 # FUNCTION calculate_richness
-# Calculate species richness for each year (number of species found)
+# read in data, extract year, calculate richness
 # input: data set 
 # output: species richness
 #__________________________________________________________________________
@@ -513,14 +523,16 @@ calculate_richness &lt;- function(filename) {
 # end of richness function
 ##########################################################################
 
-#results &lt;- calculate_richness(&quot;NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv&quot;)
-#print (results)</code></pre>
+# Rmd file would not run with the following two lines of code calling the new function
+# I may be using an improper argument for the new function 
+# results &lt;- calculate_richness(&quot;NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv&quot;)
+# print (results)</code></pre>
 </div>
 </div>
-<div id="question-4." class="section level3">
-<h3>Question #4.</h3>
-<div id="create-empty-data-frame-to-hold-the-above-summary-statistics" class="section level4">
-<h4>Create empty data frame to hold the above summary statistics</h4>
+<div id="question-4" class="section level4">
+<h4>Question #4</h4>
+<div id="create-empty-data-frame-to-hold-the-above-summary-statistics." class="section level5">
+<h5>Create empty data frame to hold the above summary statistics.</h5>
 <pre class="r"><code># create empty data frame with 4 columns, one for the file name, one for abundance, one for species richness, and one for year.
 # Not clear about whether I need the stringsAsFactors bit
 
@@ -540,12 +552,22 @@ str(sum_stats)</code></pre>
 ##  $ year            : int</code></pre>
 </div>
 </div>
-<div id="question-5." class="section level3">
-<h3>Question #5.</h3>
-<div id="step-3-create-function-templates-as-batch-operation" class="section level4">
-<h4>Step 3: Create function templates as batch operation</h4>
-<pre class="r"><code>### Step 4: Source all function templates as a batch operation 
-#### Using a for loop, run your created functions as a batch process for each folder, changing the working directory as necessary to read in the correct files, calculating summary statistics with your created functions, and then writing them out into your summary statistics data frame.
+<div id="question-5" class="section level4">
+<h4>Question #5</h4>
+<div id="create-function-templates-as-batch-operation" class="section level5">
+<h5>Create function templates as batch operation</h5>
+</div>
+<div id="using-a-for-loop-run-your-created-functions-as-a-batch-process-for-each-folder-changing-the-working-directory-as-necessary-to-read-in-the-correct-files-calculating-summary-statistics-with-your-created-functions-and-then-writing-them-out-into-your-summary-statistics-data-frame." class="section level5">
+<h5>Using a for loop, run your created functions as a batch process for
+each folder, changing the working directory as necessary to read in the
+correct files, calculating summary statistics with your created
+functions, and then writing them out into your summary statistics data
+frame.</h5>
+<pre class="r"><code># Step 3: Create function templates as batch operation
+# Step 4: Source all function templates as a batch operation 
+
+
+# This in disorganized and unsuccessful. As I am sure you can see, I am pretty confused about how to structure this code. At a vary basic level, I can&#39;t figure out how to navigate the subdirectories. It seems like I should be able to use setwd, but it throws an error inside a for loop. 
 
 # Get the list of subdirectories within the main directory
 subdirs &lt;- list.dirs(dir, recursive = TRUE)
