@@ -34,7 +34,7 @@ dir <- "~/Documents/UVM_Coursework/ComputationalBiology/Original Data"
 
 ```{r echo = TRUE, results = FALSE}
 
-# I struggled with this step. I was able to get the file names but had trouble going down into each individual directory. I don't think I have it set up correctly, and I am not if I need all the components of the code. It threw me off because I was not able to set a working directory in the for loop without throwing an error.
+# I struggled with this step. I was able to get the file names but had trouble going down into each individual directory. I don't think I have it set up correctly, and I am not sure if I need all the components of the code. It threw me off because I was not able to set a working directory in the for loop without throwing an error.
 
 # I ended up trying to use the recursive argument, but I am not sure I am using it properly
 # I used `full.names` to keep track of the pathname because it seems like that is what I was struggling with and I thought it would be helpful if I could see the path
