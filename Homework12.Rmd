@@ -109,7 +109,8 @@ print(p2)
   p1 + p2 + plot_layout(ncol=1)
 ```
 
-* Explore another type of geom
+* Explore another type of geom. 
+* OK...this is not a great figure, but could take some different parts and use them elsewhere
 
 ```{r echo=TRUE, results=TRUE}
 
@@ -122,8 +123,8 @@ data$homeworld_numeric <- as.numeric(factor(data$homeworld))
 # Create a jitter dot plot
 # Make dots transparent to visualize overlap/clustering
 
-p3 <- ggplot(data = data, aes(x = homeworld, y = species)) +
-      geom_jitter(alpha = 0.35, color = "blue", size = 4) +
+p3 <- ggplot(data = data, aes(x = homeworld, y = species, col=as.factor(sex))) +
+      geom_jitter(alpha = 0.35, color = "darkgreen", size = 5) +
        labs(x = "Homeworld", y = "Species", 
        title = "Identification of Species Adaptive Radiation Potential 
        Based on Prevalence in Multiple Homeworlds") +
@@ -134,21 +135,21 @@ p3 <- ggplot(data = data, aes(x = homeworld, y = species)) +
 p3 <- p3 + theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 7),
                  axis.text.y = element_text(size = 7))
 
-print(p3)
+plot(p3)
 ```
 
-Change theme for a more engaging visual. Spacig between labels and title still needs to be adjusted, but theme improves visual impact.
+Change theme for a more engaging visual. Spacing between labels and title still needs to be adjusted, but theme improves visual impact.
 
 ```{r echo=TRUE, results=TRUE}
 
 # histogram
 p4 <- ggplot(data=data) +
        aes(x=homeworld) +
-       geom_bar (fill="khaki",color="black")
+       geom_bar (fill="khaki",color="black", width = 0.75 )
        
 # many specialized themes
 p4 + theme_economist() +
-     theme(axis.text.x = element_text(angle = 45, hjust = .05, vjust = .08, size = 7, margin = margin(0, 0, 0, 0.05, "cm"))) +
+     theme(axis.text.x = element_text(angle = 300, hjust = .05, vjust = 1, size = 7, margin = margin(0, 0, 0, 0.05, "cm"))) +
      labs(title="Patterns of Distribution of Star Wars Characters",
          subtitle="Not sure what I could say here, but something to help clarify the purpose of this plot",
          x="Homeworld",
@@ -201,7 +202,7 @@ starwars <- starwars %>%
   mutate(species = ifelse(species == "", "Unknown", species)) %>% 
   mutate(species_group = ifelse(species %in% c("Human", "Droid", "Other Life Forms"), species, "Other"))
 
-# Create the facet plot
+# Create a facet plot
 ggplot(starwars, aes(x = height, y = mass)) +
   geom_point(alpha = 0.5, color = "darkgreen", size =5) +
   facet_wrap(~ species_group, scales = "free") +
