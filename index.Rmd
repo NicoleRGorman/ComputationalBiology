@@ -50,7 +50,10 @@ knitr::opts_chunk$set(echo = TRUE)
 + Click [here](Homework10.html) for homework #10.
 
 ### Homework #11: Batch Processing
-+ Click [here](file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html) for homework #11.
++ Click [here](file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html) for homework #11. 
+
++ If that doesn't work, try here:
+[Link to Homework11.html](file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html)
 
 ### Homework #12: ggplot
 + Click [here](Homework12.html) for homework #12.
