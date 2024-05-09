@@ -55,6 +55,8 @@ knitr::opts_chunk$set(echo = TRUE)
 + If that doesn't work, try here:
 [Link to Homework11.html](file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html)
 
++ And if that doesn't work, try pasting this into your browser: file:///Users/nicolegorman/Documents/UVM_Coursework/ComputationalBiology/Homework11/Homework11.html
+
 ### Homework #12: ggplot
 + Click [here](Homework12.html) for homework #12.
 
