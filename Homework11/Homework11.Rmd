@@ -1,29 +1,41 @@
 ---
 title: "Homework11"
 author: "Nicole R Gorman"
-date: "2024-05-08"
+date: "2024-04-10"
 output: html_document
 ---
 
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
 ```
-# Homework 11 ----
-# Date 10 April 2024
-# NRG
 
+# Batch Processing 
+
+* Open libraries
+```{r open libraries, message=FALSE}
 library(log4r)
 library(TeachingDemos)
 library(tidyverse)
 library(pracma)
 library(ggmosaic)
+```
 
-# Question #1. ----
+### Question #1.
+```{r echo = TRUE, results = TRUE}
 
 ## Download dataset ----
 ## Set working directory ----
 dir <- "~/Documents/UVM_Coursework/ComputationalBiology/Original Data"
+```
 
-# Question #2. ----
-# Within each year’s folder, you will only be using a file from each year labeled “countdata” in its title. Using for loops, iterate through each year’s folders to gather the file names of these “countdata” .csv files.
+### Question #2.
+#### Within each year’s folder, you will only be using a file from each year labeled “countdata” in its title. Using for loops, iterate through each year’s folders to gather the file names of these “countdata” .csv files.
+
+```{r echo = TRUE, results = FALSE}
+
+# I don't think I have this set up correctly, and I am not even sure if I need it, but I was not able to set a working directory in the for loop without throwing an error
+# I tried to use the recursive argument, but I am not sure I am using it properly
+# I used `full.names` to keep track of the pathname because that is what I was struggling with
 
 # iterate through each folder-go through each folder-go to levels down each time 
 # pattern ="countdata"
@@ -31,11 +43,12 @@ dir <- "~/Documents/UVM_Coursework/ComputationalBiology/Original Data"
 filenames <- list.files(dir, pattern ="countdata", recursive = TRUE, full.names = TRUE) 
 print(filenames)
 
-# Read in the data
+# Read in the csv files
 # data_list contains dataframes
 data_list <- lapply(filenames, read.csv) 
 
 # use a loop to pull out files
+# create empty object, then fill it in the loop
 my_files <- c()
 
 for (i in seq_along(filenames)) {
@@ -43,9 +56,12 @@ for (i in seq_along(filenames)) {
  }
  
  print(my_files)
+```
 
-# Question #3. ----
-### Step 1: Create Pseudo-code ----
+### Question #3. 
+#### Step 1: Create Pseudo-code
+
+```{r echo = TRUE, results = TRUE}
 # Starting with pseudo-code, generate functions for 1) Cleaning the data for any empty/missing cases 2) Extract the year from each file name, 3) Calculate Abundance for each year (Total number of individuals found), 4) Calculate Species Richness for each year(Number of unique species found)
 
 ### Step 2: Write function for each list item ----
@@ -60,29 +76,25 @@ for (i in seq_along(filenames)) {
 #__________________________________________________________________________
 
 clean_data <- function(data) {
-  cleaned <- data[complete.cases(data$scientificName), ]  # remove NAs to clean data
-  return(cleaned)
+  cleaned_data_list <- list() # create empty list
+  
+  for (i in seq_along(filenames)) {
+    data <- read.csv(filenames[i], row.names = NULL) # Read CSV file
+    cleaned <- data[complete.cases(data$scientificName), ]  # remove NAs to clean data
+  
+# I know I need to store cleaned data in the list, not sure how to do this
+# Cleaned_data_list is supposed to contain the cleaned data for each file
+#    cleaned_data_list[[i]] <- cleaned_data
+}
+    
+    return(cleaned_data_list)
   }
 
 # end of clean_data function
 ##########################################################################
 
-# I could not get this to work inside the function
-
-cleaned_data_list <- list() # create empty list
-
-for (i in seq_along(filenames)) {
-  data <- read.csv(filenames[i], row.names = NULL) # Read CSV file
-  
-  cleaned_data <- clean_data(data) 
-  
-  # Store cleaned data in the list
-  cleaned_data_list[[i]] <- cleaned_data
-}
-
+cleaned_data <- clean_data(data)
 head (cleaned_data)
-
-# Now cleaned_data_list contains the cleaned data for each file
 
 ##### 2) Extract the year ----
 # from each file name
@@ -107,8 +119,8 @@ extract_year <- function(filename) {
 # end of clean_data function
 ##########################################################################
 
-results <- extract_year(my_data)
-print(results)
+#results <- extract_year()
+#print(results)
 
 ##### 3) Calculate Abundance ----
 # for each year (Total number of individuals found), 
@@ -131,8 +143,8 @@ abundance <- function(filename) {
 # end of abundance function
 ##########################################################################
 
-results <- abundance("NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv")
-tail (results)
+#results <- abundance("NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv")
+#tail (results)
 
 ##### 4) Calculate Species Richness ----
 # for each year (Number of unique species found)
@@ -154,12 +166,16 @@ calculate_richness <- function(filename) {
 # end of richness function
 ##########################################################################
 
-results <- calculate_richness("NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv")
-print (results)
+#results <- calculate_richness("NEON.D01.BART.DP1.10003.001.brd_countdata.2022-06.basic.20231229T053256Z.csv")
+#print (results)
+```
 
-# Question #4. ----
-## Create empty data frame ----
-# to hold the above summary statistics-you should have 4 columns, one for the file name, one for abundance, one for species richness, and one for year.
+### Question #4. 
+#### Create empty data frame to hold the above summary statistics
+```{r echo = TRUE, results = TRUE}
+
+# create empty data frame with 4 columns, one for the file name, one for abundance, one for species richness, and one for year.
+# Not clear about whether I need the stringsAsFactors bit
 
 sum_stats <- data.frame(
   filename = character(),
@@ -170,60 +186,43 @@ sum_stats <- data.frame(
 )
 
 str(sum_stats)
+```
 
-# Question #5. ----
-### Step 3: Create function templates as batch operation ----
-## Batch process----
-# Using a for loop, run your created functions as a batch process for each folder, changing the working directory as necessary to read in the correct files, calculating summary statistics with your created functions, and then writing them out into your summary statistics data frame.
+### Question #5. 
+#### Step 3: Create function templates as batch operation 
+
+```{r echo = TRUE, results = TRUE}
+
+### Step 4: Source all function templates as a batch operation 
+#### Using a for loop, run your created functions as a batch process for each folder, changing the working directory as necessary to read in the correct files, calculating summary statistics with your created functions, and then writing them out into your summary statistics data frame.
 
 # Get the list of subdirectories within the main directory
 subdirs <- list.dirs(dir, recursive = TRUE)
 
 # Iterate over each subdirectory
 for (subdir in subdirs) {
-  
   setwd(subdir) # Set working directory to the current subdirectory
+  filenames <- list.files(pattern = "countdata", full.names = TRUE) # Get the filenames
+  subdir_summary <- list() # Create an empty list 
   
-  # Get the filenames for countdata files in the current subdirectory
-  filenames <- list.files(pattern = "countdata", full.names = TRUE)
-  
-  # Create an empty list to store summary statistics for the current subdirectory
-  subdir_summary <- list()
-  
-  # Iterate over each file in the subdirectory
-  for (filename in filenames) {
-  
-    # Clean the data
-    cleaned_data <- clean_data(read.csv(filename))
+# Iterate over each file in the subdirectory  
+for (filename in filenames) {
+    cleaned_data <- clean_data(read.csv(filename))   # Clean the data
+    year <- extract_year(filename)   # Extract the year from the filename
+    file_abundance <- sum(cleaned_data$Count)  # Calculate abundance for the current file
+    file_richness <- calculate_richness(filename) # Calculate species richness for the current file
     
-    # Extract the year from the filename
-    year <- extract_year(filename)
-    
-    # Calculate abundance for the current file
-    file_abundance <- sum(cleaned_data$Count)
-    
-    # Calculate species richness for the current file
-    file_richness <- calculate_richness(filename)
-    
-    # Append summary statistics to the subdir_summary list
-    subdir_summary[[filename]] <- list(
+    subdir_summary[[filename]] <- list( 
       filename = filename,
       abundance = file_abundance,
       species_richness = file_richness,
       year = year
     )
   }
-  
-# Combine summary statistics for the current subdirectory into a data frame
-subdir_summary_df <- do.call(rbind, subdir_summary)
-  
-# Append the subdir_summary_df to the sum_stats data frame
-sum_stats <- rbind(sum_stats, subdir_summary_df)
+
+subdir_summary_df <- do.call(rbind, subdir_summary) # Combine summary statistics f
+sum_stats <- rbind(sum_stats, subdir_summary_df) # Append the subdir_summary_df df 
 }
+print(sum_stats) # Print the summary statistics data frame
 
-# Print the summary statistics data frame
-print(sum_stats)
-
-### Step 4: Source all function templates as a batch operation ----
-### Step 5: Run each function template ----
 ```
